@@ -21,6 +21,22 @@ import type {
   TypedContractMethod,
 } from "../common";
 
+export declare namespace PythStructs {
+  export type PriceStruct = {
+    price: BigNumberish;
+    conf: BigNumberish;
+    expo: BigNumberish;
+    publishTime: BigNumberish;
+  };
+
+  export type PriceStructOutput = [
+    price: bigint,
+    conf: bigint,
+    expo: bigint,
+    publishTime: bigint
+  ] & { price: bigint; conf: bigint; expo: bigint; publishTime: bigint };
+}
+
 export declare namespace ISwapper {
   export type SwapParamsStruct = {
     assetToSwapToOrFrom: AddressLike;
@@ -55,6 +71,7 @@ export interface SwapperInterface extends Interface {
       | "chainStables"
       | "decimals"
       | "getOracleUpdateFee"
+      | "getPrice"
       | "name"
       | "swapFromPrivateToken"
       | "swapToPrivateToken"
@@ -95,6 +112,7 @@ export interface SwapperInterface extends Interface {
     functionFragment: "getOracleUpdateFee",
     values: [BytesLike[]]
   ): string;
+  encodeFunctionData(functionFragment: "getPrice", values: [BytesLike]): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "swapFromPrivateToken",
@@ -140,6 +158,7 @@ export interface SwapperInterface extends Interface {
     functionFragment: "getOracleUpdateFee",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getPrice", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "swapFromPrivateToken",
@@ -236,6 +255,12 @@ export interface Swapper extends BaseContract {
     "view"
   >;
 
+  getPrice: TypedContractMethod<
+    [priceFeedId: BytesLike],
+    [PythStructs.PriceStructOutput],
+    "view"
+  >;
+
   name: TypedContractMethod<[], [string], "view">;
 
   swapFromPrivateToken: TypedContractMethod<
@@ -308,6 +333,13 @@ export interface Swapper extends BaseContract {
   getFunction(
     nameOrSignature: "getOracleUpdateFee"
   ): TypedContractMethod<[updateData: BytesLike[]], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getPrice"
+  ): TypedContractMethod<
+    [priceFeedId: BytesLike],
+    [PythStructs.PriceStructOutput],
+    "view"
+  >;
   getFunction(
     nameOrSignature: "name"
   ): TypedContractMethod<[], [string], "view">;

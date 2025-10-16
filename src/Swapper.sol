@@ -7,11 +7,13 @@ import { IOracleRegistry } from "./interfaces/IOracleRegistry.sol";
 import { IPyth } from "./pyth/IPyth.sol";
 import { ISwapper } from "./interfaces/ISwapper.sol";
 
+import { NATIVE_TOKEN } from "./Fee.sol";
 import { PythStructs } from "./pyth/PythStructs.sol";
+import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { SilentERC20 } from "./token/SilentERC20.sol";
 
-contract Swapper is ISwapper, SilentERC20 {
+contract Swapper is ISwapper, SilentERC20, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     uint8 public constant AGE = 60;
@@ -41,35 +43,53 @@ contract Swapper is ISwapper, SilentERC20 {
         return PYTH.getUpdateFee(updateData);
     }
 
-    // Swap from asset to $PRIV.
-    function swapToPrivateToken(SwapParams calldata swapParams) public payable {
+    function getPrice(bytes32 priceFeedId) public view returns (PythStructs.Price memory price) {
+        price = PYTH.getPriceNoOlderThan(priceFeedId, AGE);
+    }
+
+    // Swap from asset to $SilUSD.
+    function swapToPrivateToken(SwapParams calldata swapParams) public payable nonReentrant {
         address asset = swapParams.assetToSwapToOrFrom;
         uint256 amount = swapParams.amountToSwapToOrFrom;
 
         if (asset == address(this)) revert SwapOnlyToPrivateToken();
         if (swapParams.receiver == msg.sender) revert SwapperMustNotBeReceiver();
         
-        if (chainStables[asset]) {
+        uint256 amountToMint;
+        uint256 feeUpdatePrice;
+
+        if (asset != NATIVE_TOKEN) {
             IERC20(asset).safeTransferFrom(msg.sender, address(this), amount);
-            (bool sent, ) = msg.sender.call{ value: msg.value }("");
+        }
 
-            require(sent);
-
-            uint256 amtToMint = (amount * 10 ** decimals()) / (10 ** IERC20Metadata(asset).decimals());
-            _mint(msg.sender, amtToMint);
+        if (chainStables[asset]) {
+            amountToMint = (amount * 10 ** decimals()) / (10 ** IERC20Metadata(asset).decimals());
         } else {
             bytes32 priceFeedId = _getAssetPriceFeedId(asset);
             if (priceFeedId == bytes32(0)) revert OracleNotSet();
 
-            (uint256 priceExp, uint256 expo) = _getAssetPriceData(swapParams.updateData, priceFeedId);
+            (uint256 priceExp, uint256 expo, uint256 fee) = _getAssetPriceData(swapParams.updateData, priceFeedId);
+            feeUpdatePrice = fee;
 
-            uint256 amountToMint = _calculateAmountToMint(swapParams, priceExp, expo);
-            _mint(swapParams.receiver, amountToMint);
+            amountToMint = _calculateAmountToMint(swapParams, priceExp, expo);
         }
+
+        uint256 balance;
+        if (asset == NATIVE_TOKEN) {
+            if (msg.value < (amount + feeUpdatePrice)) revert ETHSentLessThanSwapPlusFee();
+            balance = msg.value - (amount + feeUpdatePrice);
+        } else {
+            balance = msg.value - feeUpdatePrice;
+        }
+
+        (bool sent, ) = msg.sender.call{ value: balance }("");
+        require(sent);
+        
+        _mint(swapParams.receiver, amountToMint);
     }
 
-    // Swap from $PRIV to asset.
-    function swapFromPrivateToken(SwapParams calldata swapParams) public payable {
+    // Swap from $SilUSD to asset.
+    function swapFromPrivateToken(SwapParams calldata swapParams) public payable nonReentrant {
         address asset = swapParams.assetToSwapToOrFrom;
         uint256 amount = swapParams.amountToSwapToOrFrom;
 
@@ -78,31 +98,32 @@ contract Swapper is ISwapper, SilentERC20 {
 
         _burn(msg.sender, amount);
         
-        if (chainStables[asset]) {
-            (bool sent, ) = msg.sender.call{ value: msg.value }("");
-            require(sent);
+        uint256 amountToPay;
+        uint256 feeUpdatePrice;
 
-            uint256 amtToPay = (amount * (10 ** IERC20Metadata(asset).decimals())) / (10 ** decimals());
-            IERC20(asset).safeTransferFrom(address(this), msg.sender, amtToPay);
+        if (chainStables[asset]) {
+            amountToPay = (amount * (10 ** IERC20Metadata(asset).decimals())) / (10 ** decimals());
         } else {
             bytes32 priceFeedId = _getAssetPriceFeedId(asset);
             if (priceFeedId == bytes32(0)) revert OracleNotSet();
 
-            (uint256 priceExp, uint256 expo) = _getAssetPriceData(swapParams.updateData, priceFeedId);
+            (uint256 priceExp, uint256 expo, uint256 fee) = _getAssetPriceData(swapParams.updateData, priceFeedId);
+            feeUpdatePrice = fee;
 
-            uint256 amountToPay = _calculateAmountToPay(swapParams, priceExp, expo);
-
-            if (swapParams.assetToSwapToOrFrom == address(0)) {
-                (bool sent, ) = swapParams.receiver.call{ value: amountToPay }("");
-                require(sent);
-            } else {
-                IERC20(swapParams.assetToSwapToOrFrom).safeTransferFrom(
-                    address(this),
-                    swapParams.receiver,
-                    amountToPay
-                );
-            }
+            amountToPay = _calculateAmountToPay(swapParams, priceExp, expo);
         }
+
+        uint256 balance;
+        if (asset == NATIVE_TOKEN) {
+            if (msg.value < feeUpdatePrice) revert ETHSentLessThanFee();
+            balance = (msg.value + amountToPay) - feeUpdatePrice;
+        } else {
+            balance = msg.value - feeUpdatePrice;
+            IERC20(asset).safeTransferFrom(address(this), swapParams.receiver, amountToPay);
+        }
+
+        (bool sent, ) = msg.sender.call{ value: balance }("");
+        require(sent);
     }
 
     function _getAssetPriceFeedId(address asset) internal view returns (bytes32) {
@@ -112,9 +133,8 @@ contract Swapper is ISwapper, SilentERC20 {
     function _getAssetPriceData(
         bytes[] calldata updateData,
         bytes32 priceFeedId
-    ) internal returns (uint256 priceExp, uint256 expo) {
-        uint256 feeUpdatePrice = getOracleUpdateFee(updateData);
-        uint256 balance = msg.value - feeUpdatePrice;
+    ) internal returns (uint256 priceExp, uint256 expo, uint256 feeUpdatePrice) {
+        feeUpdatePrice = getOracleUpdateFee(updateData);
 
         PYTH.updatePriceFeeds{ value: feeUpdatePrice }(updateData);
 
@@ -122,9 +142,6 @@ contract Swapper is ISwapper, SilentERC20 {
 
         priceExp = uint256(int256(price.price));
         expo = uint64(_abs(price.expo));
-
-        (bool sent, ) = msg.sender.call { value: balance }("");
-        require(sent);
     }
 
     function _calculateAmountToMint(
@@ -132,7 +149,7 @@ contract Swapper is ISwapper, SilentERC20 {
         uint256 priceExp,
         uint256 expo
     ) internal view returns (uint256) {
-        uint8 decimal = swapParams.assetToSwapToOrFrom == address(0)
+        uint8 decimal = swapParams.assetToSwapToOrFrom == NATIVE_TOKEN
             ? 18 
             : IERC20Metadata(swapParams.assetToSwapToOrFrom).decimals();
 
@@ -146,7 +163,7 @@ contract Swapper is ISwapper, SilentERC20 {
         uint256 priceExp,
         uint256 expo
     ) internal view returns (uint256) {
-        uint8 decimal = swapParams.assetToSwapToOrFrom == address(0)
+        uint8 decimal = swapParams.assetToSwapToOrFrom == NATIVE_TOKEN
             ? 18 
             : IERC20Metadata(swapParams.assetToSwapToOrFrom).decimals();
 

@@ -11,6 +11,16 @@ import type {
 const _abi = [
   {
     inputs: [],
+    name: "ETHSentLessThanFee",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ETHSentLessThanSwapPlusFee",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "OracleNotSet",
     type: "error",
   },

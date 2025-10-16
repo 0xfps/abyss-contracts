@@ -9,6 +9,8 @@ interface ISwapper {
         bytes[] updateData;
     }
 
+    error ETHSentLessThanSwapPlusFee();
+    error ETHSentLessThanFee();
     error OracleNotSet();
     error SwapperMustNotBeReceiver();
     error SwapOnlyFromPrivateToken();
