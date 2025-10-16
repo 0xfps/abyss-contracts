@@ -831,8 +831,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/token/SilentERC20.sol": {
-      "lastModificationDate": 1760609701559,
-      "contentHash": "73d519f1ff6d736ccffa3710ec0e42d6",
+      "lastModificationDate": 1760611898024,
+      "contentHash": "fc8202a7d5e035e32a710b01ff58e28a",
       "sourceName": "src/token/SilentERC20.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -859,10 +859,10 @@
         }
       },
       "imports": [
+        "@openzeppelin/contracts/interfaces/draft-IERC6093.sol",
         "./ISilentERC20.sol",
         "./ISilentERC20Metadata.sol",
-        "@openzeppelin/contracts/utils/Context.sol",
-        "@openzeppelin/contracts/interfaces/draft-IERC6093.sol"
+        "@openzeppelin/contracts/utils/Context.sol"
       ],
       "versionPragmas": [
         "^0.8.28"

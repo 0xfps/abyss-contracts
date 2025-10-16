@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
+import { IERC20Errors } from "@openzeppelin/contracts/interfaces/draft-IERC6093.sol";
 import { ISilentERC20 } from "./ISilentERC20.sol";
 import { ISilentERC20Metadata } from "./ISilentERC20Metadata.sol";
+
 import { Context } from "@openzeppelin/contracts/utils/Context.sol";
-import { IERC20Errors } from "@openzeppelin/contracts/interfaces/draft-IERC6093.sol";
 
 abstract contract SilentERC20 is Context, ISilentERC20, ISilentERC20Metadata, IERC20Errors {
     mapping(address account => uint256) private _balances;
