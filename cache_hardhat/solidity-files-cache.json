@@ -791,42 +791,6 @@
         "IVerifier"
       ]
     },
-    "/Users/fps/Desktop/attp-contracts/src/lib/PoseidonT4.sol": {
-      "lastModificationDate": 1759086737097,
-      "contentHash": "127b5cd515fe51c04bf3897bbd4e2673",
-      "sourceName": "src/lib/PoseidonT4.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.7.0"
-      ],
-      "artifacts": [
-        "PoseidonT4"
-      ]
-    },
     "/Users/fps/Desktop/attp-contracts/src/token/SilentERC20.sol": {
       "lastModificationDate": 1760612006263,
       "contentHash": "1d57685cb8bf26fccdf59f20d335dfae",
