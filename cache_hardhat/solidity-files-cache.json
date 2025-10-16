@@ -74,8 +74,8 @@
       "artifacts": []
     },
     "/Users/fps/Desktop/attp-contracts/src/Fee.sol": {
-      "lastModificationDate": 1758500419217,
-      "contentHash": "ac545b85fb69f025e602680d3ee5731e",
+      "lastModificationDate": 1760617170186,
+      "contentHash": "5a911084167b7a87056955dd60d84d0e",
       "sourceName": "src/Fee.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -102,8 +102,7 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol"
+        "./token/ISilentERC20.sol"
       ],
       "versionPragmas": [
         "^0.8.28"
@@ -263,8 +262,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/Recorder.sol": {
-      "lastModificationDate": 1759090776297,
-      "contentHash": "a6f7d290a99bc68af5afd683a62b8e47",
+      "lastModificationDate": 1760617828531,
+      "contentHash": "150b81700ddbd1e117b96ce94d47f803",
       "sourceName": "src/Recorder.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -291,7 +290,6 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
         "./Fee.sol"
       ],
       "versionPragmas": [
@@ -302,8 +300,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/Main.sol": {
-      "lastModificationDate": 1759652838470,
-      "contentHash": "daa4f79c9c71864839e32db84bed6a2d",
+      "lastModificationDate": 1760617844764,
+      "contentHash": "6f8169abd6ecdb248cca1a6c34cce469",
       "sourceName": "src/Main.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -330,12 +328,11 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
         "./interfaces/IMain.sol",
+        "./token/ISilentERC20.sol",
         "./interfaces/IVerifier.sol",
         "./lib/Extractor.sol",
-        "./lib/PoseidonT4.sol",
-        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+        "@fifteenfigures/lib/PoseidonHash.sol",
         "./Fee.sol",
         "./Recorder.sol",
         "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
@@ -349,8 +346,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/interfaces/IMain.sol": {
-      "lastModificationDate": 1759652816918,
-      "contentHash": "b26b305040a5ee3e73f22e60ca5b7766",
+      "lastModificationDate": 1760617867782,
+      "contentHash": "f95f590d0d7d8eb61ac5f30ee0d29bef",
       "sourceName": "src/interfaces/IMain.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -385,8 +382,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/lib/Extractor.sol": {
-      "lastModificationDate": 1758286593711,
-      "contentHash": "b61cdb1e12c4c57b756ab5b979f38eab",
+      "lastModificationDate": 1760617308654,
+      "contentHash": "89c692adc6aa9baa7823149ae4cd7e29",
       "sourceName": "src/lib/Extractor.sol",
       "solcConfig": {
         "version": "0.8.28",

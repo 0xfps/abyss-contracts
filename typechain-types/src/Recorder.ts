@@ -3,12 +3,10 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
   Interface,
-  AddressLike,
   ContractRunner,
   ContractMethod,
   Listener,
@@ -21,62 +19,14 @@ import type {
   TypedContractMethod,
 } from "../common";
 
-export declare namespace Recorder {
-  export type UserInfoStruct = {
-    depositor: AddressLike;
-    asset: AddressLike;
-    amountAfterDeposit: BigNumberish;
-  };
-
-  export type UserInfoStructOutput = [
-    depositor: string,
-    asset: string,
-    amountAfterDeposit: bigint
-  ] & { depositor: string; asset: string; amountAfterDeposit: bigint };
-
-  export type DepositInfoStruct = {
-    info: Recorder.UserInfoStruct;
-    uniqueDeposits: BigNumberish;
-    currentDeposit: BigNumberish;
-  };
-
-  export type DepositInfoStructOutput = [
-    info: Recorder.UserInfoStructOutput,
-    uniqueDeposits: bigint,
-    currentDeposit: bigint
-  ] & {
-    info: Recorder.UserInfoStructOutput;
-    uniqueDeposits: bigint;
-    currentDeposit: bigint;
-  };
-}
-
 export interface RecorderInterface extends Interface {
-  getFunction(
-    nameOrSignature: "getDepositDelta" | "userHasDeposited" | "withdrawals"
-  ): FunctionFragment;
+  getFunction(nameOrSignature: "withdrawals"): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "getDepositDelta",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "userHasDeposited",
-    values: [AddressLike, AddressLike]
-  ): string;
   encodeFunctionData(
     functionFragment: "withdrawals",
     values: [BytesLike]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "getDepositDelta",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "userHasDeposited",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "withdrawals",
     data: BytesLike
@@ -126,18 +76,6 @@ export interface Recorder extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  getDepositDelta: TypedContractMethod<
-    [standardizedKey: BytesLike],
-    [Recorder.DepositInfoStructOutput],
-    "view"
-  >;
-
-  userHasDeposited: TypedContractMethod<
-    [user: AddressLike, asset: AddressLike],
-    [boolean],
-    "view"
-  >;
-
   withdrawals: TypedContractMethod<
     [withdrawalKeyHash: BytesLike],
     [bigint],
@@ -148,20 +86,6 @@ export interface Recorder extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
-  getFunction(
-    nameOrSignature: "getDepositDelta"
-  ): TypedContractMethod<
-    [standardizedKey: BytesLike],
-    [Recorder.DepositInfoStructOutput],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "userHasDeposited"
-  ): TypedContractMethod<
-    [user: AddressLike, asset: AddressLike],
-    [boolean],
-    "view"
-  >;
   getFunction(
     nameOrSignature: "withdrawals"
   ): TypedContractMethod<[withdrawalKeyHash: BytesLike], [bigint], "view">;

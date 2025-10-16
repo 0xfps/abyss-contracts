@@ -102,7 +102,7 @@ export interface IMain extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  deposit: TypedContractMethod<[depositKey: BytesLike], [void], "payable">;
+  deposit: TypedContractMethod<[depositKey: BytesLike], [void], "nonpayable">;
 
   withdraw: TypedContractMethod<
     [
@@ -125,7 +125,7 @@ export interface IMain extends BaseContract {
 
   getFunction(
     nameOrSignature: "deposit"
-  ): TypedContractMethod<[depositKey: BytesLike], [void], "payable">;
+  ): TypedContractMethod<[depositKey: BytesLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<

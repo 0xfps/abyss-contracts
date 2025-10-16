@@ -23,45 +23,13 @@ import type {
   TypedContractMethod,
 } from "../common";
 
-export declare namespace Recorder {
-  export type UserInfoStruct = {
-    depositor: AddressLike;
-    asset: AddressLike;
-    amountAfterDeposit: BigNumberish;
-  };
-
-  export type UserInfoStructOutput = [
-    depositor: string,
-    asset: string,
-    amountAfterDeposit: bigint
-  ] & { depositor: string; asset: string; amountAfterDeposit: bigint };
-
-  export type DepositInfoStruct = {
-    info: Recorder.UserInfoStruct;
-    uniqueDeposits: BigNumberish;
-    currentDeposit: BigNumberish;
-  };
-
-  export type DepositInfoStructOutput = [
-    info: Recorder.UserInfoStructOutput,
-    uniqueDeposits: bigint,
-    currentDeposit: bigint
-  ] & {
-    info: Recorder.UserInfoStructOutput;
-    uniqueDeposits: bigint;
-    currentDeposit: bigint;
-  };
-}
-
 export interface MainInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "deposit"
-      | "getDepositDelta"
       | "getLast64Roots"
       | "length"
       | "root"
-      | "userHasDeposited"
       | "withdraw"
       | "withdrawals"
   ): FunctionFragment;
@@ -70,19 +38,11 @@ export interface MainInterface extends Interface {
 
   encodeFunctionData(functionFragment: "deposit", values: [BytesLike]): string;
   encodeFunctionData(
-    functionFragment: "getDepositDelta",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getLast64Roots",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "length", values?: undefined): string;
   encodeFunctionData(functionFragment: "root", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "userHasDeposited",
-    values: [AddressLike, AddressLike]
-  ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [
@@ -103,19 +63,11 @@ export interface MainInterface extends Interface {
 
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getDepositDelta",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getLast64Roots",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "length", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "root", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "userHasDeposited",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawals",
@@ -178,25 +130,13 @@ export interface Main extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  deposit: TypedContractMethod<[depositKey: BytesLike], [void], "payable">;
-
-  getDepositDelta: TypedContractMethod<
-    [standardizedKey: BytesLike],
-    [Recorder.DepositInfoStructOutput],
-    "view"
-  >;
+  deposit: TypedContractMethod<[depositKey: BytesLike], [void], "nonpayable">;
 
   getLast64Roots: TypedContractMethod<[], [string[]], "view">;
 
   length: TypedContractMethod<[], [bigint], "view">;
 
   root: TypedContractMethod<[], [string], "view">;
-
-  userHasDeposited: TypedContractMethod<
-    [user: AddressLike, asset: AddressLike],
-    [boolean],
-    "view"
-  >;
 
   withdraw: TypedContractMethod<
     [
@@ -225,14 +165,7 @@ export interface Main extends BaseContract {
 
   getFunction(
     nameOrSignature: "deposit"
-  ): TypedContractMethod<[depositKey: BytesLike], [void], "payable">;
-  getFunction(
-    nameOrSignature: "getDepositDelta"
-  ): TypedContractMethod<
-    [standardizedKey: BytesLike],
-    [Recorder.DepositInfoStructOutput],
-    "view"
-  >;
+  ): TypedContractMethod<[depositKey: BytesLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "getLast64Roots"
   ): TypedContractMethod<[], [string[]], "view">;
@@ -242,13 +175,6 @@ export interface Main extends BaseContract {
   getFunction(
     nameOrSignature: "root"
   ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "userHasDeposited"
-  ): TypedContractMethod<
-    [user: AddressLike, asset: AddressLike],
-    [boolean],
-    "view"
-  >;
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<
