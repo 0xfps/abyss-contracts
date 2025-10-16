@@ -70,6 +70,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IMain__factory>;
     getContractFactory(
+      name: "IOracleRegistry",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IOracleRegistry__factory>;
+    getContractFactory(
+      name: "ISwapper",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ISwapper__factory>;
+    getContractFactory(
       name: "IVerifier",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IVerifier__factory>;
@@ -89,6 +97,18 @@ declare module "hardhat/types/runtime" {
       name: "Recorder",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Recorder__factory>;
+    getContractFactory(
+      name: "ISilentERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ISilentERC20__factory>;
+    getContractFactory(
+      name: "ISilentERC20Metadata",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ISilentERC20Metadata__factory>;
+    getContractFactory(
+      name: "SilentERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SilentERC20__factory>;
     getContractFactory(
       name: "Groth16Verifier",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -165,6 +185,16 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IMain>;
     getContractAt(
+      name: "IOracleRegistry",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IOracleRegistry>;
+    getContractAt(
+      name: "ISwapper",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ISwapper>;
+    getContractAt(
       name: "IVerifier",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -189,6 +219,21 @@ declare module "hardhat/types/runtime" {
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.Recorder>;
+    getContractAt(
+      name: "ISilentERC20",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ISilentERC20>;
+    getContractAt(
+      name: "ISilentERC20Metadata",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ISilentERC20Metadata>;
+    getContractAt(
+      name: "SilentERC20",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.SilentERC20>;
     getContractAt(
       name: "Groth16Verifier",
       address: string | ethers.Addressable,
@@ -252,6 +297,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IMain>;
     deployContract(
+      name: "IOracleRegistry",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IOracleRegistry>;
+    deployContract(
+      name: "ISwapper",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ISwapper>;
+    deployContract(
       name: "IVerifier",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IVerifier>;
@@ -271,6 +324,18 @@ declare module "hardhat/types/runtime" {
       name: "Recorder",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.Recorder>;
+    deployContract(
+      name: "ISilentERC20",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ISilentERC20>;
+    deployContract(
+      name: "ISilentERC20Metadata",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ISilentERC20Metadata>;
+    deployContract(
+      name: "SilentERC20",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.SilentERC20>;
     deployContract(
       name: "Groth16Verifier",
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -347,6 +412,16 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IMain>;
     deployContract(
+      name: "IOracleRegistry",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IOracleRegistry>;
+    deployContract(
+      name: "ISwapper",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ISwapper>;
+    deployContract(
       name: "IVerifier",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -371,6 +446,21 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.Recorder>;
+    deployContract(
+      name: "ISilentERC20",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ISilentERC20>;
+    deployContract(
+      name: "ISilentERC20Metadata",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ISilentERC20Metadata>;
+    deployContract(
+      name: "SilentERC20",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.SilentERC20>;
     deployContract(
       name: "Groth16Verifier",
       args: any[],

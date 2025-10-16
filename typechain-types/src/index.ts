@@ -9,5 +9,7 @@ import type * as lib from "./lib";
 export type { lib };
 import type * as mock from "./mock";
 export type { mock };
+import type * as token from "./token";
+export type { token };
 export type { Main } from "./Main";
 export type { Recorder } from "./Recorder";

@@ -2,4 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { IMain } from "./IMain";
+export type { IOracleRegistry } from "./IOracleRegistry";
+export type { ISwapper } from "./ISwapper";
 export type { IVerifier } from "./IVerifier";

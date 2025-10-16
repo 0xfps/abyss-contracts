@@ -2,4 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export { IMain__factory } from "./IMain__factory";
+export { IOracleRegistry__factory } from "./IOracleRegistry__factory";
+export { ISwapper__factory } from "./ISwapper__factory";
 export { IVerifier__factory } from "./IVerifier__factory";
