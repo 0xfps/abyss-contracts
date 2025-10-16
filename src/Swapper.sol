@@ -54,7 +54,9 @@ contract Swapper is ISwapper, SilentERC20 {
             (bool sent, ) = msg.sender.call{ value: msg.value }("");
 
             require(sent);
-            _mint(msg.sender, amount);
+
+            uint256 amtToMint = (amount * 10 ** decimals()) / (10 ** IERC20Metadata(asset).decimals());
+            _mint(msg.sender, amtToMint);
         } else {
             bytes32 priceFeedId = _getAssetPriceFeedId(asset);
             if (priceFeedId == bytes32(0)) revert OracleNotSet();
@@ -80,7 +82,8 @@ contract Swapper is ISwapper, SilentERC20 {
             (bool sent, ) = msg.sender.call{ value: msg.value }("");
             require(sent);
 
-            IERC20(asset).safeTransferFrom(address(this), msg.sender, amount);
+            uint256 amtToPay = (amount * (10 ** IERC20Metadata(asset).decimals())) / (10 ** decimals());
+            IERC20(asset).safeTransferFrom(address(this), msg.sender, amtToPay);
         } else {
             bytes32 priceFeedId = _getAssetPriceFeedId(asset);
             if (priceFeedId == bytes32(0)) revert OracleNotSet();
