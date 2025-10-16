@@ -10,6 +10,26 @@ import type {
 
 const _abi = [
   {
+    inputs: [],
+    name: "OracleNotSet",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "SwapOnlyFromPrivateToken",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "SwapOnlyToPrivateToken",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "SwapperMustNotBeReceiver",
+    type: "error",
+  },
+  {
     inputs: [
       {
         internalType: "bytes[]",
@@ -42,6 +62,16 @@ const _abi = [
             name: "amountToSwapToOrFrom",
             type: "uint256",
           },
+          {
+            internalType: "address",
+            name: "receiver",
+            type: "address",
+          },
+          {
+            internalType: "bytes[]",
+            name: "updateData",
+            type: "bytes[]",
+          },
         ],
         internalType: "struct ISwapper.SwapParams",
         name: "swapParams",
@@ -50,7 +80,7 @@ const _abi = [
     ],
     name: "swapFromPrivateToken",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -67,6 +97,16 @@ const _abi = [
             name: "amountToSwapToOrFrom",
             type: "uint256",
           },
+          {
+            internalType: "address",
+            name: "receiver",
+            type: "address",
+          },
+          {
+            internalType: "bytes[]",
+            name: "updateData",
+            type: "bytes[]",
+          },
         ],
         internalType: "struct ISwapper.SwapParams",
         name: "swapParams",
@@ -75,7 +115,7 @@ const _abi = [
     ],
     name: "swapToPrivateToken",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
 ] as const;

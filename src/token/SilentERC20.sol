@@ -56,7 +56,7 @@ abstract contract SilentERC20 is Context, ISilentERC20, ISilentERC20Metadata, IE
      * {IERC20-balanceOf} and {IERC20-transfer}.
      */
     function decimals() public view virtual returns (uint8) {
-        return 18;
+        return 6;
     }
 
     /// @inheritdoc ISilentERC20

@@ -118,6 +118,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Recorder__factory>;
     getContractFactory(
+      name: "Swapper",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Swapper__factory>;
+    getContractFactory(
       name: "ISilentERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ISilentERC20__factory>;
@@ -265,6 +269,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Recorder>;
     getContractAt(
+      name: "Swapper",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Swapper>;
+    getContractAt(
       name: "ISilentERC20",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -390,6 +399,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.Recorder>;
     deployContract(
+      name: "Swapper",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Swapper>;
+    deployContract(
       name: "ISilentERC20",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.ISilentERC20>;
@@ -536,6 +549,11 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.Recorder>;
+    deployContract(
+      name: "Swapper",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Swapper>;
     deployContract(
       name: "ISilentERC20",
       args: any[],

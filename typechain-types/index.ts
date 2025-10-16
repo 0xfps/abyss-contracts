@@ -60,6 +60,8 @@ export type { IPythEvents } from "./src/pyth/IPythEvents";
 export { IPythEvents__factory } from "./factories/src/pyth/IPythEvents__factory";
 export type { Recorder } from "./src/Recorder";
 export { Recorder__factory } from "./factories/src/Recorder__factory";
+export type { Swapper } from "./src/Swapper";
+export { Swapper__factory } from "./factories/src/Swapper__factory";
 export type { ISilentERC20 } from "./src/token/ISilentERC20";
 export { ISilentERC20__factory } from "./factories/src/token/ISilentERC20__factory";
 export type { ISilentERC20Metadata } from "./src/token/ISilentERC20Metadata";

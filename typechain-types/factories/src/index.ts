@@ -10,3 +10,4 @@ export * as token from "./token";
 export { Main__factory } from "./Main__factory";
 export { OracleRegistry__factory } from "./OracleRegistry__factory";
 export { Recorder__factory } from "./Recorder__factory";
+export { Swapper__factory } from "./Swapper__factory";

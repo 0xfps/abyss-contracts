@@ -4,6 +4,26 @@
   "sourceName": "src/interfaces/ISwapper.sol",
   "abi": [
     {
+      "inputs": [],
+      "name": "OracleNotSet",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SwapOnlyFromPrivateToken",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SwapOnlyToPrivateToken",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SwapperMustNotBeReceiver",
+      "type": "error"
+    },
+    {
       "inputs": [
         {
           "internalType": "bytes[]",
@@ -35,6 +55,16 @@
               "internalType": "uint256",
               "name": "amountToSwapToOrFrom",
               "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "updateData",
+              "type": "bytes[]"
             }
           ],
           "internalType": "struct ISwapper.SwapParams",
@@ -44,7 +74,7 @@
       ],
       "name": "swapFromPrivateToken",
       "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "payable",
       "type": "function"
     },
     {
@@ -60,6 +90,16 @@
               "internalType": "uint256",
               "name": "amountToSwapToOrFrom",
               "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "updateData",
+              "type": "bytes[]"
             }
           ],
           "internalType": "struct ISwapper.SwapParams",
@@ -69,7 +109,7 @@
       ],
       "name": "swapToPrivateToken",
       "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "payable",
       "type": "function"
     }
   ],

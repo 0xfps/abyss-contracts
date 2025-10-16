@@ -16,3 +16,4 @@ export type { token };
 export type { Main } from "./Main";
 export type { OracleRegistry } from "./OracleRegistry";
 export type { Recorder } from "./Recorder";
+export type { Swapper } from "./Swapper";

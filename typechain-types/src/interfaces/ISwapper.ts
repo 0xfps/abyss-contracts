@@ -25,12 +25,21 @@ export declare namespace ISwapper {
   export type SwapParamsStruct = {
     assetToSwapToOrFrom: AddressLike;
     amountToSwapToOrFrom: BigNumberish;
+    receiver: AddressLike;
+    updateData: BytesLike[];
   };
 
   export type SwapParamsStructOutput = [
     assetToSwapToOrFrom: string,
-    amountToSwapToOrFrom: bigint
-  ] & { assetToSwapToOrFrom: string; amountToSwapToOrFrom: bigint };
+    amountToSwapToOrFrom: bigint,
+    receiver: string,
+    updateData: string[]
+  ] & {
+    assetToSwapToOrFrom: string;
+    amountToSwapToOrFrom: bigint;
+    receiver: string;
+    updateData: string[];
+  };
 }
 
 export interface ISwapperInterface extends Interface {
@@ -120,13 +129,13 @@ export interface ISwapper extends BaseContract {
   swapFromPrivateToken: TypedContractMethod<
     [swapParams: ISwapper.SwapParamsStruct],
     [void],
-    "nonpayable"
+    "payable"
   >;
 
   swapToPrivateToken: TypedContractMethod<
     [swapParams: ISwapper.SwapParamsStruct],
     [void],
-    "nonpayable"
+    "payable"
   >;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -141,14 +150,14 @@ export interface ISwapper extends BaseContract {
   ): TypedContractMethod<
     [swapParams: ISwapper.SwapParamsStruct],
     [void],
-    "nonpayable"
+    "payable"
   >;
   getFunction(
     nameOrSignature: "swapToPrivateToken"
   ): TypedContractMethod<
     [swapParams: ISwapper.SwapParamsStruct],
     [void],
-    "nonpayable"
+    "payable"
   >;
 
   filters: {};

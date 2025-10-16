@@ -8,6 +8,7 @@ import { Ownable2Step, Ownable } from "@openzeppelin/contracts/access/Ownable2St
 contract OracleRegistry is IOracleRegistry, Ownable2Step {
     bool public isOwnedByMultiSig;
 
+    // address(0) is native token.
     mapping(address asset => bytes32 priceFeedId) public priceFeeds;
 
     // Address deploying the registry.
