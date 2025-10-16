@@ -129,7 +129,7 @@ contract Swapper is ISwapper, SilentERC20 {
         uint256 priceExp,
         uint256 expo
     ) internal view returns (uint256) {
-        uint8 decimal = swapParams.assetToSwapToOrFrom == address(0) 
+        uint8 decimal = swapParams.assetToSwapToOrFrom == address(0)
             ? 18 
             : IERC20Metadata(swapParams.assetToSwapToOrFrom).decimals();
 
@@ -143,7 +143,7 @@ contract Swapper is ISwapper, SilentERC20 {
         uint256 priceExp,
         uint256 expo
     ) internal view returns (uint256) {
-        uint8 decimal = swapParams.assetToSwapToOrFrom == address(0) 
+        uint8 decimal = swapParams.assetToSwapToOrFrom == address(0)
             ? 18 
             : IERC20Metadata(swapParams.assetToSwapToOrFrom).decimals();
 
