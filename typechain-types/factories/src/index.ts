@@ -5,6 +5,8 @@ export * as verifierSol from "./Verifier.sol";
 export * as interfaces from "./interfaces";
 export * as lib from "./lib";
 export * as mock from "./mock";
+export * as pyth from "./pyth";
 export * as token from "./token";
 export { Main__factory } from "./Main__factory";
+export { OracleRegistry__factory } from "./OracleRegistry__factory";
 export { Recorder__factory } from "./Recorder__factory";

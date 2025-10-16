@@ -10,6 +10,25 @@ import type {
 
 const _abi = [
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "prevOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "mulitiSig",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferredToMultisig",
+    type: "event",
+  },
+  {
     inputs: [
       {
         components: [
@@ -32,6 +51,25 @@ const _abi = [
     name: "addAssetOracle",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "asset",
+        type: "address",
+      },
+    ],
+    name: "getPriceFeed",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
