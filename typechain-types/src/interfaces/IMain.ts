@@ -23,12 +23,27 @@ import type {
   TypedContractMethod,
 } from "../../common";
 
+export declare namespace IMain {
+  export type DepositParamsStruct = {
+    depositKey: BytesLike;
+    includeLeaf: boolean;
+  };
+
+  export type DepositParamsStructOutput = [
+    depositKey: string,
+    includeLeaf: boolean
+  ] & { depositKey: string; includeLeaf: boolean };
+}
+
 export interface IMainInterface extends Interface {
   getFunction(nameOrSignature: "deposit" | "withdraw"): FunctionFragment;
 
   getEvent(nameOrSignatureOrTopic: "DepositAdded"): EventFragment;
 
-  encodeFunctionData(functionFragment: "deposit", values: [BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "deposit",
+    values: [IMain.DepositParamsStruct]
+  ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [
@@ -102,7 +117,11 @@ export interface IMain extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  deposit: TypedContractMethod<[depositKey: BytesLike], [void], "nonpayable">;
+  deposit: TypedContractMethod<
+    [depositParams: IMain.DepositParamsStruct],
+    [void],
+    "nonpayable"
+  >;
 
   withdraw: TypedContractMethod<
     [
@@ -125,7 +144,11 @@ export interface IMain extends BaseContract {
 
   getFunction(
     nameOrSignature: "deposit"
-  ): TypedContractMethod<[depositKey: BytesLike], [void], "nonpayable">;
+  ): TypedContractMethod<
+    [depositParams: IMain.DepositParamsStruct],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<

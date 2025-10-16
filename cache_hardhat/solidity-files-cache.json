@@ -300,8 +300,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/Main.sol": {
-      "lastModificationDate": 1760619459279,
-      "contentHash": "c55a742409e8a2194f31d87dd834f0c8",
+      "lastModificationDate": 1760622509172,
+      "contentHash": "df5b5f5a9a62566fe0cc4daa328b9846",
       "sourceName": "src/Main.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -333,6 +333,7 @@
         "./interfaces/IVerifier.sol",
         "./lib/Extractor.sol",
         "@fifteenfigures/lib/PoseidonHash.sol",
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
         "./Fee.sol",
         "./Recorder.sol",
         "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
@@ -346,8 +347,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/interfaces/IMain.sol": {
-      "lastModificationDate": 1760617867782,
-      "contentHash": "f95f590d0d7d8eb61ac5f30ee0d29bef",
+      "lastModificationDate": 1760622083340,
+      "contentHash": "a43a18fc3dde4633123f2577e8b443b9",
       "sourceName": "src/interfaces/IMain.sol",
       "solcConfig": {
         "version": "0.8.28",

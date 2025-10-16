@@ -8,12 +8,13 @@ import { IVerifier } from "./interfaces/IVerifier.sol";
 import { Extractor } from "./lib/Extractor.sol";
 import { PoseidonT3 } from "@fifteenfigures/lib/PoseidonHash.sol";
 
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import { NATIVE_TOKEN, Fee } from "./Fee.sol";
 import { Recorder } from "./Recorder.sol";
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { TinyMerkleTree } from "@fifteenfigures/TinyMerkleTree.sol";
 
-contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard {
+contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
     using Extractor for bytes;
 
     ISilentERC20 internal immutable SILENT_TOKEN;
@@ -22,8 +23,10 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard {
     constructor (
         bytes32 initLeaf,
         address _verifier,
-        address silentToken
-    ) TinyMerkleTree (initLeaf) {
+        address silentToken,
+        string memory name,
+        string memory symbol
+    ) TinyMerkleTree (initLeaf) ERC20(name, symbol) {
         SILENT_TOKEN = ISilentERC20(silentToken);
         verifier = IVerifier(_verifier);
         emit DepositAdded(initLeaf);
@@ -31,18 +34,30 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard {
 
     receive() external payable {}
 
-    function deposit(bytes calldata depositKey) public {
+    function decimals() public pure override returns (uint8) {
+        return 6;
+    }
+
+    function deposit(DepositParams calldata depositParams) public {
+        bytes calldata depositKey = depositParams.depositKey;
         (bytes32 keyHash, uint256 amount) = depositKey._extractKeyMetadata();
-        bytes32 leaf = bytes32(PoseidonT3.hash([uint256(keyHash), amount]));
-        
-        if (_leafExists(leaf)) revert KeyAlreadyUsed(leaf);
 
-        SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
+        if (depositParams.includeLeaf) {
+            bytes32 leaf = bytes32(PoseidonT3.hash([uint256(keyHash), amount]));
+            
+            if (_leafExists(leaf)) revert KeyAlreadyUsed(leaf);
 
-        _takeFee(SILENT_TOKEN, amount);
-        _addLeaf(leaf);
-        _recordDeposit(leaf);
-        emit DepositAdded(leaf);
+            SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
+
+            _takeFee(SILENT_TOKEN, amount);
+            _addLeaf(leaf);
+            _recordDeposit(leaf);
+            
+            emit DepositAdded(leaf);
+        } else {
+            SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
+            _mint(msg.sender, amount);
+        }
     }
     
     function withdraw(
@@ -76,6 +91,11 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard {
 
         if (!verifier.verifyProof(pA, pB, pC, publicSignals)) revert ProofNotVerified();
 
+        SILENT_TOKEN.transfer(recipient, amount);
+    }
+
+    function unWrap(uint256 amount, address recipient) public {
+        _burn(msg.sender, amount);
         SILENT_TOKEN.transfer(recipient, amount);
     }
 

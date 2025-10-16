@@ -87,9 +87,21 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "bytes",
-        name: "depositKey",
-        type: "bytes",
+        components: [
+          {
+            internalType: "bytes",
+            name: "depositKey",
+            type: "bytes",
+          },
+          {
+            internalType: "bool",
+            name: "includeLeaf",
+            type: "bool",
+          },
+        ],
+        internalType: "struct IMain.DepositParams",
+        name: "depositParams",
+        type: "tuple",
       },
     ],
     name: "deposit",

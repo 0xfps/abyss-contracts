@@ -23,26 +23,84 @@ import type {
   TypedContractMethod,
 } from "../common";
 
+export declare namespace IMain {
+  export type DepositParamsStruct = {
+    depositKey: BytesLike;
+    includeLeaf: boolean;
+  };
+
+  export type DepositParamsStructOutput = [
+    depositKey: string,
+    includeLeaf: boolean
+  ] & { depositKey: string; includeLeaf: boolean };
+}
+
 export interface MainInterface extends Interface {
   getFunction(
     nameOrSignature:
+      | "allowance"
+      | "approve"
+      | "balanceOf"
+      | "decimals"
       | "deposit"
       | "getLast64Roots"
       | "length"
+      | "name"
       | "root"
+      | "symbol"
+      | "totalSupply"
+      | "transfer"
+      | "transferFrom"
+      | "unWrap"
       | "withdraw"
       | "withdrawals"
   ): FunctionFragment;
 
-  getEvent(nameOrSignatureOrTopic: "DepositAdded"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "Approval" | "DepositAdded" | "Transfer"
+  ): EventFragment;
 
-  encodeFunctionData(functionFragment: "deposit", values: [BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "allowance",
+    values: [AddressLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "approve",
+    values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "balanceOf",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "deposit",
+    values: [IMain.DepositParamsStruct]
+  ): string;
   encodeFunctionData(
     functionFragment: "getLast64Roots",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "length", values?: undefined): string;
+  encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "root", values?: undefined): string;
+  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "totalSupply",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transfer",
+    values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferFrom",
+    values: [AddressLike, AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "unWrap",
+    values: [BigNumberish, AddressLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [
@@ -61,13 +119,29 @@ export interface MainInterface extends Interface {
     values: [BytesLike]
   ): string;
 
+  decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getLast64Roots",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "length", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "root", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "totalSupply",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "transferFrom",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "unWrap", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawals",
@@ -75,11 +149,47 @@ export interface MainInterface extends Interface {
   ): Result;
 }
 
+export namespace ApprovalEvent {
+  export type InputTuple = [
+    owner: AddressLike,
+    spender: AddressLike,
+    value: BigNumberish
+  ];
+  export type OutputTuple = [owner: string, spender: string, value: bigint];
+  export interface OutputObject {
+    owner: string;
+    spender: string;
+    value: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export namespace DepositAddedEvent {
   export type InputTuple = [leaf: BytesLike];
   export type OutputTuple = [leaf: string];
   export interface OutputObject {
     leaf: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace TransferEvent {
+  export type InputTuple = [
+    from: AddressLike,
+    to: AddressLike,
+    value: BigNumberish
+  ];
+  export type OutputTuple = [from: string, to: string, value: bigint];
+  export interface OutputObject {
+    from: string;
+    to: string;
+    value: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -130,13 +240,57 @@ export interface Main extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  deposit: TypedContractMethod<[depositKey: BytesLike], [void], "nonpayable">;
+  allowance: TypedContractMethod<
+    [owner: AddressLike, spender: AddressLike],
+    [bigint],
+    "view"
+  >;
+
+  approve: TypedContractMethod<
+    [spender: AddressLike, value: BigNumberish],
+    [boolean],
+    "nonpayable"
+  >;
+
+  balanceOf: TypedContractMethod<[account: AddressLike], [bigint], "view">;
+
+  decimals: TypedContractMethod<[], [bigint], "view">;
+
+  deposit: TypedContractMethod<
+    [depositParams: IMain.DepositParamsStruct],
+    [void],
+    "nonpayable"
+  >;
 
   getLast64Roots: TypedContractMethod<[], [string[]], "view">;
 
   length: TypedContractMethod<[], [bigint], "view">;
 
+  name: TypedContractMethod<[], [string], "view">;
+
   root: TypedContractMethod<[], [string], "view">;
+
+  symbol: TypedContractMethod<[], [string], "view">;
+
+  totalSupply: TypedContractMethod<[], [bigint], "view">;
+
+  transfer: TypedContractMethod<
+    [to: AddressLike, value: BigNumberish],
+    [boolean],
+    "nonpayable"
+  >;
+
+  transferFrom: TypedContractMethod<
+    [from: AddressLike, to: AddressLike, value: BigNumberish],
+    [boolean],
+    "nonpayable"
+  >;
+
+  unWrap: TypedContractMethod<
+    [amount: BigNumberish, recipient: AddressLike],
+    [void],
+    "nonpayable"
+  >;
 
   withdraw: TypedContractMethod<
     [
@@ -164,8 +318,32 @@ export interface Main extends BaseContract {
   ): T;
 
   getFunction(
+    nameOrSignature: "allowance"
+  ): TypedContractMethod<
+    [owner: AddressLike, spender: AddressLike],
+    [bigint],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "approve"
+  ): TypedContractMethod<
+    [spender: AddressLike, value: BigNumberish],
+    [boolean],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "balanceOf"
+  ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "decimals"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "deposit"
-  ): TypedContractMethod<[depositKey: BytesLike], [void], "nonpayable">;
+  ): TypedContractMethod<
+    [depositParams: IMain.DepositParamsStruct],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "getLast64Roots"
   ): TypedContractMethod<[], [string[]], "view">;
@@ -173,8 +351,38 @@ export interface Main extends BaseContract {
     nameOrSignature: "length"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
+    nameOrSignature: "name"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "root"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "symbol"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "totalSupply"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "transfer"
+  ): TypedContractMethod<
+    [to: AddressLike, value: BigNumberish],
+    [boolean],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "transferFrom"
+  ): TypedContractMethod<
+    [from: AddressLike, to: AddressLike, value: BigNumberish],
+    [boolean],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "unWrap"
+  ): TypedContractMethod<
+    [amount: BigNumberish, recipient: AddressLike],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<
@@ -196,14 +404,39 @@ export interface Main extends BaseContract {
   ): TypedContractMethod<[withdrawalKeyHash: BytesLike], [bigint], "view">;
 
   getEvent(
+    key: "Approval"
+  ): TypedContractEvent<
+    ApprovalEvent.InputTuple,
+    ApprovalEvent.OutputTuple,
+    ApprovalEvent.OutputObject
+  >;
+  getEvent(
     key: "DepositAdded"
   ): TypedContractEvent<
     DepositAddedEvent.InputTuple,
     DepositAddedEvent.OutputTuple,
     DepositAddedEvent.OutputObject
   >;
+  getEvent(
+    key: "Transfer"
+  ): TypedContractEvent<
+    TransferEvent.InputTuple,
+    TransferEvent.OutputTuple,
+    TransferEvent.OutputObject
+  >;
 
   filters: {
+    "Approval(address,address,uint256)": TypedContractEvent<
+      ApprovalEvent.InputTuple,
+      ApprovalEvent.OutputTuple,
+      ApprovalEvent.OutputObject
+    >;
+    Approval: TypedContractEvent<
+      ApprovalEvent.InputTuple,
+      ApprovalEvent.OutputTuple,
+      ApprovalEvent.OutputObject
+    >;
+
     "DepositAdded(bytes32)": TypedContractEvent<
       DepositAddedEvent.InputTuple,
       DepositAddedEvent.OutputTuple,
@@ -213,6 +446,17 @@ export interface Main extends BaseContract {
       DepositAddedEvent.InputTuple,
       DepositAddedEvent.OutputTuple,
       DepositAddedEvent.OutputObject
+    >;
+
+    "Transfer(address,address,uint256)": TypedContractEvent<
+      TransferEvent.InputTuple,
+      TransferEvent.OutputTuple,
+      TransferEvent.OutputObject
+    >;
+    Transfer: TypedContractEvent<
+      TransferEvent.InputTuple,
+      TransferEvent.OutputTuple,
+      TransferEvent.OutputObject
     >;
   };
 }
