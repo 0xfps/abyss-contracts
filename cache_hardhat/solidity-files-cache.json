@@ -1094,8 +1094,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/OracleRegistry.sol": {
-      "lastModificationDate": 1760611837421,
-      "contentHash": "c934495b628c1f0f5bbc4bdf88f6cfd6",
+      "lastModificationDate": 1760611869989,
+      "contentHash": "0304e83ae48b9845d173648968a8cca6",
       "sourceName": "src/OracleRegistry.sol",
       "solcConfig": {
         "version": "0.8.28",

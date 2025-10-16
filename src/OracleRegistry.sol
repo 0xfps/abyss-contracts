@@ -2,6 +2,7 @@
 pragma solidity ^0.8.28;
 
 import { IOracleRegistry } from "./interfaces/IOracleRegistry.sol";
+
 import { Ownable2Step, Ownable } from "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 contract OracleRegistry is IOracleRegistry, Ownable2Step {
