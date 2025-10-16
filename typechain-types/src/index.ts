@@ -5,8 +5,6 @@ import type * as verifierSol from "./Verifier.sol";
 export type { verifierSol };
 import type * as interfaces from "./interfaces";
 export type { interfaces };
-import type * as lib from "./lib";
-export type { lib };
 import type * as mock from "./mock";
 export type { mock };
 import type * as pyth from "./pyth";

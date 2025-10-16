@@ -90,10 +90,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IVerifier__factory>;
     getContractFactory(
-      name: "PoseidonT4",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.PoseidonT4__factory>;
-    getContractFactory(
       name: "Main",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Main__factory>;
@@ -234,11 +230,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IVerifier>;
     getContractAt(
-      name: "PoseidonT4",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.PoseidonT4>;
-    getContractAt(
       name: "Main",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -370,10 +361,6 @@ declare module "hardhat/types/runtime" {
       name: "IVerifier",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IVerifier>;
-    deployContract(
-      name: "PoseidonT4",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.PoseidonT4>;
     deployContract(
       name: "Main",
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -514,11 +501,6 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IVerifier>;
-    deployContract(
-      name: "PoseidonT4",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.PoseidonT4>;
     deployContract(
       name: "Main",
       args: any[],

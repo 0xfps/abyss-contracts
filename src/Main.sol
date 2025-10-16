@@ -68,12 +68,11 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard {
         if ((amountWithdrawn + amount) > maxWithdrawable) revert WithdrawalExceedsMax(amount);
         withdrawals[withdrawalKey] += amount;
 
-        uint256[5] memory publicSignals;
+        uint256[4] memory publicSignals;
         publicSignals[0] = uint256(root);
         publicSignals[1] = uint256(keyHash);
-        publicSignals[2] = uint256(uint160(0)); // Until Circuits are fixed.
-        publicSignals[3] = uint256(amountInKey);
-        publicSignals[4] = nullifier;
+        publicSignals[2] = uint256(amountInKey);
+        publicSignals[3] = nullifier;
 
         if (!verifier.verifyProof(pA, pB, pC, publicSignals)) revert ProofNotVerified();
 

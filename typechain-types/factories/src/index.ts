@@ -3,7 +3,6 @@
 /* eslint-disable */
 export * as verifierSol from "./Verifier.sol";
 export * as interfaces from "./interfaces";
-export * as lib from "./lib";
 export * as mock from "./mock";
 export * as pyth from "./pyth";
 export * as token from "./token";

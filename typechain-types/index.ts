@@ -46,8 +46,6 @@ export type { ISwapper } from "./src/interfaces/ISwapper";
 export { ISwapper__factory } from "./factories/src/interfaces/ISwapper__factory";
 export type { IVerifier } from "./src/interfaces/IVerifier";
 export { IVerifier__factory } from "./factories/src/interfaces/IVerifier__factory";
-export type { PoseidonT4 } from "./src/lib/PoseidonT4";
-export { PoseidonT4__factory } from "./factories/src/lib/PoseidonT4__factory";
 export type { Main } from "./src/Main";
 export { Main__factory } from "./factories/src/Main__factory";
 export type { MockERC20 } from "./src/mock/MockERC20";
