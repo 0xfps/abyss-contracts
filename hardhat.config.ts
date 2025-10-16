@@ -34,7 +34,10 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {
-      // allowUnlimitedContractSize: true
+      forking: {
+        enabled: true,
+        url: "https://arbitrum-sepolia.gateway.tenderly.co"
+      }
     },
     arbitrumSepolia: {
       chainId: 421614,
