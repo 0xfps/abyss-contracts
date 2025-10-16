@@ -36,7 +36,10 @@ export declare namespace IOracleRegistry {
 
 export interface IOracleRegistryInterface extends Interface {
   getFunction(
-    nameOrSignature: "addAssetOracle" | "getPriceFeed" | "removeAssetOracle"
+    nameOrSignature:
+      | "addAssetPriceFeed"
+      | "getPriceFeed"
+      | "removeAssetPriceFeed"
   ): FunctionFragment;
 
   getEvent(
@@ -44,7 +47,7 @@ export interface IOracleRegistryInterface extends Interface {
   ): EventFragment;
 
   encodeFunctionData(
-    functionFragment: "addAssetOracle",
+    functionFragment: "addAssetPriceFeed",
     values: [IOracleRegistry.OracleParamsStruct]
   ): string;
   encodeFunctionData(
@@ -52,12 +55,12 @@ export interface IOracleRegistryInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "removeAssetOracle",
+    functionFragment: "removeAssetPriceFeed",
     values: [AddressLike]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "addAssetOracle",
+    functionFragment: "addAssetPriceFeed",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -65,7 +68,7 @@ export interface IOracleRegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "removeAssetOracle",
+    functionFragment: "removeAssetPriceFeed",
     data: BytesLike
   ): Result;
 }
@@ -126,7 +129,7 @@ export interface IOracleRegistry extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  addAssetOracle: TypedContractMethod<
+  addAssetPriceFeed: TypedContractMethod<
     [oracleParams: IOracleRegistry.OracleParamsStruct],
     [void],
     "nonpayable"
@@ -134,7 +137,7 @@ export interface IOracleRegistry extends BaseContract {
 
   getPriceFeed: TypedContractMethod<[asset: AddressLike], [string], "view">;
 
-  removeAssetOracle: TypedContractMethod<
+  removeAssetPriceFeed: TypedContractMethod<
     [asset: AddressLike],
     [void],
     "nonpayable"
@@ -145,7 +148,7 @@ export interface IOracleRegistry extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "addAssetOracle"
+    nameOrSignature: "addAssetPriceFeed"
   ): TypedContractMethod<
     [oracleParams: IOracleRegistry.OracleParamsStruct],
     [void],
@@ -155,7 +158,7 @@ export interface IOracleRegistry extends BaseContract {
     nameOrSignature: "getPriceFeed"
   ): TypedContractMethod<[asset: AddressLike], [string], "view">;
   getFunction(
-    nameOrSignature: "removeAssetOracle"
+    nameOrSignature: "removeAssetPriceFeed"
   ): TypedContractMethod<[asset: AddressLike], [void], "nonpayable">;
 
   getEvent(

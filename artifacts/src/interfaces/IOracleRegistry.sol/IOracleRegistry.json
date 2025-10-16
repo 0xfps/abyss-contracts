@@ -42,7 +42,7 @@
           "type": "tuple"
         }
       ],
-      "name": "addAssetOracle",
+      "name": "addAssetPriceFeed",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -74,7 +74,7 @@
           "type": "address"
         }
       ],
-      "name": "removeAssetOracle",
+      "name": "removeAssetPriceFeed",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

@@ -38,13 +38,12 @@ export interface OracleRegistryInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "acceptOwnership"
-      | "addAssetOracle"
+      | "addAssetPriceFeed"
       | "getPriceFeed"
       | "isOwnedByMultiSig"
       | "owner"
       | "pendingOwner"
-      | "priceFeeds"
-      | "removeAssetOracle"
+      | "removeAssetPriceFeed"
       | "renounceOwnership"
       | "transferOwnership"
       | "transferToMultiSig"
@@ -62,7 +61,7 @@ export interface OracleRegistryInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "addAssetOracle",
+    functionFragment: "addAssetPriceFeed",
     values: [IOracleRegistry.OracleParamsStruct]
   ): string;
   encodeFunctionData(
@@ -79,11 +78,7 @@ export interface OracleRegistryInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "priceFeeds",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "removeAssetOracle",
+    functionFragment: "removeAssetPriceFeed",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
@@ -104,7 +99,7 @@ export interface OracleRegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "addAssetOracle",
+    functionFragment: "addAssetPriceFeed",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -120,9 +115,8 @@ export interface OracleRegistryInterface extends Interface {
     functionFragment: "pendingOwner",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "priceFeeds", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "removeAssetOracle",
+    functionFragment: "removeAssetPriceFeed",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -223,7 +217,7 @@ export interface OracleRegistry extends BaseContract {
 
   acceptOwnership: TypedContractMethod<[], [void], "nonpayable">;
 
-  addAssetOracle: TypedContractMethod<
+  addAssetPriceFeed: TypedContractMethod<
     [oracleParams: IOracleRegistry.OracleParamsStruct],
     [void],
     "nonpayable"
@@ -237,9 +231,7 @@ export interface OracleRegistry extends BaseContract {
 
   pendingOwner: TypedContractMethod<[], [string], "view">;
 
-  priceFeeds: TypedContractMethod<[asset: AddressLike], [string], "view">;
-
-  removeAssetOracle: TypedContractMethod<
+  removeAssetPriceFeed: TypedContractMethod<
     [asset: AddressLike],
     [void],
     "nonpayable"
@@ -267,7 +259,7 @@ export interface OracleRegistry extends BaseContract {
     nameOrSignature: "acceptOwnership"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "addAssetOracle"
+    nameOrSignature: "addAssetPriceFeed"
   ): TypedContractMethod<
     [oracleParams: IOracleRegistry.OracleParamsStruct],
     [void],
@@ -286,10 +278,7 @@ export interface OracleRegistry extends BaseContract {
     nameOrSignature: "pendingOwner"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "priceFeeds"
-  ): TypedContractMethod<[asset: AddressLike], [string], "view">;
-  getFunction(
-    nameOrSignature: "removeAssetOracle"
+    nameOrSignature: "removeAssetPriceFeed"
   ): TypedContractMethod<[asset: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "renounceOwnership"

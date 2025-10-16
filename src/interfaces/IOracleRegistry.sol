@@ -11,6 +11,6 @@ interface IOracleRegistry {
 
     function getPriceFeed(address asset) external view returns (bytes32);
 
-    function addAssetOracle(OracleParams memory oracleParams) external;
-    function removeAssetOracle(address asset) external;
+    function addAssetPriceFeed(OracleParams memory oracleParams) external;
+    function removeAssetPriceFeed(address asset) external;
 }

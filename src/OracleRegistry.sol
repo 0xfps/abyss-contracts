@@ -9,7 +9,7 @@ contract OracleRegistry is IOracleRegistry, Ownable2Step {
     bool public isOwnedByMultiSig;
 
     // address(0) is native token.
-    mapping(address asset => bytes32 priceFeedId) public priceFeeds;
+    mapping(address asset => bytes32 priceFeedId) internal priceFeeds;
 
     // Address deploying the registry.
     // This will be transferred to a multisig.
@@ -30,13 +30,13 @@ contract OracleRegistry is IOracleRegistry, Ownable2Step {
         return priceFeeds[asset];
     }
 
-    function addAssetOracle(OracleParams memory oracleParams) public onlyOwner {
+    function addAssetPriceFeed(OracleParams memory oracleParams) public onlyOwner {
         if (priceFeeds[oracleParams.asset] == bytes32(0)) {
             priceFeeds[oracleParams.asset] = oracleParams.priceFeedId;
         }
     }
 
-    function removeAssetOracle(address asset) public onlyOwner {
+    function removeAssetPriceFeed(address asset) public onlyOwner {
         if (priceFeeds[asset] != bytes32(0)) {
             priceFeeds[asset] = bytes32(0);
         }

@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>9/9</span>
+        <span class='fraction'>0/5</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">75% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>3/4</span>
+        <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>3/3</span>
+        <span class='fraction'>0/3</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>10/10</span>
+        <span class='fraction'>0/6</span>
       </div>
     </div>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line low'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -77,18 +77,7 @@
 32
 33
 34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+35</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -108,43 +97,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7×</span>
-<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7×</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4×</span>
-<span class="cline-any cline-yes">4×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 &nbsp;
-import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-&nbsp;
-import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { ISilentERC20 } from "./token/ISilentERC20.sol";
 &nbsp;
 address constant NATIVE_TOKEN = address(0);
 &nbsp;
 abstract contract Fee {
-    using SafeERC20 for IERC20;
-&nbsp;
     /// @notice 1%, unused, but for informational purposes.
     uint8 private constant FEE_PERCENTAGE = 1;
     uint8 private constant PERCENTAGE_BASE = 100;
@@ -156,27 +130,20 @@ abstract contract Fee {
     address private constant COLLECTOR = 0x1181a7eA6E0A4350b067B0BaCdf71440e70ef219; // 90% goes to this guy.
     address private constant SECOND_COLLECTOR = 0x5f6eF81421e331f65aA3D841247927ACb00df77A; // 10% goes to this guy.
 &nbsp;
-    function _takeFee(IERC20 token, uint256 amount) internal {
-        _distributeFee(token, _calculateFee(amount));
+<span class="fstat-no" title="function not covered" >    function _takeFee(ISilentERC20 token, uint256 amount) internal {</span>
+<span class="cstat-no" title="statement not covered" >        _distributeFee(token, _calculateFee(amount))</span>;
     }
 &nbsp;
-    function _calculateFee(uint256 amount) internal pure returns (uint256 fee) {
+<span class="fstat-no" title="function not covered" >    function _calculateFee(uint256 amount) internal pure returns (uint256 fee) {</span>
         fee = amount / PERCENTAGE_BASE;
     }
 &nbsp;
-    function _distributeFee(IERC20 token, uint256 fee) private {
-        uint256 collectorFee = (COLLECTOR_PERCENTAGE * fee) / PERCENTAGE_BASE;
-        uint256 secondCollectorFee = fee - collectorFee;
+<span class="fstat-no" title="function not covered" >    function _distributeFee(ISilentERC20 token, uint256 fee) private {</span>
+<span class="cstat-no" title="statement not covered" >        uint256 collectorFee = (COLLECTOR_PERCENTAGE * fee) / PERCENTAGE_BASE;</span>
+<span class="cstat-no" title="statement not covered" >        uint256 secondCollectorFee = fee - collectorFee;</span>
 &nbsp;
-        if (address(token) == NATIVE_TOKEN) {
-            (bool sent, ) = COLLECTOR.call{ value: collectorFee }("");
-            (bool secondSent, ) = SECOND_COLLECTOR.call{ value: secondCollectorFee }("");
-&nbsp;
-            <span class="missing-if-branch" title="else path not taken" >E</span>require(sent &amp;&amp; secondSent);
-        } else {
-            token.safeTransfer(COLLECTOR, collectorFee);
-            token.safeTransfer(SECOND_COLLECTOR, secondCollectorFee);
-        }
+<span class="cstat-no" title="statement not covered" >        token.transferFrom(address(this), COLLECTOR, collectorFee)</span>;
+<span class="cstat-no" title="statement not covered" >        token.transferFrom(address(this), SECOND_COLLECTOR, secondCollectorFee)</span>;
     }
 }</pre></td></tr>
 </table></pre>
@@ -184,7 +151,7 @@ abstract contract Fee {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Sep 28 2025 21:43:13 GMT+0100 (West Africa Standard Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Oct 16 2025 21:17:39 GMT+0100 (West Africa Standard Time)
 </div>
 </div>
 <script src="../prettify.js"></script>
