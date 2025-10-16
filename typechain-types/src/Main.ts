@@ -27,12 +27,14 @@ export declare namespace IMain {
   export type DepositParamsStruct = {
     depositKey: BytesLike;
     includeLeaf: boolean;
+    recipient: AddressLike;
   };
 
   export type DepositParamsStructOutput = [
     depositKey: string,
-    includeLeaf: boolean
-  ] & { depositKey: string; includeLeaf: boolean };
+    includeLeaf: boolean,
+    recipient: string
+  ] & { depositKey: string; includeLeaf: boolean; recipient: string };
 }
 
 export interface MainInterface extends Interface {

@@ -5,6 +5,7 @@ interface IMain {
     struct DepositParams {
         bytes depositKey;
         bool includeLeaf;
+        address recipient;
     }
 
     event DepositAdded(bytes32 indexed leaf);

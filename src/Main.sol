@@ -52,11 +52,11 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
             _takeFee(SILENT_TOKEN, amount);
             _addLeaf(leaf);
             _recordDeposit(leaf);
-            
+
             emit DepositAdded(leaf);
         } else {
             SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
-            _mint(msg.sender, amount);
+            _mint(depositParams.recipient, amount);
         }
     }
     

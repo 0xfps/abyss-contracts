@@ -98,6 +98,11 @@ const _abi = [
             name: "includeLeaf",
             type: "bool",
           },
+          {
+            internalType: "address",
+            name: "recipient",
+            type: "address",
+          },
         ],
         internalType: "struct IMain.DepositParams",
         name: "depositParams",
