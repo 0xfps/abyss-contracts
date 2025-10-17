@@ -29,7 +29,7 @@ abstract contract Fee {
         uint256 collectorFee = (COLLECTOR_PERCENTAGE * fee) / PERCENTAGE_BASE;
         uint256 secondCollectorFee = fee - collectorFee;
 
-        token.transferFrom(address(this), COLLECTOR, collectorFee);
-        token.transferFrom(address(this), SECOND_COLLECTOR, secondCollectorFee);
+        token.transfer(COLLECTOR, collectorFee);
+        token.transfer(SECOND_COLLECTOR, secondCollectorFee);
     }
 }

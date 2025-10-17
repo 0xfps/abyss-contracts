@@ -7,10 +7,11 @@ import { IOracleRegistry } from "./interfaces/IOracleRegistry.sol";
 import { IPyth } from "./pyth/IPyth.sol";
 import { ISwapper } from "./interfaces/ISwapper.sol";
 
+import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+
 import { NATIVE_TOKEN } from "./Fee.sol";
 import { PythStructs } from "./pyth/PythStructs.sol";
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { SilentERC20 } from "./token/SilentERC20.sol";
 
 contract Swapper is ISwapper, SilentERC20, ReentrancyGuard {
@@ -117,7 +118,7 @@ contract Swapper is ISwapper, SilentERC20, ReentrancyGuard {
             balance = (msg.value + amountToPay) - feeUpdatePrice;
         } else {
             balance = msg.value - feeUpdatePrice;
-            IERC20(asset).safeTransferFrom(address(this), swapParams.receiver, amountToPay);
+            IERC20(asset).safeTransfer(swapParams.receiver, amountToPay);
         }
 
         (bool sent, ) = swapParams.receiver.call{ value: balance }("");

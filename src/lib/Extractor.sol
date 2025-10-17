@@ -15,6 +15,6 @@ library Extractor {
     }
 
     function _extractAmount(bytes calldata key) private pure returns (uint256 amount) {
-        amount = uint256(bytes32(key[52 : ]));
+        amount = uint256(bytes32(key[32 : ]));
     }
 }

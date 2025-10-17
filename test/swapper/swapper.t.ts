@@ -5,7 +5,7 @@ import { expect } from "chai"
 import assert from "node:assert/strict"
 import { HermesClient } from "@pythnetwork/hermes-client"
 import { hexify } from "@fifteenfigures/tiny-merkle-tree"
-import { dante, elisha } from "../constants"
+import { elisha } from "../constants"
 import commaNumber from "comma-number"
 
 describe("Swapper Tests", function () {
