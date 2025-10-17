@@ -39,12 +39,10 @@ contract Swapper is ISwapper, SilentERC20, ReentrancyGuard {
         }
     }
 
+    receive() external payable {}
+
     function getOracleUpdateFee(bytes[] calldata updateData) public view returns (uint256) {
         return PYTH.getUpdateFee(updateData);
-    }
-
-    function getPrice(bytes32 priceFeedId) public view returns (PythStructs.Price memory price) {
-        price = PYTH.getPriceNoOlderThan(priceFeedId, AGE);
     }
 
     // Swap from asset to $SilUSD.
