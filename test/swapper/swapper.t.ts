@@ -5,7 +5,7 @@ import { expect } from "chai"
 import assert from "node:assert/strict"
 import { HermesClient } from "@pythnetwork/hermes-client"
 import { hexify } from "@fifteenfigures/tiny-merkle-tree"
-import { elisha } from "../constants"
+import { elisha, fisk } from "../constants"
 import commaNumber from "comma-number"
 
 describe("Swapper Tests", function () {
@@ -33,6 +33,9 @@ describe("Swapper Tests", function () {
     let feeUpdatePrice: bigint
     let bobBalancePostMint: bigint
 
+    let stableMock: MockERC20
+    let stableMockAddress: string
+
     before(async function () {
         [alice, bob] = await ethers.getSigners()
         aliceAddress = await alice.getAddress()
@@ -45,23 +48,29 @@ describe("Swapper Tests", function () {
             priceFeedId: ETH_PRICE_FEED_ID
         })
 
+        stableMock = await ethers.deployContract("MockERC20", ["MockUSD", "MUSD"])
+        stableMockAddress = await stableMock.getAddress()
+        
         swapper = await ethers.deployContract("Swapper", [
             "PrivateToken",
             "PRIV",
             oracleRegistryAddress,
             PYTH_ORACLE_ADDRESS,
-            []
+            [stableMockAddress]
         ])
         swapperAddress = await swapper.getAddress()
-
+        
         mockERC20 = await ethers.deployContract("MockERC20", ["Mock", "MCK"])
         mockERC20Address = await mockERC20.getAddress()
-
+        
         const balance = BigInt(5e38)
         mockERC20.mint(aliceAddress, balance)
         mockERC20.mint(bobAddress, balance)
-        mockERC20.connect(alice).approve(swapper, balance)
-        mockERC20.connect(bob).approve(swapper, balance)
+        mockERC20.connect(alice).approve(swapperAddress, balance)
+        mockERC20.connect(bob).approve(swapperAddress, balance)
+
+        stableMock.mint(aliceAddress, balance)
+        stableMock.connect(alice).approve(swapperAddress, balance)
 
         const updates = await hermesConnection.getLatestPriceUpdates([ETH_PRICE_FEED_ID])
         const hexifiedData = updates.binary.data.map(function (data) {
@@ -169,6 +178,27 @@ describe("Swapper Tests", function () {
 
         bobBalancePostMint = await swapper.balanceOf(bobAddress)
         console.log({ balanceAfter: `${commaNumber(Number(bobBalancePostMint / BigInt(1e6)))} $PRIV` })
+    })
+
+    it("Swap stable Mock USD and mint $PRIV.", async function () {
+        swapParams = {
+            ...swapParams,
+            assetToSwapToOrFrom: stableMockAddress,
+            receiver: fisk,
+            updateData: priceUpdate
+        }
+
+        let balance: bigint
+
+        balance = await swapper.balanceOf(fisk)
+        console.log({ balanceBefore: `${commaNumber(Number(balance / BigInt(1e6)))} $PRIV` })
+
+        await swapper.connect(alice).swapToPrivateToken(swapParams, {
+            value: feeUpdatePrice
+        })
+
+        balance = await swapper.balanceOf(fisk)
+        console.log({ balanceAfter: `${commaNumber(Number(balance / BigInt(1e6)))} $PRIV` })
     })
 
     it("Swapping from $PRIV to ETH.", async function () {})
