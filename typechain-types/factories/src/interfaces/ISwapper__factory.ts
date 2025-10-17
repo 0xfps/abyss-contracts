@@ -26,7 +26,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "SwapOnlyFromPrivateToken",
+    name: "SwapOnlyToOtherTokens",
     type: "error",
   },
   {

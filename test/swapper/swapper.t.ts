@@ -5,7 +5,7 @@ import { expect } from "chai"
 import assert from "node:assert/strict"
 import { HermesClient } from "@pythnetwork/hermes-client"
 import { hexify } from "@fifteenfigures/tiny-merkle-tree"
-import { dante } from "../constants"
+import { dante, elisha } from "../constants"
 import commaNumber from "comma-number"
 
 describe("Swapper Tests", function () {
@@ -28,8 +28,10 @@ describe("Swapper Tests", function () {
     const ETH_PRICE_FEED_ID = "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace"
 
     const hermesConnection = new HermesClient("https://hermes.pyth.network", {})
+
     let priceUpdate: string[]
     let feeUpdatePrice: bigint
+    let bobBalancePostMint: bigint
 
     before(async function () {
         [alice, bob] = await ethers.getSigners()
@@ -57,7 +59,9 @@ describe("Swapper Tests", function () {
 
         const balance = BigInt(5e38)
         mockERC20.mint(aliceAddress, balance)
+        mockERC20.mint(bobAddress, balance)
         mockERC20.connect(alice).approve(swapper, balance)
+        mockERC20.connect(bob).approve(swapper, balance)
 
         const updates = await hermesConnection.getLatestPriceUpdates([ETH_PRICE_FEED_ID])
         const hexifiedData = updates.binary.data.map(function (data) {
@@ -88,6 +92,8 @@ describe("Swapper Tests", function () {
 
         console.log({ feeUpdatePrice }) // In Wei.
     })
+
+    it("Swapping from ETH to $PRIV.", async function () { })
 
     let swapParams = {
         assetToSwapToOrFrom: ZeroAddress,
@@ -161,7 +167,83 @@ describe("Swapper Tests", function () {
             value: swapParams.amountToSwapToOrFrom + feeUpdatePrice
         })
 
-        balance = await swapper.balanceOf(bobAddress)
-        console.log({ balanceAfter: `${commaNumber(Number(balance / BigInt(1e6)))} $PRIV` })
+        bobBalancePostMint = await swapper.balanceOf(bobAddress)
+        console.log({ balanceAfter: `${commaNumber(Number(bobBalancePostMint / BigInt(1e6)))} $PRIV` })
+    })
+
+    it("Swapping from $PRIV to ETH.", async function () {})
+
+    it("Revert because asset is Swapper contract.", async function () {
+        swapParams = {
+            ...swapParams,
+            assetToSwapToOrFrom: swapperAddress,
+            amountToSwapToOrFrom: bobBalancePostMint,
+            receiver: aliceAddress,
+            updateData: priceUpdate
+        }
+
+        await expect(swapper.connect(bob).swapFromPrivateToken(swapParams))
+            .to.be.revertedWithCustomError(swapper, "SwapOnlyToOtherTokens")
+    })
+
+    it("Revert because caller is receiver.", async function () {
+        swapParams = {
+            ...swapParams,
+            assetToSwapToOrFrom: ZeroAddress,
+            amountToSwapToOrFrom: bobBalancePostMint,
+            receiver: bobAddress,
+            updateData: priceUpdate
+        }
+
+        await expect(swapper.connect(bob).swapToPrivateToken(swapParams))
+            .to.be.revertedWithCustomError(swapper, "SwapperMustNotBeReceiver")
+    })
+
+    it("Revert because oracle is not set.", async function () {
+        swapParams = {
+            ...swapParams,
+            assetToSwapToOrFrom: mockERC20Address,
+            amountToSwapToOrFrom: bobBalancePostMint,
+            receiver: aliceAddress,
+            updateData: priceUpdate
+        }
+
+        await expect(swapper.connect(bob).swapToPrivateToken(swapParams))
+            .to.be.revertedWithCustomError(swapper, "OracleNotSet")
+    })
+
+    it("Revert because value sent is < fee update price.", async function () {
+        swapParams = {
+            ...swapParams,
+            assetToSwapToOrFrom: ZeroAddress,
+            amountToSwapToOrFrom: bobBalancePostMint,
+            receiver: aliceAddress,
+            updateData: priceUpdate
+        }
+
+        await expect(swapper.connect(bob).swapToPrivateToken(swapParams))
+            .to.be.revertedWithCustomError(swapper, "ETHSentLessThanSwapPlusFee")
+    })
+
+    it("Swap and redeem ETH.", async function () {
+        swapParams = {
+            ...swapParams,
+            assetToSwapToOrFrom: ZeroAddress,
+            amountToSwapToOrFrom: bobBalancePostMint,
+            receiver: elisha,
+            updateData: priceUpdate
+        }
+
+        let balance: bigint
+
+        balance = await ethers.provider.getBalance(elisha)
+        console.log({ balanceBefore: `${commaNumber(Number(balance / BigInt(1e18)))} $ETH` })
+
+        await swapper.connect(bob).swapFromPrivateToken(swapParams, {
+            value: feeUpdatePrice
+        })
+
+        balance = await ethers.provider.getBalance(elisha)
+        console.log({ balanceAfter: `${Number(balance) / 1e18} $ETH` })
     })
 })

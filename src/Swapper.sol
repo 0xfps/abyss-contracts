@@ -91,7 +91,7 @@ contract Swapper is ISwapper, SilentERC20, ReentrancyGuard {
         address asset = swapParams.assetToSwapToOrFrom;
         uint256 amount = swapParams.amountToSwapToOrFrom;
 
-        if (asset == address(this)) revert SwapOnlyFromPrivateToken();
+        if (asset == address(this)) revert SwapOnlyToOtherTokens();
         if (swapParams.receiver == msg.sender) revert SwapperMustNotBeReceiver();
 
         _burn(msg.sender, amount);
@@ -120,7 +120,7 @@ contract Swapper is ISwapper, SilentERC20, ReentrancyGuard {
             IERC20(asset).safeTransferFrom(address(this), swapParams.receiver, amountToPay);
         }
 
-        (bool sent, ) = msg.sender.call{ value: balance }("");
+        (bool sent, ) = swapParams.receiver.call{ value: balance }("");
         require(sent);
     }
 

@@ -20,7 +20,7 @@
     },
     {
       "inputs": [],
-      "name": "SwapOnlyFromPrivateToken",
+      "name": "SwapOnlyToOtherTokens",
       "type": "error"
     },
     {

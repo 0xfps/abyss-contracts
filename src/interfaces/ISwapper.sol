@@ -13,7 +13,7 @@ interface ISwapper {
     error ETHSentLessThanFee();
     error OracleNotSet();
     error SwapperMustNotBeReceiver();
-    error SwapOnlyFromPrivateToken();
+    error SwapOnlyToOtherTokens();
     error SwapOnlyToPrivateToken();
 
     function getOracleUpdateFee(bytes[] calldata priceUpdate) external view returns (uint256);
