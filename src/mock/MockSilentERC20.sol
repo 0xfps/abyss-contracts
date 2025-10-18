@@ -4,9 +4,9 @@ pragma solidity ^0.8.28;
 import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import { SilentERC20 } from "../token/SilentERC20.sol";
 
-// https://sepolia.arbiscan.io/address/0x28ab0Fd9f8469Bcb070505cB76A3fC462648A4A6
+// https://sepolia.arbiscan.io/address/0xe4a40523ceaBd35B73235741a82342FB420bc813
 contract MockSilentERC20 is SilentERC20 {
-    uint256 amount = 500_000e18;
+    uint256 amount = 500_000e6;
     constructor(string memory name, string memory symbol)
        SilentERC20(name, symbol) {
         _mint(address(this), amount);
@@ -15,7 +15,7 @@ contract MockSilentERC20 is SilentERC20 {
     }
 }
 
-// https://sepolia.arbiscan.io/address/0xaC0A882f3858db39cB77755C10144FF2f162a1ad#events
+// https://sepolia.arbiscan.io/address/0x93B863Ea6680B4DCa821d61032768Bb6f75aCEC5
 contract MockNonSilentERC20 is ERC20 {
     uint256 amount = 500_000e18;
     constructor(string memory name, string memory symbol)
