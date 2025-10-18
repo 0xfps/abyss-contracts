@@ -2,7 +2,7 @@ import { run, ethers, network } from "hardhat"
 import { TESTNET_ORACLE_ADDRESSES } from "./config/testnet-oracle-addresses"
 import { TESTNET_PRICE_FEEDS } from "./config/testnet-price-feeds"
 import { encodeBytes32String } from "ethers"
-import { createChainFolder } from "./create-chain-folder"
+import { createChainFolder, MODE } from "./create-chain-folder"
 import { writeAbiFile } from "./write-abi-file"
 import path from "path"
 import { readFileSync } from "fs"
@@ -46,7 +46,7 @@ async function deployStableToken() {
     await stableToken.deploymentTransaction()?.wait(BLOCKS)
     stableTokenAddress = await stableToken.getAddress()
 
-    filePath = path.join(__dirname, "../deployments/", name, "/stable-token.json")
+    filePath = path.join(__dirname, "../deployments/", MODE, name, "/stable-token.json")
     fileContents = {
         address: stableTokenAddress,
         abi: stableToken.interface.fragments
@@ -94,7 +94,7 @@ async function deployOracleRegistry() {
     })
 
 
-    filePath = path.join(__dirname, "../deployments/", name, "/oracle-registry.json")
+    filePath = path.join(__dirname, "../deployments/", MODE, name, "/oracle-registry.json")
     fileContents = {
         address: oracleRegistryAddress,
         abi: oracleRegistry.interface.fragments
@@ -133,7 +133,7 @@ async function deploySwapper() {
         constructorArguments: swapperConstructorParams
     })
 
-    filePath = path.join(__dirname, "../deployments/", name, "/swapper.json")
+    filePath = path.join(__dirname, "../deployments/", MODE, name, "/swapper.json")
     fileContents = {
         address: swapperAddress,
         abi: swapper.interface.fragments
@@ -168,7 +168,7 @@ async function deployGroth16() {
         constructorArguments: []
     })
 
-    filePath = path.join(__dirname, "../deployments/", name, "/groth-16-verifier.json")
+    filePath = path.join(__dirname, "../deployments/", MODE, name, "/groth-16-verifier.json")
     fileContents = {
         address: groth16VerifierAddress,
         abi: Groth16Verifier.interface.fragments
@@ -220,7 +220,7 @@ async function deployPoseidonLibraries() {
         constructorArguments: []
     })
 
-    filePath = path.join(__dirname, "../deployments/", name, "/poseidon-t2.json")
+    filePath = path.join(__dirname, "../deployments/", MODE, name, "/poseidon-t2.json")
     fileContents = {
         address: poseidonT2,
         abi: PoseidonT2.interface.fragments
@@ -228,7 +228,7 @@ async function deployPoseidonLibraries() {
 
     writeAbiFile(filePath, JSON.stringify(fileContents))
 
-    filePath = path.join(__dirname, "../deployments/", name, "/poseidon-t3.json")
+    filePath = path.join(__dirname, "../deployments/", MODE, name, "/poseidon-t3.json")
     fileContents = {
         address: poseidonT3,
         abi: PoseidonT3.interface.fragments
@@ -280,7 +280,7 @@ async function deployMainContract() {
         }
     })
 
-    filePath = path.join(__dirname, "../deployments/", name, "/main.json")
+    filePath = path.join(__dirname, "../deployments/", MODE, name, "/main.json")
     fileContents = {
         address: mainAddress,
         abi: main.interface.fragments
