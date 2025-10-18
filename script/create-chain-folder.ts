@@ -19,7 +19,9 @@ export function createChainFolder(name: string) {
         mkdirSync(generalJsonFolderPath)
     }
 
-    writeFileSync(path.join(generalJsonFolderPath, "/deployments.json"), JSON.stringify({}))
+    if (!existsSync(path.join(generalJsonFolderPath, "/deployments.json"))) {
+        writeFileSync(path.join(generalJsonFolderPath, "/deployments.json"), JSON.stringify({}))
+    }
 
     const chainFolderPath = path.join(__dirname, "../deployments/", MODE, name)
     if (!existsSync(chainFolderPath)) {
