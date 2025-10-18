@@ -98,6 +98,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockERC20__factory>;
     getContractFactory(
+      name: "MockNonSilentERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MockNonSilentERC20__factory>;
+    getContractFactory(
+      name: "MockSilentERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MockSilentERC20__factory>;
+    getContractFactory(
       name: "OracleRegistry",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.OracleRegistry__factory>;
@@ -240,6 +248,16 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.MockERC20>;
     getContractAt(
+      name: "MockNonSilentERC20",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MockNonSilentERC20>;
+    getContractAt(
+      name: "MockSilentERC20",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MockSilentERC20>;
+    getContractAt(
       name: "OracleRegistry",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -370,6 +388,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MockERC20>;
     deployContract(
+      name: "MockNonSilentERC20",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.MockNonSilentERC20>;
+    deployContract(
+      name: "MockSilentERC20",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.MockSilentERC20>;
+    deployContract(
       name: "OracleRegistry",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.OracleRegistry>;
@@ -511,6 +537,16 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MockERC20>;
+    deployContract(
+      name: "MockNonSilentERC20",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.MockNonSilentERC20>;
+    deployContract(
+      name: "MockSilentERC20",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.MockSilentERC20>;
     deployContract(
       name: "OracleRegistry",
       args: any[],
