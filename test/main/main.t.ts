@@ -68,10 +68,10 @@ describe("Main Tests", function () {
 
         const oracleRegistry = await ethers.deployContract("OracleRegistry", [aliceAddress, []])
         const oracleRegistryAddress = await oracleRegistry.getAddress()
-        await oracleRegistry.connect(alice).addAssetPriceFeed({
+        await oracleRegistry.connect(alice).addAssetPriceFeeds([{
             asset: ZeroAddress,
             priceFeedId: ETH_PRICE_FEED_ID
-        })
+        }])
 
         swapper = await ethers.deployContract("Swapper", [
             "PrivateToken",

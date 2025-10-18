@@ -1,16 +1,11 @@
 import { run, ethers, network } from "hardhat"
-import { setupFiles, writeABI, writeFiles } from "./setup-files"
+import { TESTNET_ORACLE_ADDRESSES } from "./config/testnet-oracle-addresses"
+import { TESTNET_PRICE_FEEDS } from "./config/testnet-price-feeds"
 import { encodeBytes32String } from "ethers"
 
-setupFiles()
-
-const TOKENS = [
-    { name: "USD Coin", symbol: "USDC" },
-    { name: "Tether USD", symbol: "USDT" },
-    { name: "DAI", symbol: "DAI" }
-]
-const INIT_LEAF = encodeBytes32String("")
-const BLOCKS = 5
+const BLOCKS = 2
+const ADDRESS = "0xa08092B3AE155e6aa3444DBEeB5D92E69E8a41fB"
+const AMT = BigInt(500_000e18)
 
 async function deployGroth16() {
     console.log("Deploying Groth16 library...")
@@ -33,7 +28,6 @@ async function deployGroth16() {
 async function deployPoseidonLibraries() {
     const PoseidonT2 = await ethers.getContractFactory("PoseidonT2")
     const PoseidonT3 = await ethers.getContractFactory("PoseidonT3")
-    const PoseidonT4 = await ethers.getContractFactory("PoseidonT4")
 
     console.log("Deploying libraries...")
     const poseidonT2 = await PoseidonT2.deploy()
@@ -43,86 +37,112 @@ async function deployPoseidonLibraries() {
     const poseidonT3 = await PoseidonT3.deploy()
     await poseidonT3.deploymentTransaction()?.wait(BLOCKS)
     console.log("Deployed PoseidonT3.")
-
-    const poseidonT4 = await PoseidonT4.deploy()
-    await poseidonT4.deploymentTransaction()?.wait(BLOCKS)
-    console.log("Deployed PoseidonT4.")
     console.log("Deployed libraries.")
 
     const poseidonT2Address = await poseidonT2.getAddress()
     const poseidonT3Address = await poseidonT3.getAddress()
-    const poseidonT4Address = await poseidonT4.getAddress()
 
-    return [poseidonT2Address, poseidonT3Address, poseidonT4Address]
+    await run("verify:verify", {
+        address: poseidonT2Address,
+        constructorArguments: []
+    })
+
+    await run("verify:verify", {
+        address: poseidonT3Address,
+        constructorArguments: []
+    })
+
+    return [poseidonT2Address, poseidonT3Address]
 }
 
 async function deploy() {
-    const { name, config } = network
-    const { chainId } = config
+    const { name } = network
+    const { chainId } = network.config
 
-    console.log(name.toUpperCase())
+    console.log("Deploying to", name, ".")
+
+    const oracleAddress = TESTNET_ORACLE_ADDRESSES[chainId!]
+    const oracleParams = TESTNET_PRICE_FEEDS[chainId!]
+ 
+    if (!oracleAddress || Object.keys(oracleParams).length == 0) {
+        throw new Error("No Oracle Address or Oracle Params.")
+    }
+
+    const stableToken = await ethers.deployContract("MockERC20", ["Circle USD", "USDC"])
+    await stableToken.deploymentTransaction()?.wait(BLOCKS)
+    const stableTokenAddress = await stableToken.getAddress()
+    
+    // 0x19abf40e
+    console.log("Stable Token Deployed.")
+    
+    const mintTx = await stableToken.mint(ADDRESS, AMT)
+    await mintTx.wait()
+
+    console.log("$500K minted.")
+
+    const oracleRegistry = await ethers.deployContract("OracleRegistry", [ADDRESS, oracleParams])
+    await oracleRegistry.deploymentTransaction()?.wait(BLOCKS)
+    const oracleRegistryAddress = await oracleRegistry.getAddress()
+
+    console.log("Deployed OracleRegistry.")
+
+    await run("verify:verify", {
+        address: oracleRegistryAddress,
+        constructorArguments: [ADDRESS, oracleParams]
+    })
+
+    const swapperConstructorParams = [
+        "Privacy Token",
+        "PRIV",
+        oracleRegistryAddress,
+        oracleAddress,
+        [stableTokenAddress]
+    ]
+    const swapper = await ethers.deployContract("Swapper", swapperConstructorParams)
+    await swapper.deploymentTransaction()?.wait(BLOCKS)
+    const swapperAddress = await swapper.getAddress()
+
+    console.log("Deployed Swapper.")
+
+    await run("verify:verify", {
+        address: swapperAddress,
+        constructorArguments: swapperConstructorParams
+    })
 
     const groth16VerifierAddress = await deployGroth16()
-    const [poseidonT2Address, poseidonT3Address, poseidonT4Address] = await deployPoseidonLibraries()
+    const [poseidonT2Address, poseidonT3Address] = await deployPoseidonLibraries()
 
-    const MockERC20 = await ethers.getContractFactory("MockERC20")
+    const mainConstructorParams = [
+        encodeBytes32String(""),
+        groth16VerifierAddress,
+        swapperAddress,
+        "Wrapped Private Token",
+        "wPRIV"
+    ]
 
-    const Main = await ethers.getContractFactory("Main", {
+    const main = await ethers.deployContract("Main", mainConstructorParams, {
         libraries: {
             PoseidonT2: poseidonT2Address,
-            PoseidonT3: poseidonT3Address,
-            PoseidonT4: poseidonT4Address
+            PoseidonT3: poseidonT3Address
         }
     })
 
-    writeABI(Main.interface.fragments)
-
-    console.log("Deploying Main contract...")
-
-    const main = await Main.deploy(INIT_LEAF, groth16VerifierAddress)
     await main.deploymentTransaction()?.wait(BLOCKS)
     const mainAddress = await main.getAddress()
     console.log("Deployed Main contract, verifying...")
 
     await run("verify:verify", {
         address: mainAddress,
-        constructorArguments: [INIT_LEAF, groth16VerifierAddress],
+        constructorArguments: mainConstructorParams,
         libraries: {
             PoseidonT2: poseidonT2Address,
-            PoseidonT3: poseidonT3Address,
-            PoseidonT4: poseidonT4Address
+            PoseidonT3: poseidonT3Address
         }
     })
-
-    console.log("Verified Main contract.")
-
-    const tokens: Record<string, string> = {}
-
-    console.log("Deploying tokens...")
-    for (const { name, symbol } of TOKENS) {
-        const token = await MockERC20.deploy(name, symbol)
-        await token.deploymentTransaction()?.wait(BLOCKS)
-        const tokenAddress = await token.getAddress()
-        tokens[symbol.toLowerCase()] = tokenAddress
-
-        // await run("verify:verify", {
-        //     address: tokenAddress,
-        //     constructorArguments: [name, symbol]
-        // })
-    }
-
-    const addresses = {
-        address: mainAddress,
-        ...tokens
-    }
-    console.log("Deployed all tokens.")
-
-    writeFiles(chainId!, addresses)
 }
 
 deploy().then(function () {
-    console.log("Deployment finished!")
-    process.exit(0)
-}).catch(function (err: any) {
-    console.log(err)
+    console.log("Deployments complete!")
+}).catch(function (e) {
+    console.log(e)
 })

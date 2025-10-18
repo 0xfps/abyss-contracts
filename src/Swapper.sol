@@ -17,7 +17,7 @@ import { SilentERC20 } from "./token/SilentERC20.sol";
 contract Swapper is ISwapper, SilentERC20, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    uint8 public constant AGE = 60;
+    uint8 public constant AGE = 90;
     uint24 public constant DENOMINATION = 1_000_000;
 
     IOracleRegistry public immutable ORACLE_REGISTRY;

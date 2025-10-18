@@ -19,31 +19,34 @@ contract OracleRegistry is IOracleRegistry {
 
     constructor(address multiSigAddress, OracleParams[] memory oracleParams) {
         owner = multiSigAddress;
-        
-        uint256 length = oracleParams.length;
-        
-        for (uint256 i; i < length; i++) {
-            _addAssetPriceFeed(oracleParams[i]);
-        }
+        _addAssetPriceFeeds(oracleParams);
     }
 
     function getPriceFeed(address asset) public view returns (bytes32) {
         return priceFeeds[asset];
     }
 
-    function addAssetPriceFeed(OracleParams memory oracleParams) public onlyOwner {
-        _addAssetPriceFeed(oracleParams);
+    function addAssetPriceFeeds(OracleParams[] memory oracleParams) public onlyOwner {
+        _addAssetPriceFeeds(oracleParams);
     }
 
-    function removeAssetPriceFeed(address asset) public onlyOwner {
-        if (priceFeeds[asset] != bytes32(0)) {
-            priceFeeds[asset] = bytes32(0);
+    function removeAssetPriceFeeds(address[] memory assets) public onlyOwner {
+        uint256 length = assets.length;
+        
+        for (uint256 i; i < length; i++) {
+            if (priceFeeds[assets[i]] != bytes32(0)) {
+                priceFeeds[assets[i]] = bytes32(0);
+            }
         }
     }
 
-    function _addAssetPriceFeed(OracleParams memory oracleParams) internal {
-        if (priceFeeds[oracleParams.asset] == bytes32(0)) {
-            priceFeeds[oracleParams.asset] = oracleParams.priceFeedId;
+    function _addAssetPriceFeeds(OracleParams[] memory oracleParams) internal {
+        uint256 length = oracleParams.length;
+
+        for (uint256 i; i < length; i++) {
+            if (priceFeeds[oracleParams[i].asset] == bytes32(0)) {
+                priceFeeds[oracleParams[i].asset] = oracleParams[i].priceFeedId;
+            }
         }
     }
 }

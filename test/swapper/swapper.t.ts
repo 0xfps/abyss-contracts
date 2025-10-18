@@ -43,10 +43,10 @@ describe("Swapper Tests", function () {
 
         oracleRegistry = await ethers.deployContract("OracleRegistry", [aliceAddress, []])
         oracleRegistryAddress = await oracleRegistry.getAddress()
-        await oracleRegistry.connect(alice).addAssetPriceFeed({
+        await oracleRegistry.connect(alice).addAssetPriceFeeds([{
             asset: ZeroAddress,
             priceFeedId: ETH_PRICE_FEED_ID
-        })
+        }])
 
         stableMock = await ethers.deployContract("MockERC20", ["MockUSD", "MUSD"])
         stableMockAddress = await stableMock.getAddress()

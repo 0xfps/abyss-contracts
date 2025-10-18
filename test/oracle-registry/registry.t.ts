@@ -38,10 +38,10 @@ describe("Oracle Registry Tests", function () {
             priceFeedId: fakeOracleFeedId
         }
         
-        await expect(oracleRegistry.connect(alice).addAssetPriceFeed(params))
+        await expect(oracleRegistry.connect(alice).addAssetPriceFeeds([params]))
             .to.be.revertedWithCustomError(oracleRegistry, "NotOwner");
 
-        await expect(oracleRegistry.connect(alice).removeAssetPriceFeed(dante))
+        await expect(oracleRegistry.connect(alice).removeAssetPriceFeeds([dante]))
             .to.be.revertedWithCustomError(oracleRegistry, "NotOwner");
     })
 
@@ -56,7 +56,7 @@ describe("Oracle Registry Tests", function () {
             priceFeedId: fakeOracleFeedId
         }
 
-        await oracleRegistry.connect(bob).addAssetPriceFeed(params)
+        await oracleRegistry.connect(bob).addAssetPriceFeeds([params])
         const priceFeedId = await oracleRegistry.getPriceFeed(dante)
         assert(priceFeedId == fakeOracleFeedId)
     })
@@ -67,7 +67,7 @@ describe("Oracle Registry Tests", function () {
             priceFeedId: anotherFakeOracleFeedId
         }
 
-        await oracleRegistry.connect(bob).addAssetPriceFeed(params)
+        await oracleRegistry.connect(bob).addAssetPriceFeeds([params])
         const priceFeedId = await oracleRegistry.getPriceFeed(dante)
         assert(priceFeedId == fakeOracleFeedId)
     })
@@ -75,7 +75,7 @@ describe("Oracle Registry Tests", function () {
     it("Remove set asset oracle feed Id.", async function () {
         const asset = dante
 
-        await oracleRegistry.connect(bob).removeAssetPriceFeed(asset)
+        await oracleRegistry.connect(bob).removeAssetPriceFeeds([asset])
         const priceFeedId = await oracleRegistry.getPriceFeed(dante)
         assert(priceFeedId == encodeBytes32String(""))
     })
