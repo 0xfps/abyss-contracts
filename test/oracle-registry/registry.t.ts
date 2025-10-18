@@ -23,33 +23,11 @@ describe("Oracle Registry Tests", function () {
         aliceAddress = await alice.getAddress()
         bobAddress = await bob.getAddress()
 
-        oracleRegistry = await ethers.deployContract("OracleRegistry", [aliceAddress])
+        oracleRegistry = await ethers.deployContract("OracleRegistry", [bobAddress, []])
         oracleRegistryAddress = await oracleRegistry.getAddress()
     })
 
-    it("Owner should be the deployer.", async function () {
-        const owner = await oracleRegistry.owner()
-        assert(owner == aliceAddress)
-    })
-
-    it("`isOwnedByMultiSig` should be false.", async function () {
-        const isOwnedByMultiSig = await oracleRegistry.isOwnedByMultiSig()
-        assert(isOwnedByMultiSig == false)
-    })
-
-    it("Transfer ownership to multisig.", async function () {
-        await oracleRegistry.connect(alice).transferToMultiSig(bobAddress)
-        const owner = await oracleRegistry.owner()
-        assert(owner == bobAddress)
-    })
-
-    it("`isOwnedByMultiSig` should be true.", async function () {
-        const isOwnedByMultiSig = await oracleRegistry.isOwnedByMultiSig()
-        assert(isOwnedByMultiSig == true)
-    })
-
-    it("Transfer ownership to multisig will not set new owner.", async function () {
-        await oracleRegistry.connect(bob).transferToMultiSig(aliceAddress)
+    it("Owner should be the Bob.", async function () {
         const owner = await oracleRegistry.owner()
         assert(owner == bobAddress)
     })
@@ -61,10 +39,10 @@ describe("Oracle Registry Tests", function () {
         }
         
         await expect(oracleRegistry.connect(alice).addAssetPriceFeed(params))
-            .to.be.revertedWithCustomError(oracleRegistry, "OwnableUnauthorizedAccount");
+            .to.be.revertedWithCustomError(oracleRegistry, "NotOwner");
 
         await expect(oracleRegistry.connect(alice).removeAssetPriceFeed(dante))
-            .to.be.revertedWithCustomError(oracleRegistry, "OwnableUnauthorizedAccount");
+            .to.be.revertedWithCustomError(oracleRegistry, "NotOwner");
     })
 
     it("Price feed for unset asset should be bytes32(0)", async function () {

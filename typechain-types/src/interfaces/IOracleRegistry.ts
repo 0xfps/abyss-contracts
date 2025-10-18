@@ -7,7 +7,6 @@ import type {
   FunctionFragment,
   Result,
   Interface,
-  EventFragment,
   AddressLike,
   ContractRunner,
   ContractMethod,
@@ -17,7 +16,6 @@ import type {
   TypedContractEvent,
   TypedDeferredTopicFilter,
   TypedEventLog,
-  TypedLogDescription,
   TypedListener,
   TypedContractMethod,
 } from "../../common";
@@ -41,10 +39,6 @@ export interface IOracleRegistryInterface extends Interface {
       | "getPriceFeed"
       | "removeAssetPriceFeed"
   ): FunctionFragment;
-
-  getEvent(
-    nameOrSignatureOrTopic: "OwnershipTransferredToMultisig"
-  ): EventFragment;
 
   encodeFunctionData(
     functionFragment: "addAssetPriceFeed",
@@ -71,19 +65,6 @@ export interface IOracleRegistryInterface extends Interface {
     functionFragment: "removeAssetPriceFeed",
     data: BytesLike
   ): Result;
-}
-
-export namespace OwnershipTransferredToMultisigEvent {
-  export type InputTuple = [prevOwner: AddressLike, mulitiSig: AddressLike];
-  export type OutputTuple = [prevOwner: string, mulitiSig: string];
-  export interface OutputObject {
-    prevOwner: string;
-    mulitiSig: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface IOracleRegistry extends BaseContract {
@@ -161,24 +142,5 @@ export interface IOracleRegistry extends BaseContract {
     nameOrSignature: "removeAssetPriceFeed"
   ): TypedContractMethod<[asset: AddressLike], [void], "nonpayable">;
 
-  getEvent(
-    key: "OwnershipTransferredToMultisig"
-  ): TypedContractEvent<
-    OwnershipTransferredToMultisigEvent.InputTuple,
-    OwnershipTransferredToMultisigEvent.OutputTuple,
-    OwnershipTransferredToMultisigEvent.OutputObject
-  >;
-
-  filters: {
-    "OwnershipTransferredToMultisig(address,address)": TypedContractEvent<
-      OwnershipTransferredToMultisigEvent.InputTuple,
-      OwnershipTransferredToMultisigEvent.OutputTuple,
-      OwnershipTransferredToMultisigEvent.OutputObject
-    >;
-    OwnershipTransferredToMultisig: TypedContractEvent<
-      OwnershipTransferredToMultisigEvent.InputTuple,
-      OwnershipTransferredToMultisigEvent.OutputTuple,
-      OwnershipTransferredToMultisigEvent.OutputObject
-    >;
-  };
+  filters: {};
 }

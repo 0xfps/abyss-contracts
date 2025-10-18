@@ -10,23 +10,9 @@ import type {
 
 const _abi = [
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "prevOwner",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "mulitiSig",
-        type: "address",
-      },
-    ],
-    name: "OwnershipTransferredToMultisig",
-    type: "event",
+    inputs: [],
+    name: "NotOwner",
+    type: "error",
   },
   {
     inputs: [

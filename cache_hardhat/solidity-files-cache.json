@@ -908,8 +908,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/interfaces/IOracleRegistry.sol": {
-      "lastModificationDate": 1760645550383,
-      "contentHash": "75d5d32f8a279bd6b1a8577a457cef50",
+      "lastModificationDate": 1760767542822,
+      "contentHash": "c9ce3929d1bac36e1f32fa98cd4609f6",
       "sourceName": "src/interfaces/IOracleRegistry.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -1056,8 +1056,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/OracleRegistry.sol": {
-      "lastModificationDate": 1760645538786,
-      "contentHash": "507072e06b7e7f4d36f6438567124338",
+      "lastModificationDate": 1760768291793,
+      "contentHash": "d4725c6437d18a2c35ac3d77c9f97f8d",
       "sourceName": "src/OracleRegistry.sol",
       "solcConfig": {
         "version": "0.8.28",

@@ -41,7 +41,7 @@ describe("Swapper Tests", function () {
         aliceAddress = await alice.getAddress()
         bobAddress = await bob.getAddress()
 
-        oracleRegistry = await ethers.deployContract("OracleRegistry", [aliceAddress])
+        oracleRegistry = await ethers.deployContract("OracleRegistry", [aliceAddress, []])
         oracleRegistryAddress = await oracleRegistry.getAddress()
         await oracleRegistry.connect(alice).addAssetPriceFeed({
             asset: ZeroAddress,

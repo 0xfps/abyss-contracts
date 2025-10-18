@@ -66,7 +66,7 @@ describe("Main Tests", function () {
         bobAddress = await bob.getAddress()
         chrisAddress = await chris.getAddress()
 
-        const oracleRegistry = await ethers.deployContract("OracleRegistry", [aliceAddress])
+        const oracleRegistry = await ethers.deployContract("OracleRegistry", [aliceAddress, []])
         const oracleRegistryAddress = await oracleRegistry.getAddress()
         await oracleRegistry.connect(alice).addAssetPriceFeed({
             asset: ZeroAddress,

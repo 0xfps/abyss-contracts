@@ -7,7 +7,6 @@ import type {
   FunctionFragment,
   Result,
   Interface,
-  EventFragment,
   AddressLike,
   ContractRunner,
   ContractMethod,
@@ -17,7 +16,6 @@ import type {
   TypedContractEvent,
   TypedDeferredTopicFilter,
   TypedEventLog,
-  TypedLogDescription,
   TypedListener,
   TypedContractMethod,
 } from "../common";
@@ -37,29 +35,12 @@ export declare namespace IOracleRegistry {
 export interface OracleRegistryInterface extends Interface {
   getFunction(
     nameOrSignature:
-      | "acceptOwnership"
       | "addAssetPriceFeed"
       | "getPriceFeed"
-      | "isOwnedByMultiSig"
       | "owner"
-      | "pendingOwner"
       | "removeAssetPriceFeed"
-      | "renounceOwnership"
-      | "transferOwnership"
-      | "transferToMultiSig"
   ): FunctionFragment;
 
-  getEvent(
-    nameOrSignatureOrTopic:
-      | "OwnershipTransferStarted"
-      | "OwnershipTransferred"
-      | "OwnershipTransferredToMultisig"
-  ): EventFragment;
-
-  encodeFunctionData(
-    functionFragment: "acceptOwnership",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "addAssetPriceFeed",
     values: [IOracleRegistry.OracleParamsStruct]
@@ -68,36 +49,12 @@ export interface OracleRegistryInterface extends Interface {
     functionFragment: "getPriceFeed",
     values: [AddressLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "isOwnedByMultiSig",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "pendingOwner",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "removeAssetPriceFeed",
     values: [AddressLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "renounceOwnership",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferOwnership",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferToMultiSig",
-    values: [AddressLike]
-  ): string;
 
-  decodeFunctionResult(
-    functionFragment: "acceptOwnership",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "addAssetPriceFeed",
     data: BytesLike
@@ -106,70 +63,11 @@ export interface OracleRegistryInterface extends Interface {
     functionFragment: "getPriceFeed",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "isOwnedByMultiSig",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "pendingOwner",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "removeAssetPriceFeed",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "renounceOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferToMultiSig",
-    data: BytesLike
-  ): Result;
-}
-
-export namespace OwnershipTransferStartedEvent {
-  export type InputTuple = [previousOwner: AddressLike, newOwner: AddressLike];
-  export type OutputTuple = [previousOwner: string, newOwner: string];
-  export interface OutputObject {
-    previousOwner: string;
-    newOwner: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace OwnershipTransferredEvent {
-  export type InputTuple = [previousOwner: AddressLike, newOwner: AddressLike];
-  export type OutputTuple = [previousOwner: string, newOwner: string];
-  export interface OutputObject {
-    previousOwner: string;
-    newOwner: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace OwnershipTransferredToMultisigEvent {
-  export type InputTuple = [prevOwner: AddressLike, mulitiSig: AddressLike];
-  export type OutputTuple = [prevOwner: string, mulitiSig: string];
-  export interface OutputObject {
-    prevOwner: string;
-    mulitiSig: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface OracleRegistry extends BaseContract {
@@ -215,8 +113,6 @@ export interface OracleRegistry extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  acceptOwnership: TypedContractMethod<[], [void], "nonpayable">;
-
   addAssetPriceFeed: TypedContractMethod<
     [oracleParams: IOracleRegistry.OracleParamsStruct],
     [void],
@@ -225,28 +121,10 @@ export interface OracleRegistry extends BaseContract {
 
   getPriceFeed: TypedContractMethod<[asset: AddressLike], [string], "view">;
 
-  isOwnedByMultiSig: TypedContractMethod<[], [boolean], "view">;
-
   owner: TypedContractMethod<[], [string], "view">;
-
-  pendingOwner: TypedContractMethod<[], [string], "view">;
 
   removeAssetPriceFeed: TypedContractMethod<
     [asset: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
-  renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
-
-  transferOwnership: TypedContractMethod<
-    [newOwner: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
-  transferToMultiSig: TypedContractMethod<
-    [multiSigAddress: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -255,9 +133,6 @@ export interface OracleRegistry extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
-  getFunction(
-    nameOrSignature: "acceptOwnership"
-  ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "addAssetPriceFeed"
   ): TypedContractMethod<
@@ -269,81 +144,11 @@ export interface OracleRegistry extends BaseContract {
     nameOrSignature: "getPriceFeed"
   ): TypedContractMethod<[asset: AddressLike], [string], "view">;
   getFunction(
-    nameOrSignature: "isOwnedByMultiSig"
-  ): TypedContractMethod<[], [boolean], "view">;
-  getFunction(
     nameOrSignature: "owner"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "pendingOwner"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "removeAssetPriceFeed"
   ): TypedContractMethod<[asset: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "renounceOwnership"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "transferOwnership"
-  ): TypedContractMethod<[newOwner: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "transferToMultiSig"
-  ): TypedContractMethod<[multiSigAddress: AddressLike], [void], "nonpayable">;
 
-  getEvent(
-    key: "OwnershipTransferStarted"
-  ): TypedContractEvent<
-    OwnershipTransferStartedEvent.InputTuple,
-    OwnershipTransferStartedEvent.OutputTuple,
-    OwnershipTransferStartedEvent.OutputObject
-  >;
-  getEvent(
-    key: "OwnershipTransferred"
-  ): TypedContractEvent<
-    OwnershipTransferredEvent.InputTuple,
-    OwnershipTransferredEvent.OutputTuple,
-    OwnershipTransferredEvent.OutputObject
-  >;
-  getEvent(
-    key: "OwnershipTransferredToMultisig"
-  ): TypedContractEvent<
-    OwnershipTransferredToMultisigEvent.InputTuple,
-    OwnershipTransferredToMultisigEvent.OutputTuple,
-    OwnershipTransferredToMultisigEvent.OutputObject
-  >;
-
-  filters: {
-    "OwnershipTransferStarted(address,address)": TypedContractEvent<
-      OwnershipTransferStartedEvent.InputTuple,
-      OwnershipTransferStartedEvent.OutputTuple,
-      OwnershipTransferStartedEvent.OutputObject
-    >;
-    OwnershipTransferStarted: TypedContractEvent<
-      OwnershipTransferStartedEvent.InputTuple,
-      OwnershipTransferStartedEvent.OutputTuple,
-      OwnershipTransferStartedEvent.OutputObject
-    >;
-
-    "OwnershipTransferred(address,address)": TypedContractEvent<
-      OwnershipTransferredEvent.InputTuple,
-      OwnershipTransferredEvent.OutputTuple,
-      OwnershipTransferredEvent.OutputObject
-    >;
-    OwnershipTransferred: TypedContractEvent<
-      OwnershipTransferredEvent.InputTuple,
-      OwnershipTransferredEvent.OutputTuple,
-      OwnershipTransferredEvent.OutputObject
-    >;
-
-    "OwnershipTransferredToMultisig(address,address)": TypedContractEvent<
-      OwnershipTransferredToMultisigEvent.InputTuple,
-      OwnershipTransferredToMultisigEvent.OutputTuple,
-      OwnershipTransferredToMultisigEvent.OutputObject
-    >;
-    OwnershipTransferredToMultisig: TypedContractEvent<
-      OwnershipTransferredToMultisigEvent.InputTuple,
-      OwnershipTransferredToMultisigEvent.OutputTuple,
-      OwnershipTransferredToMultisigEvent.OutputObject
-    >;
-  };
+  filters: {};
 }

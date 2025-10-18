@@ -7,7 +7,7 @@ interface IOracleRegistry {
         bytes32 priceFeedId;
     }
 
-    event OwnershipTransferredToMultisig(address indexed prevOwner, address indexed mulitiSig);
+    error NotOwner();
 
     function getPriceFeed(address asset) external view returns (bytes32);
 
