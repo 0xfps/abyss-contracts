@@ -1,9 +1,5 @@
-import { existsSync, writeFileSync } from "fs"
-import path from "path"
+import { writeFileSync } from "fs"
 
-export function writeAbiFile(fileName: string, contents: string) {
-    const deploymentsFolder = path.join(__dirname, "../deployments")
-    if (!existsSync(deploymentsFolder)) throw new Error("No 'deployments' folder found.")
-    const filePath = path.join(__dirname, "../deployments", fileName)
+export function writeAbiFile(filePath: string, contents: string) {
     writeFileSync(filePath, contents, { flush: true })
 }
