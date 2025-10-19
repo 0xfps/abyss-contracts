@@ -269,6 +269,7 @@ async function deployMainContract() {
 
     await main.deploymentTransaction()?.wait(BLOCKS)
     const mainAddress = await main.getAddress()
+    const blockNumber = main.deploymentTransaction()?.blockNumber
     console.log("Deployed Main contract, verifying...")
 
     await run("verify:verify", {
@@ -283,6 +284,7 @@ async function deployMainContract() {
     filePath = path.join(__dirname, "../deployments/", MODE, name, "/main.json")
     fileContents = {
         address: mainAddress,
+        blockNumber: blockNumber?.toString(),
         abi: main.interface.fragments
     }
 
