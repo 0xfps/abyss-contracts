@@ -20,6 +20,7 @@ let groth16VerifierAddress: string
 let poseidonT2Address: string
 let poseidonT3Address: string
 let swapperAddress: string
+let blockNumber: number | null | undefined
 
 const name = network.name.toLowerCase()
 const { chainId } = network.config
@@ -34,7 +35,7 @@ async function deploy() {
 
     groth16VerifierAddress = await deployGroth16()
     const addresses = await deployPoseidonLibraries()
-    
+
     poseidonT2Address = addresses[0]
     poseidonT3Address = addresses[1]
 
@@ -269,7 +270,7 @@ async function deployMainContract() {
 
     await main.deploymentTransaction()?.wait(BLOCKS)
     const mainAddress = await main.getAddress()
-    const blockNumber = main.deploymentTransaction()?.blockNumber
+    blockNumber = main.deploymentTransaction()?.blockNumber
     console.log("Deployed Main contract, verifying...")
 
     await run("verify:verify", {
@@ -284,7 +285,6 @@ async function deployMainContract() {
     filePath = path.join(__dirname, "../deployments/", MODE, name, "/main.json")
     fileContents = {
         address: mainAddress,
-        blockNumber: blockNumber?.toString(),
         abi: main.interface.fragments
     }
 
@@ -296,7 +296,8 @@ async function deployMainContract() {
         ...content,
         [chainId!]: {
             ...content[chainId!],
-            mainAddress
+            mainAddress,
+            blockNumber
         }
     }
     writeAbiFile(fP, JSON.stringify(newContent))
