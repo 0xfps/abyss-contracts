@@ -7,7 +7,7 @@ import { writeAbiFile } from "./write-abi-file"
 import path from "path"
 import { readFileSync } from "fs"
 
-const BLOCKS = 5
+const BLOCKS = 15
 const ADDRESS = "0xa08092B3AE155e6aa3444DBEeB5D92E69E8a41fB"
 const AMT = BigInt(500_000e18)
 

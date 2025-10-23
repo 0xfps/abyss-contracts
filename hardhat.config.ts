@@ -57,7 +57,7 @@ const config: HardhatUserConfig = {
     },
     bscTestnet: {
       chainId: 97,
-      url: "https://bsc-testnet-rpc.publicnode.com",
+      url: "https://bsc-testnet-dataseed.bnbchain.org/",
       ...ACCOUNTS_CONFIG
     },
     optimismSepolia: {
