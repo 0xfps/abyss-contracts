@@ -56,6 +56,7 @@ export interface MainInterface extends Interface {
       | "transferFrom"
       | "unWrap"
       | "withdraw"
+      | "withdrawalSlots"
       | "withdrawals"
   ): FunctionFragment;
 
@@ -117,9 +118,14 @@ export interface MainInterface extends Interface {
       [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]],
       [BigNumberish, BigNumberish],
       BigNumberish,
+      BigNumberish,
       AddressLike,
       BigNumberish
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawalSlots",
+    values: [BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawals",
@@ -154,6 +160,10 @@ export interface MainInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "unWrap", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawalSlots",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "withdrawals",
     data: BytesLike
@@ -316,12 +326,19 @@ export interface Main extends BaseContract {
       pA: [BigNumberish, BigNumberish],
       pB: [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]],
       pC: [BigNumberish, BigNumberish],
+      slot: BigNumberish,
       nullifier: BigNumberish,
       recipient: AddressLike,
       amount: BigNumberish
     ],
     [void],
     "nonpayable"
+  >;
+
+  withdrawalSlots: TypedContractMethod<
+    [withdrawalKeyHash: BytesLike, slot: BigNumberish],
+    [bigint],
+    "view"
   >;
 
   withdrawals: TypedContractMethod<
@@ -416,12 +433,20 @@ export interface Main extends BaseContract {
       pA: [BigNumberish, BigNumberish],
       pB: [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]],
       pC: [BigNumberish, BigNumberish],
+      slot: BigNumberish,
       nullifier: BigNumberish,
       recipient: AddressLike,
       amount: BigNumberish
     ],
     [void],
     "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawalSlots"
+  ): TypedContractMethod<
+    [withdrawalKeyHash: BytesLike, slot: BigNumberish],
+    [bigint],
+    "view"
   >;
   getFunction(
     nameOrSignature: "withdrawals"

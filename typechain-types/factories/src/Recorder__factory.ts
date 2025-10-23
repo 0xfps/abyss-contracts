@@ -13,6 +13,30 @@ const _abi = [
         name: "withdrawalKeyHash",
         type: "bytes",
       },
+      {
+        internalType: "uint256",
+        name: "slot",
+        type: "uint256",
+      },
+    ],
+    name: "withdrawalSlots",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "amountWithdrawn",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes",
+        name: "withdrawalKeyHash",
+        type: "bytes",
+      },
     ],
     name: "withdrawals",
     outputs: [

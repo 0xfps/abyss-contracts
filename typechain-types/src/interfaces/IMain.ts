@@ -55,6 +55,7 @@ export interface IMainInterface extends Interface {
       [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]],
       [BigNumberish, BigNumberish],
       BigNumberish,
+      BigNumberish,
       AddressLike,
       BigNumberish
     ]
@@ -132,6 +133,7 @@ export interface IMain extends BaseContract {
       pA: [BigNumberish, BigNumberish],
       pB: [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]],
       pC: [BigNumberish, BigNumberish],
+      slot: BigNumberish,
       nullifier: BigNumberish,
       receipient: AddressLike,
       amount: BigNumberish
@@ -160,6 +162,7 @@ export interface IMain extends BaseContract {
       pA: [BigNumberish, BigNumberish],
       pB: [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]],
       pC: [BigNumberish, BigNumberish],
+      slot: BigNumberish,
       nullifier: BigNumberish,
       receipient: AddressLike,
       amount: BigNumberish

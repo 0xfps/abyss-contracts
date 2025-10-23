@@ -22,22 +22,22 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>7/7</span>
+        <span class='fraction'>10/10</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">83.33% </span>
+        <span class="strong">90% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>10/12</span>
+        <span class='fraction'>9/10</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>5/5</span>
+        <span class='fraction'>6/6</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>10/10</span>
+        <span class='fraction'>14/14</span>
       </div>
     </div>
   </div>
@@ -86,7 +86,15 @@
 41
 42
 43
-44</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+44
+45
+46
+47
+48
+49
+50
+51
+52</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -101,32 +109,40 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">5×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2×</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
@@ -136,40 +152,48 @@ import { IOracleRegistry } from "./interfaces/IOracleRegistry.sol";
 &nbsp;
 import { Ownable2Step, Ownable } from "@openzeppelin/contracts/access/Ownable2Step.sol";
 &nbsp;
-contract OracleRegistry is IOracleRegistry, Ownable2Step {
-    bool public isOwnedByMultiSig;
+contract OracleRegistry is IOracleRegistry {
+    // MultiSig.
+    address public owner;
 &nbsp;
     // address(0) is native token.
     mapping(address asset =&gt; bytes32 priceFeedId) internal priceFeeds;
 &nbsp;
-    // Address deploying the registry.
-    // This will be transferred to a multisig.
-    constructor(address initialOwner) Ownable(initialOwner) {}
+    modifier onlyOwner() {
+        if (msg.sender != owner) revert NotOwner();
+        _;
+    }
 &nbsp;
-    function transferToMultiSig(address multiSigAddress) public <span class="missing-if-branch" title="else path not taken" >E</span>onlyOwner {
-        if (!isOwnedByMultiSig) {
-            address currentOwner = owner();
-&nbsp;
-            isOwnedByMultiSig = true;
-            _transferOwnership(multiSigAddress);
-&nbsp;
-            emit OwnershipTransferredToMultisig(currentOwner, multiSigAddress);
-        }
+    constructor(address multiSigAddress, OracleParams[] memory oracleParams) {
+        owner = multiSigAddress;
+        _addAssetPriceFeeds(oracleParams);
     }
 &nbsp;
     function getPriceFeed(address asset) public view returns (bytes32) {
         return priceFeeds[asset];
     }
 &nbsp;
-    function addAssetPriceFeed(OracleParams memory oracleParams) public onlyOwner {
-        if (priceFeeds[oracleParams.asset] == bytes32(0)) {
-            priceFeeds[oracleParams.asset] = oracleParams.priceFeedId;
+    function addAssetPriceFeeds(OracleParams[] memory oracleParams) public onlyOwner {
+        _addAssetPriceFeeds(oracleParams);
+    }
+&nbsp;
+    function removeAssetPriceFeeds(address[] memory assets) public onlyOwner {
+        uint256 length = assets.length;
+        
+        for (uint256 i; i &lt; length; i++) {
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (priceFeeds[assets[i]] != bytes32(0)) {
+                priceFeeds[assets[i]] = bytes32(0);
+            }
         }
     }
 &nbsp;
-    function removeAssetPriceFeed(address asset) public onlyOwner {
-        <span class="missing-if-branch" title="else path not taken" >E</span>if (priceFeeds[asset] != bytes32(0)) {
-            priceFeeds[asset] = bytes32(0);
+    function _addAssetPriceFeeds(OracleParams[] memory oracleParams) internal {
+        uint256 length = oracleParams.length;
+&nbsp;
+        for (uint256 i; i &lt; length; i++) {
+            if (priceFeeds[oracleParams[i].asset] == bytes32(0)) {
+                priceFeeds[oracleParams[i].asset] = oracleParams[i].priceFeedId;
+            }
         }
     }
 }</pre></td></tr>
@@ -178,7 +202,7 @@ contract OracleRegistry is IOracleRegistry, Ownable2Step {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 17 2025 09:39:32 GMT+0100 (West Africa Standard Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Oct 23 2025 20:50:08 GMT+0100 (West Africa Standard Time)
 </div>
 </div>
 <script src="../prettify.js"></script>

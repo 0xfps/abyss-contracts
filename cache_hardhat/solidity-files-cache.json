@@ -9,7 +9,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -26,6 +26,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -45,7 +48,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -62,6 +65,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -81,7 +87,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -98,6 +104,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -119,7 +128,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -136,6 +145,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -155,7 +167,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -172,6 +184,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -194,7 +209,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -211,6 +226,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -233,7 +251,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -250,6 +268,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -262,14 +283,14 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/Recorder.sol": {
-      "lastModificationDate": 1760617828531,
-      "contentHash": "150b81700ddbd1e117b96ce94d47f803",
+      "lastModificationDate": 1761241604892,
+      "contentHash": "70af3255113dac6ed9bedbc7b6dec7f6",
       "sourceName": "src/Recorder.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -286,6 +307,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -300,14 +324,14 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/Main.sol": {
-      "lastModificationDate": 1761219149808,
-      "contentHash": "c6df7dfa6b6b205e07a5e73de84ce940",
+      "lastModificationDate": 1761243780034,
+      "contentHash": "2deb464993705b977c230fb76f8b7881",
       "sourceName": "src/Main.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -324,6 +348,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -347,14 +374,14 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/interfaces/IMain.sol": {
-      "lastModificationDate": 1761218226104,
-      "contentHash": "0b69482104a4a5e65db80b8f0bb37d28",
+      "lastModificationDate": 1761242094865,
+      "contentHash": "257659fabfa4634d9d7b2ecaf7474925",
       "sourceName": "src/interfaces/IMain.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -371,6 +398,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -383,14 +413,14 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/lib/Extractor.sol": {
-      "lastModificationDate": 1760682976843,
+      "lastModificationDate": 1761218539467,
       "contentHash": "5ab749d079c4b82ee3903ac4ebf2d1b7",
       "sourceName": "src/lib/Extractor.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -407,6 +437,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -419,14 +452,14 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/Verifier.sol": {
-      "lastModificationDate": 1760619107660,
-      "contentHash": "abce41ac87e0a54530fee7da5706cca7",
+      "lastModificationDate": 1761241063254,
+      "contentHash": "101191ce53da0d3b758c19831d929176",
       "sourceName": "src/Verifier.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -443,6 +476,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -455,14 +491,14 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/lib/tiny-merkle-tree-solidity/src/TinyMerkleTree.sol": {
-      "lastModificationDate": 1760619506927,
+      "lastModificationDate": 1760690957644,
       "contentHash": "ea98ebc0d81e6106af441b7f842ced8f",
       "sourceName": "@fifteenfigures/TinyMerkleTree.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -479,6 +515,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -500,7 +539,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -517,6 +556,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -529,14 +571,14 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/lib/tiny-merkle-tree-solidity/src/lib/PoseidonHash.sol": {
-      "lastModificationDate": 1760619506929,
+      "lastModificationDate": 1760690957646,
       "contentHash": "5ae2e9c8dd4616eb4e9148e0c6477503",
       "sourceName": "@fifteenfigures/lib/PoseidonHash.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -553,6 +595,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -573,7 +618,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -590,6 +635,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -611,7 +659,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -628,6 +676,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -652,7 +703,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -669,6 +720,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -688,7 +742,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -705,6 +759,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -726,7 +783,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -743,6 +800,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -757,14 +817,14 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/interfaces/IVerifier.sol": {
-      "lastModificationDate": 1760619112268,
-      "contentHash": "b7966e9a68c1368d6d3ac43c4c9b447e",
+      "lastModificationDate": 1761223339359,
+      "contentHash": "487a5a87f4c2187d2e8593f42ff38d7c",
       "sourceName": "src/interfaces/IVerifier.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -781,6 +841,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -800,7 +863,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -817,6 +880,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -841,7 +907,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -858,6 +924,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -877,7 +946,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -894,6 +963,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -915,7 +987,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -932,6 +1004,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -951,7 +1026,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -968,6 +1043,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -987,7 +1065,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1004,6 +1082,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -1025,7 +1106,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1042,6 +1123,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -1063,7 +1147,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1080,6 +1164,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -1095,14 +1182,14 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/Swapper.sol": {
-      "lastModificationDate": 1760788752539,
+      "lastModificationDate": 1761221452678,
       "contentHash": "10f54346744610483be94f33b29506d6",
       "sourceName": "src/Swapper.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1119,6 +1206,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -1149,7 +1239,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1166,6 +1256,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -1188,7 +1281,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1205,6 +1298,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -1224,7 +1320,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1241,6 +1337,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -1253,14 +1352,14 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/mock/MockSilentERC20.sol": {
-      "lastModificationDate": 1760770040941,
+      "lastModificationDate": 1760771035049,
       "contentHash": "7e0f3b54d4fa66623e67bc82087bed09",
       "sourceName": "src/mock/MockSilentERC20.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1277,6 +1376,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },

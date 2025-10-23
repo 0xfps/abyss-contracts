@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -20,13 +21,23 @@ import type {
 } from "../common";
 
 export interface RecorderInterface extends Interface {
-  getFunction(nameOrSignature: "withdrawals"): FunctionFragment;
+  getFunction(
+    nameOrSignature: "withdrawalSlots" | "withdrawals"
+  ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "withdrawalSlots",
+    values: [BytesLike, BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "withdrawals",
     values: [BytesLike]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "withdrawalSlots",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "withdrawals",
     data: BytesLike
@@ -76,6 +87,12 @@ export interface Recorder extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  withdrawalSlots: TypedContractMethod<
+    [withdrawalKeyHash: BytesLike, slot: BigNumberish],
+    [bigint],
+    "view"
+  >;
+
   withdrawals: TypedContractMethod<
     [withdrawalKeyHash: BytesLike],
     [bigint],
@@ -86,6 +103,13 @@ export interface Recorder extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "withdrawalSlots"
+  ): TypedContractMethod<
+    [withdrawalKeyHash: BytesLike, slot: BigNumberish],
+    [bigint],
+    "view"
+  >;
   getFunction(
     nameOrSignature: "withdrawals"
   ): TypedContractMethod<[withdrawalKeyHash: BytesLike], [bigint], "view">;

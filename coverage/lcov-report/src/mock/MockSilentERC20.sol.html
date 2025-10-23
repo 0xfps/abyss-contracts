@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for src/interfaces/IMain.sol</title>
+    <title>Code coverage report for src/mock/MockSilentERC20.sol</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -16,13 +16,13 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../../index.html">all files</a> / <a href="index.html">src/interfaces/</a> IMain.sol
+      <a href="../../index.html">all files</a> / <a href="index.html">src/mock/</a> MockSilentERC20.sol
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/0</span>
+        <span class='fraction'>0/6</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -30,18 +30,18 @@
         <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/0</span>
+        <span class='fraction'>0/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/0</span>
+        <span class='fraction'>0/6</span>
       </div>
     </div>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line low'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -69,15 +69,7 @@
 24
 25
 26
-27
-28
-29
-30
-31
-32
-33
-34
-35</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+27</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -88,6 +80,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -96,55 +91,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 &nbsp;
-interface IMain {
-    struct DepositParams {
-        bytes depositKey;
-        bool includeLeaf;
-        address recipient;
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { SilentERC20 } from "../token/SilentERC20.sol";
+&nbsp;
+// https://sepolia.arbiscan.io/address/0xe4a40523ceaBd35B73235741a82342FB420bc813
+contract MockSilentERC20 is SilentERC20 {
+    uint256 amount = 500_000e6;
+<span class="fstat-no" title="function not covered" >    constructor(string memory name, string memory symbol)</span>
+       SilentERC20(name, symbol) {
+<span class="cstat-no" title="statement not covered" >        _mint(address(this), amount)</span>;
+<span class="cstat-no" title="statement not covered" >        _approve(address(this), msg.sender, amount)</span>;
+<span class="cstat-no" title="statement not covered" >        _transfer(address(this), msg.sender, amount)</span>;
     }
+}
 &nbsp;
-    event DepositAdded(bytes32 indexed leaf);
-&nbsp;
-    error Max100By100();
-    error KeyAlreadyUsed(bytes32 leaf);
-    error NullifierUsed(uint256 nullifier);
-    error ProofNotVerified();
-    error RootNotInHistory(bytes32 root);
-    error WithdrawalExceedsMaxInSlot(uint256 withdrawal);
-    error WithdrawalExceedsMax(uint256 withdrawal);
-    error WithdrawalSlotUsed();
-&nbsp;
-    function deposit(DepositParams calldata depositParams) external;
-&nbsp;
-    function withdraw(
-        bytes32 root,
-        bytes calldata withdrawalKey,
-        uint256[2] calldata pA,     // Proof.
-        uint256[2][2] calldata pB,  // Proof.
-        uint256[2] calldata pC,     // Proof.
-        uint8 slot,
-        uint256 nullifier,
-        address receipient,
-        uint256 amount
-    ) external;
+// https://sepolia.arbiscan.io/address/0x93B863Ea6680B4DCa821d61032768Bb6f75aCEC5
+contract MockNonSilentERC20 is ERC20 {
+    uint256 amount = 500_000e18;
+<span class="fstat-no" title="function not covered" >    constructor(string memory name, string memory symbol)</span>
+       ERC20(name, symbol) {
+<span class="cstat-no" title="statement not covered" >        _mint(address(this), amount)</span>;
+<span class="cstat-no" title="statement not covered" >        _approve(address(this), msg.sender, amount)</span>;
+<span class="cstat-no" title="statement not covered" >        _transfer(address(this), msg.sender, amount)</span>;
+    }
 }</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->

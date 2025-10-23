@@ -61,6 +61,22 @@ const _abi = [
     type: "error",
   },
   {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "withdrawal",
+        type: "uint256",
+      },
+    ],
+    name: "WithdrawalExceedsMaxInSlot",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "WithdrawalSlotUsed",
+    type: "error",
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -129,6 +145,11 @@ const _abi = [
         internalType: "uint256[2]",
         name: "pC",
         type: "uint256[2]",
+      },
+      {
+        internalType: "uint8",
+        name: "slot",
+        type: "uint8",
       },
       {
         internalType: "uint256",

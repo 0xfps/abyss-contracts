@@ -1,10 +1,10 @@
 import { BigNumberish, parseEther, Signer, ZeroAddress } from "ethers"
 import { Groth16Verifier, Main, MockERC20, Swapper } from "../../typechain-types"
 import { ethers } from "hardhat"
-import TinyMerkleTree, { generatekeys, getInputObjects, getLeafFromKey, getMaxWithdrawalOnKey, getRandomNullifier, hashNums, hexify } from "@fifteenfigures/tiny-merkle-tree"
+import TinyMerkleTree, { extractKeyMetadata, generateDepositKey, generatekeys, getInputObjects, getLeafFromKey, getMaxSlots, getMaxWithdrawalOnAmount, getMaxWithdrawalOnKey, getRandomNullifier, hashNums, hexify, NOTE, smolPadding } from "@fifteenfigures/tiny-merkle-tree"
 import assert from "node:assert/strict"
 import { HermesClient } from "@pythnetwork/hermes-client"
-import { collector, elisha, fisk, george, sCollector, SECRET_KEY_LENGTH } from "../constants"
+import { collector, elisha, fisk, george, hank, sCollector, SECRET_KEY_LENGTH } from "../constants"
 import Randomstring = require("randomstring")
 import { expect } from "chai"
 import commaNumber = require("comma-number")
@@ -115,13 +115,17 @@ describe("Main Tests", function () {
 
         mainAddress = await main.getAddress()
 
+        priceUpdate = await getLatestPriceUpdate()
+    })
+
+    async function getLatestPriceUpdate(): Promise<string[]> {
         const updates = await hermesConnection.getLatestPriceUpdates([ETH_PRICE_FEED_ID])
         const hexifiedData = updates.binary.data.map(function (data) {
             return hexify(data)
         })
 
-        priceUpdate = hexifiedData
-    })
+        return hexifiedData
+    }
 
     it("Decimals should be 6.", async function () {
         const decimals = await main.decimals()
@@ -129,7 +133,7 @@ describe("Main Tests", function () {
     })
 
     it("Should get update fee.", async function () {
-        feeUpdatePrice = await swapper.getOracleUpdateFee(priceUpdate)
+        feeUpdatePrice = await swapper.getOracleUpdateFee(await getLatestPriceUpdate())
 
         console.log({ feeUpdatePrice }) // In Wei.
     })
@@ -141,7 +145,7 @@ describe("Main Tests", function () {
             assetToSwapToOrFrom: ZeroAddress,
             amountToSwapToOrFrom: parseEther("5"),
             receiver: bobAddress,
-            updateData: priceUpdate
+            updateData: await getLatestPriceUpdate()
         }
 
         await swapper.connect(alice).swapToPrivateToken(swapParams, {
@@ -166,7 +170,7 @@ describe("Main Tests", function () {
             recipient: ZeroAddress
         }
 
-        
+
         let balance = await swapper.balanceOf(collector)
         console.log({ collectorBalanceBefore: balance })
 
@@ -192,7 +196,7 @@ describe("Main Tests", function () {
             assetToSwapToOrFrom: ZeroAddress,
             amountToSwapToOrFrom: parseEther("10"),
             receiver: bobAddress,
-            updateData: priceUpdate
+            updateData: await getLatestPriceUpdate()
         }
 
         await swapper.connect(alice).swapToPrivateToken(swapParams, {
@@ -219,7 +223,7 @@ describe("Main Tests", function () {
             assetToSwapToOrFrom: ZeroAddress,
             amountToSwapToOrFrom: parseEther("5"),
             receiver: chrisAddress,
-            updateData: priceUpdate
+            updateData: await getLatestPriceUpdate()
         }
 
         await swapper.connect(alice).swapToPrivateToken(swapParams, {
@@ -264,6 +268,7 @@ describe("Main Tests", function () {
                     mockPA,
                     mockPB,
                     mockPC,
+                    0,
                     getRandomNullifier(),
                     elisha,
                     bobsWithdrawalAmount
@@ -271,7 +276,7 @@ describe("Main Tests", function () {
         ).to.be.revertedWithCustomError(main, "RootNotInHistory")
     })
 
-    it("Revert because withdrwal exceeds amount.", async function () {
+    it("Revert because withdrawal exceeds amount.", async function () {
         const root = await main.root()
 
         await expect(
@@ -283,11 +288,12 @@ describe("Main Tests", function () {
                     mockPA,
                     mockPB,
                     mockPC,
+                    0,
                     getRandomNullifier(),
                     elisha,
                     bobsWithdrawalAmount + 1n
                 )
-        ).to.be.revertedWithCustomError(main, "WithdrawalExceedsMax")
+        ).to.be.revertedWithCustomError(main, "WithdrawalExceedsMaxInSlot")
     })
 
     it("Fail to verify proof.", async function () {
@@ -302,6 +308,7 @@ describe("Main Tests", function () {
                     mockPA,
                     mockPB,
                     mockPC,
+                    0,
                     getRandomNullifier(),
                     elisha,
                     bobsWithdrawalAmount
@@ -359,7 +366,7 @@ describe("Main Tests", function () {
         // pC should be [pi_c[0], pi_c[1]].
         const piC = [BigInt(pi_c[0]), BigInt(pi_c[1])] as [BigNumberish, BigNumberish]
 
-        await main.withdraw(root, usedWithdrawalkey, piA, piB, piC, nullifier, elisha, bobsWithdrawalAmount)
+        await main.withdraw(root, usedWithdrawalkey, piA, piB, piC, BigInt(inputObjects.slot), nullifier, elisha, bobsWithdrawalAmount)
         const balance = await swapper.balanceOf(elisha)
         assert(balance == bobsWithdrawalAmount)
     })
@@ -394,7 +401,7 @@ describe("Main Tests", function () {
         const piC = [BigInt(pi_c[0]), BigInt(pi_c[1])] as [BigNumberish, BigNumberish]
 
         await expect(
-            main.withdraw(root, usedWithdrawalkey, piA, piB, piC, BigInt(nullifier.toString()), elisha, BigInt(1e10))
+            main.withdraw(root, usedWithdrawalkey, piA, piB, piC, 0, BigInt(nullifier.toString()), elisha, BigInt(1e10))
         ).to.be.revertedWithCustomError(main, "NullifierUsed")
     })
 
@@ -411,8 +418,178 @@ describe("Main Tests", function () {
         balance = await swapper.balanceOf(george)
         console.log({ georgeBalanceAfter: balance })
     })
+
+    let splitWKey: string
+    let splitDepositSecretKey: string
+    let splitDepositLeaf: string
+
+    it("Revert on split deposit with quotient > 100.", async function () {
+        const amountForSplitDeposit = BigInt(10_099_999_999 + 1)
+        const secretKey = Randomstring.generate({ length: SECRET_KEY_LENGTH, charset: "alphanumeric" })
+
+        const swapParams = {
+            assetToSwapToOrFrom: ZeroAddress,
+            amountToSwapToOrFrom: parseEther("5000"),
+            receiver: bobAddress,
+            updateData: await getLatestPriceUpdate()
+        }
+
+        await swapper.connect(alice).swapToPrivateToken(swapParams, {
+            value: swapParams.amountToSwapToOrFrom + feeUpdatePrice
+        })
+
+        const bobBalance = await swapper.balanceOf(bobAddress)
+        await swapper.connect(bob).approve(mainAddress, bobBalance)
+
+        const { depositKey } = generatekeys(amountForSplitDeposit, secretKey)
+
+        const depositParams = {
+            depositKey,
+            includeLeaf: true,
+            recipient: ZeroAddress
+        }
+
+        await expect(main.connect(bob).splitDeposit(depositParams))
+            .to.be.revertedWithCustomError(main, "Max100By100")
+    })
+
+    it("Deposit 250 using split deposit.", async function () {
+        // Bob still has his balance from previous test.
+        const amountForSplitDeposit = BigInt(250e6)
+
+        splitDepositSecretKey = Randomstring.generate({ length: SECRET_KEY_LENGTH, charset: "alphanumeric" })
+        const { depositKey, withdrawalKey } = generatekeys(amountForSplitDeposit, splitDepositSecretKey)
+
+        splitWKey = withdrawalKey
+
+        const keyHashBigInt = BigInt(extractKeyMetadata(depositKey).keyHash)
+
+        const concat = `${smolPadding(`0x${(keyHashBigInt + 1n).toString(16)}`)}${smolPadding(`0x${50e6.toString(16)}`).slice(2)}`
+        const concat1 = `${smolPadding(`0x${(keyHashBigInt + 2n).toString(16)}`)}${smolPadding(`0x${NOTE.toString(16)}`).slice(2)}`
+        const concat2 = `${smolPadding(`0x${(keyHashBigInt + 3n).toString(16)}`)}${smolPadding(`0x${NOTE.toString(16)}`).slice(2)}`
+
+        const splitDepositLeaf0 = getLeafFromKey(concat)
+        splitDepositLeaf = getLeafFromKey(concat1)
+        const splitDepositLeaf2 = getLeafFromKey(concat2)
+
+        leaves.push(splitDepositLeaf0)
+        leaves.push(splitDepositLeaf)
+        leaves.push(splitDepositLeaf2)
+
+        const depositParams = {
+            depositKey,
+            includeLeaf: true,
+            recipient: ZeroAddress
+        }
+
+        await main.connect(bob).splitDeposit(depositParams)
+        assert(await main.root() == new TinyMerkleTree(leaves).root)
+    })
+
+    it("Fail to verify proof on withdrawal from a fake slot.", async function () {
+        const max = getMaxWithdrawalOnAmount(BigInt(100e6))
+        const slots = 4
+
+        const tree = new TinyMerkleTree(leaves)
+        const root = tree.root
+
+        const inputObjects = getInputObjects(splitWKey, splitDepositLeaf, splitDepositSecretKey, tree)
+        inputObjects.slot = 2 // Leaf I'm proving is at slot 2. L-470.
+
+        const { proof } = await groth16.fullProve(inputObjects as any, wasmPath, zkeyPath)
+        const { pi_a, pi_b, pi_c } = proof
+
+        // pA should be [pi_a[0], pi_a[1]].
+        const piA = [BigInt(pi_a[0]), BigInt(pi_a[1])] as [BigNumberish, BigNumberish]
+
+        // ⚠️ Notice: snarkjs outputs G2 elements transposed compared to Solidity. You must flip them.
+        // pB should be [
+        // [pi_b[0][1], pi_b[0][0]]
+        // [pi_b[1][1], pi_b[1][0]]
+        // ].
+        // Flipped. 
+        const piB = [
+            [BigInt(pi_b[0][1]), BigInt(pi_b[0][0])],
+            [BigInt(pi_b[1][1]), BigInt(pi_b[1][0])]
+        ] as [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]]
+
+        // pC should be [pi_c[0], pi_c[1]].
+        const piC = [BigInt(pi_c[0]), BigInt(pi_c[1])] as [BigNumberish, BigNumberish]
+
+        await expect(main.withdraw(root, splitWKey, piA, piB, piC, BigInt(slots), inputObjects.nullifier, hank, max))
+            .to.be.revertedWithCustomError(main, "ProofNotVerified")
+    })
+
+    it("Fail to withdraw more than max from a slot.", async function () {
+        const max = getMaxWithdrawalOnAmount(BigInt(100e6))
+        const slot = 2
+
+        const tree = new TinyMerkleTree(leaves)
+        const root = tree.root
+
+        const inputObjects = getInputObjects(splitWKey, splitDepositLeaf, splitDepositSecretKey, tree)
+        inputObjects.slot = slot // Leaf I'm proving is at slot 2. L-470.
+
+        const { proof } = await groth16.fullProve(inputObjects as any, wasmPath, zkeyPath)
+        const { pi_a, pi_b, pi_c } = proof
+
+        // pA should be [pi_a[0], pi_a[1]].
+        const piA = [BigInt(pi_a[0]), BigInt(pi_a[1])] as [BigNumberish, BigNumberish]
+
+        // ⚠️ Notice: snarkjs outputs G2 elements transposed compared to Solidity. You must flip them.
+        // pB should be [
+        // [pi_b[0][1], pi_b[0][0]]
+        // [pi_b[1][1], pi_b[1][0]]
+        // ].
+        // Flipped. 
+        const piB = [
+            [BigInt(pi_b[0][1]), BigInt(pi_b[0][0])],
+            [BigInt(pi_b[1][1]), BigInt(pi_b[1][0])]
+        ] as [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]]
+
+        // pC should be [pi_c[0], pi_c[1]].
+        const piC = [BigInt(pi_c[0]), BigInt(pi_c[1])] as [BigNumberish, BigNumberish]
+
+        await expect(main.withdraw(root, splitWKey, piA, piB, piC, BigInt(slot), inputObjects.nullifier, hank, max + 1n))
+            .to.be.revertedWithCustomError(main, "WithdrawalExceedsMaxInSlot")
+    })
+
+    it("Withdraw from a slot.", async function () {
+        const max = getMaxWithdrawalOnAmount(BigInt(100e6))
+        const slot = 2
+
+        const tree = new TinyMerkleTree(leaves)
+        const root = tree.root
+
+        const inputObjects = getInputObjects(splitWKey, splitDepositLeaf, splitDepositSecretKey, tree)
+        inputObjects.slot = slot // Leaf I'm proving is at slot 2. L-470.
+
+        const { proof } = await groth16.fullProve(inputObjects as any, wasmPath, zkeyPath)
+        const { pi_a, pi_b, pi_c } = proof
+
+        // pA should be [pi_a[0], pi_a[1]].
+        const piA = [BigInt(pi_a[0]), BigInt(pi_a[1])] as [BigNumberish, BigNumberish]
+
+        // ⚠️ Notice: snarkjs outputs G2 elements transposed compared to Solidity. You must flip them.
+        // pB should be [
+        // [pi_b[0][1], pi_b[0][0]]
+        // [pi_b[1][1], pi_b[1][0]]
+        // ].
+        // Flipped. 
+        const piB = [
+            [BigInt(pi_b[0][1]), BigInt(pi_b[0][0])],
+            [BigInt(pi_b[1][1]), BigInt(pi_b[1][0])]
+        ] as [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]]
+
+        // pC should be [pi_c[0], pi_c[1]].
+        const piC = [BigInt(pi_c[0]), BigInt(pi_c[1])] as [BigNumberish, BigNumberish]
+
+        await main.withdraw(root, splitWKey, piA, piB, piC, BigInt(slot), inputObjects.nullifier, hank, max)
+        assert(await swapper.balanceOf(hank) == max)
+    })
 })
 
 function getRandomNumber() {
+    return 1
     return Math.floor(Math.random() * 100)
 }

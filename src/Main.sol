@@ -68,24 +68,39 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
         (bytes32 keyHash, uint256 amount) = depositKey._extractKeyMetadata();
 
         SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
+        SILENT_TOKEN.approve(address(this), amount);
         
         uint256 quotient = amount / NOTE;
         uint256 remainder = amount % NOTE;
 
         if (quotient > QUOTIENT) revert Max100By100();
 
-        uint8 i;
+        uint8 i = 1;
         DepositParams memory params;
 
+        if (remainder > 0) {
+            params = _buildParams(
+                keyHash,
+                i,
+                remainder,
+                depositParams.recipient
+            );
+            
+            this.deposit(params);
+        }
+        
+        i++;
+
         for (uint8 j; j < quotient; j++) {
-            params = _buildParams(keyHash, i, depositParams.recipient);
+            params = _buildParams(
+                keyHash,
+                i,
+                NOTE,
+                depositParams.recipient
+            );
+
             this.deposit(params);
             i++;
-        }
-
-        if (remainder > 0) {
-            params = _buildParams(keyHash, i, depositParams.recipient);
-            this.deposit(params);
         }
     }
     
@@ -95,6 +110,7 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
         uint256[2] calldata pA,     // Proof.
         uint256[2][2] calldata pB,  // Proof.
         uint256[2] calldata pC,     // Proof.
+        uint8 slot,                 // Can only go from 0 - 100 based off of QUOTIENT.
         uint256 nullifier,
         address recipient,
         uint256 amount
@@ -106,17 +122,20 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
 
         (bytes32 keyHash, uint256 amountInKey) = withdrawalKey._extractKeyMetadata();
 
+        _validateWithdrawalFromSlot(withdrawalKey, slot, amount);
+        
         uint256 maxWithdrawable = _getMaxWithdrawalOnAmount(amountInKey);
         uint256 amountWithdrawn = withdrawals[withdrawalKey];
 
         if ((amountWithdrawn + amount) > maxWithdrawable) revert WithdrawalExceedsMax(amount);
         withdrawals[withdrawalKey] += amount;
 
-        uint256[4] memory publicSignals;
+        uint256[5] memory publicSignals;
         publicSignals[0] = uint256(root);
         publicSignals[1] = uint256(keyHash);
         publicSignals[2] = uint256(amountInKey);
-        publicSignals[3] = nullifier;
+        publicSignals[3] = slot;
+        publicSignals[4] = nullifier;
 
         if (!verifier.verifyProof(pA, pB, pC, publicSignals)) revert ProofNotVerified();
 
@@ -128,6 +147,29 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
         SILENT_TOKEN.transfer(recipient, amount);
     }
 
+    function _validateWithdrawalFromSlot(
+        bytes calldata withdrawalKey,
+        uint8 slot,
+        uint256 amount
+    ) internal {
+        (, uint256 amountInKey) = withdrawalKey._extractKeyMetadata();
+        
+        uint256 remainder = amountInKey % NOTE;
+
+        uint256 maxWithdrawableFromSlot;
+        if (slot == 0)
+            maxWithdrawableFromSlot = _getMaxWithdrawalOnAmount(amountInKey);
+        else if (slot == 1)
+            maxWithdrawableFromSlot = _getMaxWithdrawalOnAmount(remainder);
+        else
+            maxWithdrawableFromSlot = _getMaxWithdrawalOnAmount(NOTE);
+
+        uint256 amountWithdrawnFromSlot = withdrawalSlots[withdrawalKey][slot];
+        if ((amountWithdrawnFromSlot + amount) > maxWithdrawableFromSlot) revert WithdrawalExceedsMaxInSlot(amount);
+
+        withdrawalSlots[withdrawalKey][slot] += amount;
+    }
+
     function _getMaxWithdrawalOnAmount(uint256 amount) internal pure returns (uint256 maxWithdrawal) {
         uint256 fee = _calculateFee(amount);
         maxWithdrawal = amount - fee;
@@ -136,11 +178,12 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
     function _buildParams(
         bytes32 keyHash,
         uint8 i,
+        uint256 amount,
         address recipient
     ) internal pure returns (DepositParams memory params) {
         bytes memory key = abi.encodePacked(
             bytes32(uint256(keyHash) + i),
-            bytes32(uint256(NOTE))
+            bytes32(uint256(amount))
         );
 
         params = DepositParams({

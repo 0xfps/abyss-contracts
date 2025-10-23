@@ -15,7 +15,9 @@ interface IMain {
     error NullifierUsed(uint256 nullifier);
     error ProofNotVerified();
     error RootNotInHistory(bytes32 root);
+    error WithdrawalExceedsMaxInSlot(uint256 withdrawal);
     error WithdrawalExceedsMax(uint256 withdrawal);
+    error WithdrawalSlotUsed();
 
     function deposit(DepositParams calldata depositParams) external;
 
@@ -25,6 +27,7 @@ interface IMain {
         uint256[2] calldata pA,     // Proof.
         uint256[2][2] calldata pB,  // Proof.
         uint256[2] calldata pC,     // Proof.
+        uint8 slot,
         uint256 nullifier,
         address receipient,
         uint256 amount

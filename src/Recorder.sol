@@ -7,6 +7,7 @@ abstract contract Recorder {
     mapping(bytes32 leaf => bool inUse) internal leaves;
     mapping(uint256 nullifier => bool used) internal nullifierUsed;
     mapping(bytes withdrawalKeyHash => uint256 amountWithdrawn) public withdrawals;
+    mapping(bytes withdrawalKeyHash => mapping(uint256 slot => uint256 amountWithdrawn)) public withdrawalSlots;
 
     function _leafExists(bytes32 leaf) internal view returns (bool) {
         return leaves[leaf];
