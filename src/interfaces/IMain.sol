@@ -10,7 +10,7 @@ interface IMain {
 
     event DepositAdded(bytes32 indexed leaf);
 
-    error ETHSentLessThanDeposit(uint256 ethSent, uint256 deposit);
+    error Max100By100();
     error KeyAlreadyUsed(bytes32 leaf);
     error NullifierUsed(uint256 nullifier);
     error ProofNotVerified();

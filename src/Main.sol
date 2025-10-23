@@ -17,6 +17,8 @@ import { TinyMerkleTree } from "@fifteenfigures/TinyMerkleTree.sol";
 contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
     using Extractor for bytes;
 
+    uint8 internal constant QUOTIENT = 100;
+    uint32 internal constant NOTE = 100e6;
     ISilentERC20 internal immutable SILENT_TOKEN;
     IVerifier internal verifier;
 
@@ -57,6 +59,33 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
         } else {
             SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
             _mint(depositParams.recipient, amount);
+        }
+    }
+
+    // This function is experimental. I expect it to cost a shit ton of gas.
+    function splitDeposit(DepositParams calldata depositParams) public {
+        bytes calldata depositKey = depositParams.depositKey;
+        (bytes32 keyHash, uint256 amount) = depositKey._extractKeyMetadata();
+
+        SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
+        
+        uint256 quotient = amount / NOTE;
+        uint256 remainder = amount % NOTE;
+
+        if (quotient > QUOTIENT) revert Max100By100();
+
+        uint8 i;
+        DepositParams memory params;
+
+        for (uint8 j; j < quotient; j++) {
+            params = _buildParams(keyHash, i, depositParams.recipient);
+            this.deposit(params);
+            i++;
+        }
+
+        if (remainder > 0) {
+            params = _buildParams(keyHash, i, depositParams.recipient);
+            this.deposit(params);
         }
     }
     
@@ -102,6 +131,23 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
     function _getMaxWithdrawalOnAmount(uint256 amount) internal pure returns (uint256 maxWithdrawal) {
         uint256 fee = _calculateFee(amount);
         maxWithdrawal = amount - fee;
+    }
+    
+    function _buildParams(
+        bytes32 keyHash,
+        uint8 i,
+        address recipient
+    ) internal pure returns (DepositParams memory params) {
+        bytes memory key = abi.encodePacked(
+            bytes32(uint256(keyHash) + i),
+            bytes32(uint256(NOTE))
+        );
+
+        params = DepositParams({
+            depositKey: key,
+            includeLeaf: true,
+            recipient: recipient
+        });
     }
 
     function _rootIsInHistory(bytes32 root) private view returns (bool) {

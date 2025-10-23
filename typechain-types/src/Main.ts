@@ -49,6 +49,7 @@ export interface MainInterface extends Interface {
       | "length"
       | "name"
       | "root"
+      | "splitDeposit"
       | "symbol"
       | "totalSupply"
       | "transfer"
@@ -86,6 +87,10 @@ export interface MainInterface extends Interface {
   encodeFunctionData(functionFragment: "length", values?: undefined): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "root", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "splitDeposit",
+    values: [IMain.DepositParamsStruct]
+  ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -133,6 +138,10 @@ export interface MainInterface extends Interface {
   decodeFunctionResult(functionFragment: "length", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "root", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "splitDeposit",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -272,6 +281,12 @@ export interface Main extends BaseContract {
 
   root: TypedContractMethod<[], [string], "view">;
 
+  splitDeposit: TypedContractMethod<
+    [depositParams: IMain.DepositParamsStruct],
+    [void],
+    "nonpayable"
+  >;
+
   symbol: TypedContractMethod<[], [string], "view">;
 
   totalSupply: TypedContractMethod<[], [bigint], "view">;
@@ -358,6 +373,13 @@ export interface Main extends BaseContract {
   getFunction(
     nameOrSignature: "root"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "splitDeposit"
+  ): TypedContractMethod<
+    [depositParams: IMain.DepositParamsStruct],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "symbol"
   ): TypedContractMethod<[], [string], "view">;

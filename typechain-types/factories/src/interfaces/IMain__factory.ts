@@ -9,28 +9,17 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "ethSent",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "deposit",
-        type: "uint256",
-      },
-    ],
-    name: "ETHSentLessThanDeposit",
-    type: "error",
-  },
-  {
-    inputs: [
-      {
         internalType: "bytes32",
         name: "leaf",
         type: "bytes32",
       },
     ],
     name: "KeyAlreadyUsed",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "Max100By100",
     type: "error",
   },
   {
