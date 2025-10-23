@@ -9,7 +9,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -26,9 +26,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -48,7 +45,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -65,9 +62,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -87,7 +81,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -104,9 +98,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -128,7 +119,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -145,9 +136,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -167,7 +155,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -184,9 +172,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -209,7 +194,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -226,9 +211,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -251,7 +233,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -268,9 +250,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -290,7 +269,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -307,9 +286,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -331,7 +307,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -348,9 +324,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -381,7 +354,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -398,9 +371,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -420,7 +390,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -437,9 +407,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -459,7 +426,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -476,9 +443,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -491,14 +455,14 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/lib/tiny-merkle-tree-solidity/src/TinyMerkleTree.sol": {
-      "lastModificationDate": 1760690957644,
+      "lastModificationDate": 1761249390956,
       "contentHash": "ea98ebc0d81e6106af441b7f842ced8f",
       "sourceName": "@fifteenfigures/TinyMerkleTree.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -515,9 +479,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -539,7 +500,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -556,9 +517,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -571,14 +529,14 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/lib/tiny-merkle-tree-solidity/src/lib/PoseidonHash.sol": {
-      "lastModificationDate": 1760690957646,
+      "lastModificationDate": 1761249390958,
       "contentHash": "5ae2e9c8dd4616eb4e9148e0c6477503",
       "sourceName": "@fifteenfigures/lib/PoseidonHash.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -595,9 +553,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -618,7 +573,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -635,9 +590,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -659,7 +611,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -676,9 +628,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -703,7 +652,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -720,9 +669,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -742,7 +688,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -759,9 +705,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -783,7 +726,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -800,9 +743,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -824,7 +764,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -841,9 +781,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -863,7 +800,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -880,9 +817,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -907,7 +841,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -924,9 +858,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -946,7 +877,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -963,9 +894,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -987,7 +915,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1004,9 +932,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1026,7 +951,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1043,9 +968,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1065,7 +987,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1082,9 +1004,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1106,7 +1025,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1123,9 +1042,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1147,7 +1063,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1164,9 +1080,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1189,7 +1102,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1206,9 +1119,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1239,7 +1149,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1256,9 +1166,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1281,7 +1188,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1298,9 +1205,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1320,7 +1224,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1337,9 +1241,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1359,7 +1260,7 @@
         "version": "0.8.28",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1
           },
           "evmVersion": "paris",
@@ -1376,9 +1277,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
