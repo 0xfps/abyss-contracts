@@ -101,9 +101,9 @@
               "type": "address"
             }
           ],
-          "internalType": "struct IMain.DepositParams",
+          "internalType": "struct IMain.DepositParams[]",
           "name": "depositParams",
-          "type": "tuple"
+          "type": "tuple[]"
         }
       ],
       "name": "deposit",

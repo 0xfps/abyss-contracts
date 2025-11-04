@@ -77,7 +77,7 @@ export interface MainInterface extends Interface {
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "deposit",
-    values: [IMain.DepositParamsStruct]
+    values: [IMain.DepositParamsStruct[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getLast64Roots",
@@ -259,7 +259,7 @@ export interface Main extends BaseContract {
   decimals: TypedContractMethod<[], [bigint], "view">;
 
   deposit: TypedContractMethod<
-    [depositParams: IMain.DepositParamsStruct],
+    [depositParams: IMain.DepositParamsStruct[]],
     [void],
     "nonpayable"
   >;
@@ -342,7 +342,7 @@ export interface Main extends BaseContract {
   getFunction(
     nameOrSignature: "deposit"
   ): TypedContractMethod<
-    [depositParams: IMain.DepositParamsStruct],
+    [depositParams: IMain.DepositParamsStruct[]],
     [void],
     "nonpayable"
   >;

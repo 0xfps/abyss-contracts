@@ -38,25 +38,31 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
         return 6;
     }
 
-    function deposit(DepositParams calldata depositParams) public {
-        bytes calldata depositKey = depositParams.depositKey;
-        (bytes32 keyHash, uint256 amount) = depositKey._extractKeyMetadata();
+    function deposit(DepositParams[] calldata depositParams) public {
+        uint256 length = depositParams.length;
+        
+        for (uint256 i; i < length; i++) {
+            DepositParams calldata depositParam = depositParams[i];
 
-        if (depositParams.includeLeaf) {
-            bytes32 leaf = bytes32(PoseidonT3.hash([uint256(keyHash), amount]));
-            
-            if (_leafExists(leaf)) revert KeyAlreadyUsed(leaf);
+            bytes calldata depositKey = depositParam.depositKey;
+            (bytes32 keyHash, uint256 amount) = depositKey._extractKeyMetadata();
 
-            SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
+            if (depositParam.includeLeaf) {
+                bytes32 leaf = bytes32(PoseidonT3.hash([uint256(keyHash), amount]));
+                
+                if (_leafExists(leaf)) revert KeyAlreadyUsed(leaf);
 
-            _takeFee(SILENT_TOKEN, amount);
-            _addLeaf(leaf);
-            _recordDeposit(leaf);
+                SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
 
-            emit DepositAdded(leaf);
-        } else {
-            SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
-            _mint(depositParams.recipient, amount);
+                _takeFee(SILENT_TOKEN, amount);
+                _addLeaf(leaf);
+                _recordDeposit(leaf);
+
+                emit DepositAdded(leaf);
+            } else {
+                SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
+                _mint(depositParam.recipient, amount);
+            }
         }
     }
     

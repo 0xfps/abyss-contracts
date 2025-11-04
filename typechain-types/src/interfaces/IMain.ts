@@ -44,7 +44,7 @@ export interface IMainInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "deposit",
-    values: [IMain.DepositParamsStruct]
+    values: [IMain.DepositParamsStruct[]]
   ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
@@ -120,7 +120,7 @@ export interface IMain extends BaseContract {
   ): Promise<this>;
 
   deposit: TypedContractMethod<
-    [depositParams: IMain.DepositParamsStruct],
+    [depositParams: IMain.DepositParamsStruct[]],
     [void],
     "nonpayable"
   >;
@@ -147,7 +147,7 @@ export interface IMain extends BaseContract {
   getFunction(
     nameOrSignature: "deposit"
   ): TypedContractMethod<
-    [depositParams: IMain.DepositParamsStruct],
+    [depositParams: IMain.DepositParamsStruct[]],
     [void],
     "nonpayable"
   >;

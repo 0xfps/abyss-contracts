@@ -300,8 +300,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/Main.sol": {
-      "lastModificationDate": 1760683600732,
-      "contentHash": "e249be6e94f1d09f0b823839508bc038",
+      "lastModificationDate": 1762272722677,
+      "contentHash": "062c92c1913ecbc61add975bd208b730",
       "sourceName": "src/Main.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -347,8 +347,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/interfaces/IMain.sol": {
-      "lastModificationDate": 1760622639417,
-      "contentHash": "d4e5772435d96504306ad4fc5a04b4f1",
+      "lastModificationDate": 1762272736202,
+      "contentHash": "c31cad8bc3299d80bd1b23484366b496",
       "sourceName": "src/interfaces/IMain.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -419,8 +419,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/Verifier.sol": {
-      "lastModificationDate": 1760619107660,
-      "contentHash": "abce41ac87e0a54530fee7da5706cca7",
+      "lastModificationDate": 1762272624000,
+      "contentHash": "6b94a6e7b3d2ba57d463a76ca6949df8",
       "sourceName": "src/Verifier.sol",
       "solcConfig": {
         "version": "0.8.28",

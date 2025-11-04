@@ -166,14 +166,14 @@ describe("Main Tests", function () {
             recipient: ZeroAddress
         }
 
-        
+
         let balance = await swapper.balanceOf(collector)
         console.log({ collectorBalanceBefore: balance })
 
         balance = await swapper.balanceOf(sCollector)
         console.log({ sCollectorBalanceBefore: balance })
 
-        await main.connect(bob).deposit(depositParams)
+        await main.connect(bob).deposit([depositParams])
 
         balance = await swapper.balanceOf(collector)
         console.log({ collectorBalanceAfter: balance })
@@ -208,7 +208,7 @@ describe("Main Tests", function () {
             recipient: ZeroAddress
         }
 
-        await expect(main.connect(bob).deposit(depositParams))
+        await expect(main.connect(bob).deposit([depositParams]))
             .to.be.revertedWithCustomError(main, "KeyAlreadyUsed")
     })
 
@@ -241,7 +241,7 @@ describe("Main Tests", function () {
         let balance = await main.balanceOf(chrisAddress)
         console.log({ balanceBefore: `${commaNumber(Number(balance / BigInt(1e6)))} $wPRIV` })
 
-        await main.connect(chris).deposit(depositParams)
+        await main.connect(chris).deposit([depositParams])
 
         balance = await main.balanceOf(chrisAddress)
         console.log({ balanceAfter: `${commaNumber(Number(balance / BigInt(1e6)))} $wPRIV` })
@@ -323,7 +323,7 @@ describe("Main Tests", function () {
             recipient: ZeroAddress
         }
 
-        await main.connect(bob).deposit(depositParams)
+        await main.connect(bob).deposit([depositParams])
 
         assert(await main.root() == new TinyMerkleTree(leaves).root)
     }
