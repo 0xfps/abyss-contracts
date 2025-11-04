@@ -1,1 +1,62 @@
-{"97":{"stableTokenAddress":"0x698A173441138A6493221442330981868d116823","oracleRegistryAddress":"0xb6Fbb1E84462C0cDC9b30785382834e7743A76Ac","swapperAddress":"0x189a87b18E73a0a8a4F3F23C8b14676F0c197032","groth16VerifierAddress":"0x1DF0a57e9c1AaF1C81def8E569e0dCF142b0139f","poseidonT2Address":"0x5A2B1309c959CF9Eaa40D976fa71c3B55b2ad12F","poseidonT3Address":"0x143c4c20260B0E76e148871509C4C25810C9f79E","mainAddress":"0x692E3105956892060944133033f98708f017CBab","blockNumber":null},"43113":{"stableTokenAddress":"0x189a87b18E73a0a8a4F3F23C8b14676F0c197032","oracleRegistryAddress":"0x5A2B1309c959CF9Eaa40D976fa71c3B55b2ad12F","swapperAddress":"0x143c4c20260B0E76e148871509C4C25810C9f79E","groth16VerifierAddress":"0x692E3105956892060944133033f98708f017CBab","poseidonT2Address":"0xba19B89E3745dB3D80d0B3B206552121b92e178f","poseidonT3Address":"0x3f465aedDb4BC0694BfdD6DAA17DBbF21277079B","mainAddress":"0xA0Ade4628883bEeB35a062862E4B3f0F90B03FA8","blockNumber":47442540},"84532":{"stableTokenAddress":"0x2A9Fdefd58f2FdFD13830eDe0FA8cfAf286e86bf","oracleRegistryAddress":"0x9623D86D3AfFc90966f0e9AFc47e402096266d0e","swapperAddress":"0x2A5e316a2B786Ad7e5b9961C142e0E2ef7d788f1","groth16VerifierAddress":"0xF7B5d10f6E38f4748a97a6C79876c959e4bf93Fc","poseidonT2Address":"0xB2D871e1edF3f4FA586f36953749191790BfCEBA","poseidonT3Address":"0xbe5e9E66bA41EF6ACd76273Ec3f53E28dB596259","mainAddress":"0x6D1258AB47680c71d8d579088A99De293fae2673","blockNumber":null},"421614":{"stableTokenAddress":"0x22ce71B5f3566D26ED9f74ED99F24160A218476D","oracleRegistryAddress":"0x5606e1308509476AfB227657c5BFb7353Eb82C09","swapperAddress":"0x4Bc2b30BB4c77802A1C61f0c844B29Bf995A2B65","groth16VerifierAddress":"0x918De6A4CAe1621ecB0945225316aF5F7b81010A","poseidonT2Address":"0x7e429179ae9dA257f3DEed4a79dFA961040d5feF","poseidonT3Address":"0xdaB0819E03b1C6232894732F1469f07dfc78738c","mainAddress":"0xD8dFE03Cd5E7372D00602687A6E5Ee4aE796E14A","blockNumber":211772921},"11155111":{"stableTokenAddress":"0x9354eE183769A24bc9Bf3E7507817d30Cc14EAC5","oracleRegistryAddress":"0xDD4C416d23E0A24B91Ac236F4deCa86216AC08a9","swapperAddress":"0xabd4b8167E43D8f391C7F1a019D07D1ff108138D","groth16VerifierAddress":"0x315965D14651f8E9192614171d222f2Cc37B49F1","poseidonT2Address":"0x15c575422d0AFE79E2EfA960485f7FF2d5f070f4","poseidonT3Address":"0xF937B0E0D645419F0E9f5F1bb4c5dC3c90a9c0ae","mainAddress":"0x39A9e3C34C5e1DEEB8304590aE784972d583F563","blockNumber":null},"11155420":{"stableTokenAddress":"0x315965D14651f8E9192614171d222f2Cc37B49F1","oracleRegistryAddress":"0xF937B0E0D645419F0E9f5F1bb4c5dC3c90a9c0ae","swapperAddress":"0x39A9e3C34C5e1DEEB8304590aE784972d583F563","groth16VerifierAddress":"0x4B69C96e7d61fb3C0Db8C7D6922363080BE52B4C","poseidonT2Address":"0x7a02b6085213da873091F5b06926dc1438e09D07","poseidonT3Address":"0x3Df16eb72e427229B87ba9AbcE7ceA7E6d3091FA","mainAddress":"0x0a1840B87bb47f76365257F15710f9FDCAcA0f48","blockNumber":null}}
+{
+    "97": {
+        "stableTokenAddress": "0x698A173441138A6493221442330981868d116823",
+        "oracleRegistryAddress": "0xb6Fbb1E84462C0cDC9b30785382834e7743A76Ac",
+        "swapperAddress": "0x189a87b18E73a0a8a4F3F23C8b14676F0c197032",
+        "groth16VerifierAddress": "0x1DF0a57e9c1AaF1C81def8E569e0dCF142b0139f",
+        "poseidonT2Address": "0x5A2B1309c959CF9Eaa40D976fa71c3B55b2ad12F",
+        "poseidonT3Address": "0x143c4c20260B0E76e148871509C4C25810C9f79E",
+        "mainAddress": "0x692E3105956892060944133033f98708f017CBab",
+        "blockNumber": 71235662
+    },
+    "43113": {
+        "stableTokenAddress": "0x189a87b18E73a0a8a4F3F23C8b14676F0c197032",
+        "oracleRegistryAddress": "0x5A2B1309c959CF9Eaa40D976fa71c3B55b2ad12F",
+        "swapperAddress": "0x143c4c20260B0E76e148871509C4C25810C9f79E",
+        "groth16VerifierAddress": "0x692E3105956892060944133033f98708f017CBab",
+        "poseidonT2Address": "0xba19B89E3745dB3D80d0B3B206552121b92e178f",
+        "poseidonT3Address": "0x3f465aedDb4BC0694BfdD6DAA17DBbF21277079B",
+        "mainAddress": "0xA0Ade4628883bEeB35a062862E4B3f0F90B03FA8",
+        "blockNumber": 47442540
+    },
+    "84532": {
+        "stableTokenAddress": "0x2A9Fdefd58f2FdFD13830eDe0FA8cfAf286e86bf",
+        "oracleRegistryAddress": "0x9623D86D3AfFc90966f0e9AFc47e402096266d0e",
+        "swapperAddress": "0x2A5e316a2B786Ad7e5b9961C142e0E2ef7d788f1",
+        "groth16VerifierAddress": "0xF7B5d10f6E38f4748a97a6C79876c959e4bf93Fc",
+        "poseidonT2Address": "0xB2D871e1edF3f4FA586f36953749191790BfCEBA",
+        "poseidonT3Address": "0xbe5e9E66bA41EF6ACd76273Ec3f53E28dB596259",
+        "mainAddress": "0x6D1258AB47680c71d8d579088A99De293fae2673",
+        "blockNumber": 33252606
+    },
+    "421614": {
+        "stableTokenAddress": "0x22ce71B5f3566D26ED9f74ED99F24160A218476D",
+        "oracleRegistryAddress": "0x5606e1308509476AfB227657c5BFb7353Eb82C09",
+        "swapperAddress": "0x4Bc2b30BB4c77802A1C61f0c844B29Bf995A2B65",
+        "groth16VerifierAddress": "0x918De6A4CAe1621ecB0945225316aF5F7b81010A",
+        "poseidonT2Address": "0x7e429179ae9dA257f3DEed4a79dFA961040d5feF",
+        "poseidonT3Address": "0xdaB0819E03b1C6232894732F1469f07dfc78738c",
+        "mainAddress": "0xD8dFE03Cd5E7372D00602687A6E5Ee4aE796E14A",
+        "blockNumber": 211772921
+    },
+    "11155111": {
+        "stableTokenAddress": "0x9354eE183769A24bc9Bf3E7507817d30Cc14EAC5",
+        "oracleRegistryAddress": "0xDD4C416d23E0A24B91Ac236F4deCa86216AC08a9",
+        "swapperAddress": "0xabd4b8167E43D8f391C7F1a019D07D1ff108138D",
+        "groth16VerifierAddress": "0x315965D14651f8E9192614171d222f2Cc37B49F1",
+        "poseidonT2Address": "0x15c575422d0AFE79E2EfA960485f7FF2d5f070f4",
+        "poseidonT3Address": "0xF937B0E0D645419F0E9f5F1bb4c5dC3c90a9c0ae",
+        "mainAddress": "0x39A9e3C34C5e1DEEB8304590aE784972d583F563",
+        "blockNumber": 9560005
+    },
+    "11155420": {
+        "stableTokenAddress": "0x315965D14651f8E9192614171d222f2Cc37B49F1",
+        "oracleRegistryAddress": "0xF937B0E0D645419F0E9f5F1bb4c5dC3c90a9c0ae",
+        "swapperAddress": "0x39A9e3C34C5e1DEEB8304590aE784972d583F563",
+        "groth16VerifierAddress": "0x4B69C96e7d61fb3C0Db8C7D6922363080BE52B4C",
+        "poseidonT2Address": "0x7a02b6085213da873091F5b06926dc1438e09D07",
+        "poseidonT3Address": "0x3Df16eb72e427229B87ba9AbcE7ceA7E6d3091FA",
+        "mainAddress": "0x0a1840B87bb47f76365257F15710f9FDCAcA0f48",
+        "blockNumber": 35235611
+    }
+}
