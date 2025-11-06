@@ -7,7 +7,15 @@ import { writeAbiFile } from "./write-abi-file"
 import path from "path"
 import { readFileSync } from "fs"
 
-const BLOCKS = 5
+import stableTokenArtifact from "../artifacts/src/mock/MockERC20.sol/MockERC20.json"
+import oracleArtifact from "../artifacts/src/OracleRegistry.sol/OracleRegistry.json"
+import swapperArtifact from "../artifacts/src/Swapper.sol/Swapper.json"
+import groth16Artifact from "../artifacts/src/Verifier.sol/Groth16Verifier.json"
+import poseidonT2Artifact from "../artifacts/@fifteenfigures/lib/PoseidonHash.sol/PoseidonT2.json"
+import poseidonT3Artifact from "../artifacts/@fifteenfigures/lib/PoseidonHash.sol/PoseidonT3.json"
+import mainArtifact from "../artifacts/src/Main.sol/Main.json"
+
+const BLOCKS = 10
 const ADDRESS = "0xa08092B3AE155e6aa3444DBEeB5D92E69E8a41fB"
 const AMT = BigInt(500_000e18)
 
@@ -20,7 +28,7 @@ let groth16VerifierAddress: string
 let poseidonT2Address: string
 let poseidonT3Address: string
 let swapperAddress: string
-let blockNumber: number | null | undefined
+let blockNumber: number 
 
 const name = network.name.toLowerCase()
 const { chainId } = network.config
@@ -44,13 +52,14 @@ async function deploy() {
 
 async function deployStableToken() {
     const stableToken = await ethers.deployContract("MockERC20", ["Circle USD", "USDC"])
+    await stableToken.waitForDeployment()
     await stableToken.deploymentTransaction()?.wait(BLOCKS)
     stableTokenAddress = await stableToken.getAddress()
 
     filePath = path.join(__dirname, "../deployments/", MODE, name, "/stable-token.json")
     fileContents = {
         address: stableTokenAddress,
-        abi: stableToken.interface.fragments
+        abi: stableTokenArtifact.abi
     }
 
     writeAbiFile(filePath, JSON.stringify(fileContents))
@@ -84,6 +93,7 @@ async function deployOracleRegistry() {
     }
 
     const oracleRegistry = await ethers.deployContract("OracleRegistry", [ADDRESS, oracleParams])
+    await oracleRegistry.waitForDeployment()
     await oracleRegistry.deploymentTransaction()?.wait(BLOCKS)
     oracleRegistryAddress = await oracleRegistry.getAddress()
 
@@ -98,7 +108,7 @@ async function deployOracleRegistry() {
     filePath = path.join(__dirname, "../deployments/", MODE, name, "/oracle-registry.json")
     fileContents = {
         address: oracleRegistryAddress,
-        abi: oracleRegistry.interface.fragments
+        abi: oracleArtifact.abi
     }
 
     writeAbiFile(filePath, JSON.stringify(fileContents))
@@ -124,6 +134,7 @@ async function deploySwapper() {
         [stableTokenAddress]
     ]
     const swapper = await ethers.deployContract("Swapper", swapperConstructorParams)
+    await swapper.waitForDeployment()
     await swapper.deploymentTransaction()?.wait(BLOCKS)
     swapperAddress = await swapper.getAddress()
 
@@ -137,7 +148,7 @@ async function deploySwapper() {
     filePath = path.join(__dirname, "../deployments/", MODE, name, "/swapper.json")
     fileContents = {
         address: swapperAddress,
-        abi: swapper.interface.fragments
+        abi: swapperArtifact.abi
     }
 
     writeAbiFile(filePath, JSON.stringify(fileContents))
@@ -160,6 +171,7 @@ async function deployGroth16() {
     console.log("Deploying Groth16 library...")
     const Groth16Verifier = await ethers.getContractFactory("Groth16Verifier")
     const groth16Verifier = await Groth16Verifier.deploy()
+    await groth16Verifier.waitForDeployment()
     await groth16Verifier.deploymentTransaction()?.wait(BLOCKS)
     const groth16VerifierAddress = await groth16Verifier.getAddress()
     console.log("Deployed Groth16 libaray, verifying...")
@@ -172,7 +184,7 @@ async function deployGroth16() {
     filePath = path.join(__dirname, "../deployments/", MODE, name, "/groth-16-verifier.json")
     fileContents = {
         address: groth16VerifierAddress,
-        abi: Groth16Verifier.interface.fragments
+        abi: groth16Artifact.abi
     }
 
     writeAbiFile(filePath, JSON.stringify(fileContents))
@@ -200,10 +212,12 @@ async function deployPoseidonLibraries() {
 
     console.log("Deploying libraries...")
     const poseidonT2 = await PoseidonT2.deploy()
+    await poseidonT2.waitForDeployment()
     await poseidonT2.deploymentTransaction()?.wait(BLOCKS)
     console.log("Deployed PoseidonT2.")
 
     const poseidonT3 = await PoseidonT3.deploy()
+    await poseidonT3.waitForDeployment()
     await poseidonT3.deploymentTransaction()?.wait(BLOCKS)
     console.log("Deployed PoseidonT3.")
     console.log("Deployed libraries.")
@@ -224,7 +238,7 @@ async function deployPoseidonLibraries() {
     filePath = path.join(__dirname, "../deployments/", MODE, name, "/poseidon-t2.json")
     fileContents = {
         address: poseidonT2,
-        abi: PoseidonT2.interface.fragments
+        abi: poseidonT2Artifact.abi
     }
 
     writeAbiFile(filePath, JSON.stringify(fileContents))
@@ -232,7 +246,7 @@ async function deployPoseidonLibraries() {
     filePath = path.join(__dirname, "../deployments/", MODE, name, "/poseidon-t3.json")
     fileContents = {
         address: poseidonT3,
-        abi: PoseidonT3.interface.fragments
+        abi: poseidonT3Artifact.abi
     }
 
     writeAbiFile(filePath, JSON.stringify(fileContents))
@@ -267,11 +281,12 @@ async function deployMainContract() {
             PoseidonT3: poseidonT3Address
         }
     })
-
+    
+    await main.waitForDeployment()
     await main.deploymentTransaction()?.wait(BLOCKS)
     const mainAddress = await main.getAddress()
-    blockNumber = main.deploymentTransaction()?.blockNumber
-    console.log("Deployed Main contract, verifying...")
+    blockNumber = main.deploymentTransaction()?.blockNumber!
+    console.log("Deployed Main contract at", blockNumber,", verifying...")
 
     await run("verify:verify", {
         address: mainAddress,
@@ -285,7 +300,7 @@ async function deployMainContract() {
     filePath = path.join(__dirname, "../deployments/", MODE, name, "/main.json")
     fileContents = {
         address: mainAddress,
-        abi: main.interface.fragments
+        abi: mainArtifact.abi
     }
 
     writeAbiFile(filePath, JSON.stringify(fileContents))
