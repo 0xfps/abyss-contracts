@@ -270,9 +270,7 @@ async function deployMainContract() {
     const mainConstructorParams = [
         encodeBytes32String(""),
         groth16VerifierAddress,
-        swapperAddress,
-        "Wrapped Private Token",
-        "wPRIV"
+        swapperAddress
     ]
 
     const main = await ethers.deployContract("Main", mainConstructorParams, {
