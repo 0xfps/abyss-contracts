@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -20,13 +21,37 @@ import type {
 } from "../common";
 
 export interface RecorderInterface extends Interface {
-  getFunction(nameOrSignature: "withdrawals"): FunctionFragment;
+  getFunction(
+    nameOrSignature:
+      | "depositCountForAmount"
+      | "leaves"
+      | "withdrawalCountForAmount"
+      | "withdrawals"
+  ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "depositCountForAmount",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "leaves", values: [BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "withdrawalCountForAmount",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "withdrawals",
     values: [BytesLike]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "depositCountForAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "leaves", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawalCountForAmount",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "withdrawals",
     data: BytesLike
@@ -76,8 +101,22 @@ export interface Recorder extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  depositCountForAmount: TypedContractMethod<
+    [amount: BigNumberish],
+    [bigint],
+    "view"
+  >;
+
+  leaves: TypedContractMethod<[leaf: BytesLike], [boolean], "view">;
+
+  withdrawalCountForAmount: TypedContractMethod<
+    [amount: BigNumberish],
+    [bigint],
+    "view"
+  >;
+
   withdrawals: TypedContractMethod<
-    [withdrawalKeyHash: BytesLike],
+    [withdrawalKey: BytesLike],
     [bigint],
     "view"
   >;
@@ -87,8 +126,17 @@ export interface Recorder extends BaseContract {
   ): T;
 
   getFunction(
+    nameOrSignature: "depositCountForAmount"
+  ): TypedContractMethod<[amount: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "leaves"
+  ): TypedContractMethod<[leaf: BytesLike], [boolean], "view">;
+  getFunction(
+    nameOrSignature: "withdrawalCountForAmount"
+  ): TypedContractMethod<[amount: BigNumberish], [bigint], "view">;
+  getFunction(
     nameOrSignature: "withdrawals"
-  ): TypedContractMethod<[withdrawalKeyHash: BytesLike], [bigint], "view">;
+  ): TypedContractMethod<[withdrawalKey: BytesLike], [bigint], "view">;
 
   filters: {};
 }

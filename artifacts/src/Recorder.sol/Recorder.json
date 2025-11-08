@@ -6,8 +6,65 @@
     {
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "depositCountForAmount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "depositCount",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "leaf",
+          "type": "bytes32"
+        }
+      ],
+      "name": "leaves",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "inUse",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdrawalCountForAmount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "depositCount",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "bytes",
-          "name": "withdrawalKeyHash",
+          "name": "withdrawalKey",
           "type": "bytes"
         }
       ],

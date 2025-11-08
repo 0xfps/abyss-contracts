@@ -2,12 +2,6 @@
 pragma solidity ^0.8.28;
 
 interface IMain {
-    struct DepositParams {
-        bytes depositKey;
-        bool includeLeaf;
-        address recipient;
-    }
-
     event DepositAdded(bytes32 indexed leaf);
 
     error ETHSentLessThanDeposit(uint256 ethSent, uint256 deposit);
@@ -17,7 +11,7 @@ interface IMain {
     error RootNotInHistory(bytes32 root);
     error WithdrawalExceedsMax(uint256 withdrawal);
 
-    function deposit(DepositParams[] calldata depositParams) external;
+    function deposit(bytes[] calldata depositKeys) external;
 
     function withdraw(
         bytes32 root,

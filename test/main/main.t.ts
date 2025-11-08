@@ -1,7 +1,7 @@
 import { BigNumberish, parseEther, Signer, ZeroAddress } from "ethers"
 import { Groth16Verifier, Main, MockERC20, Swapper } from "../../typechain-types"
 import { ethers } from "hardhat"
-import TinyMerkleTree, { generatekeys, getInputObjects, getLeafFromKey, getMaxWithdrawalOnKey, getRandomNullifier, hashNums, hexify } from "@fifteenfigures/tiny-merkle-tree"
+import TinyMerkleTree, { extractKeyMetadata, generatekeys, getInputObjects, getLeafFromKey, getMaxWithdrawalOnKey, getRandomNullifier, hashNums, hexify } from "@fifteenfigures/tiny-merkle-tree"
 import assert from "node:assert/strict"
 import { HermesClient } from "@pythnetwork/hermes-client"
 import { collector, elisha, fisk, george, sCollector, SECRET_KEY_LENGTH } from "../constants"
@@ -103,9 +103,7 @@ describe("Main Tests", function () {
         main = await ethers.deployContract("Main", [
             initLeaf,
             verifierAddress,
-            swapperAddress,
-            "Wrapped Private Token",
-            "wPRIV"
+            swapperAddress
         ], {
             libraries: {
                 PoseidonT2,
@@ -121,11 +119,6 @@ describe("Main Tests", function () {
         })
 
         priceUpdate = hexifiedData
-    })
-
-    it("Decimals should be 6.", async function () {
-        const decimals = await main.decimals()
-        assert(decimals == 6n)
     })
 
     it("Should get update fee.", async function () {
@@ -160,20 +153,13 @@ describe("Main Tests", function () {
         randomUsedLeaf = getLeafFromKey(depositKey)
         leaves.push(randomUsedLeaf)
 
-        const depositParams = {
-            depositKey,
-            includeLeaf: true,
-            recipient: ZeroAddress
-        }
-
-
         let balance = await swapper.balanceOf(collector)
         console.log({ collectorBalanceBefore: balance })
 
         balance = await swapper.balanceOf(sCollector)
         console.log({ sCollectorBalanceBefore: balance })
 
-        await main.connect(bob).deposit([depositParams])
+        await main.connect(bob).deposit([depositKey])
 
         balance = await swapper.balanceOf(collector)
         console.log({ collectorBalanceAfter: balance })
@@ -202,56 +188,8 @@ describe("Main Tests", function () {
         const bobBalance = await swapper.balanceOf(bobAddress)
         await swapper.connect(bob).approve(mainAddress, bobBalance)
 
-        const depositParams = {
-            depositKey: usedDepositKey,
-            includeLeaf: true,
-            recipient: ZeroAddress
-        }
-
-        await expect(main.connect(bob).deposit([depositParams]))
+        await expect(main.connect(bob).deposit([usedDepositKey]))
             .to.be.revertedWithCustomError(main, "KeyAlreadyUsed")
-    })
-
-    it("Make a valid deposit without adding leaf.", async function () {
-        const secretKey = Randomstring.generate({ length: SECRET_KEY_LENGTH, charset: "alphanumeric" })
-
-        const swapParams = {
-            assetToSwapToOrFrom: ZeroAddress,
-            amountToSwapToOrFrom: parseEther("5"),
-            receiver: chrisAddress,
-            updateData: priceUpdate
-        }
-
-        await swapper.connect(alice).swapToPrivateToken(swapParams, {
-            value: swapParams.amountToSwapToOrFrom + feeUpdatePrice
-        })
-
-        const chrisBalance = await swapper.balanceOf(chrisAddress)
-        await swapper.connect(chris).approve(mainAddress, chrisBalance)
-        console.log({ chrisBalance })
-
-        const { depositKey } = generatekeys(chrisBalance, secretKey)
-
-        const depositParams = {
-            depositKey,
-            includeLeaf: false,
-            recipient: chrisAddress
-        }
-
-        let balance = await main.balanceOf(chrisAddress)
-        console.log({ balanceBefore: `${commaNumber(Number(balance / BigInt(1e6)))} $wPRIV` })
-
-        await main.connect(chris).deposit([depositParams])
-
-        balance = await main.balanceOf(chrisAddress)
-        console.log({ balanceAfter: `${commaNumber(Number(balance / BigInt(1e6)))} $wPRIV` })
-
-        // Leaf wasn't used.
-        const tree = new TinyMerkleTree(leaves)
-        const root = await main.root()
-
-        // Root is still same.
-        assert(tree.root == root)
     })
 
     it("Revert because of inexistent root.", async function () {
@@ -317,13 +255,7 @@ describe("Main Tests", function () {
         usedDepositKey = depositKey
         leaves.push(stdKey)
 
-        const depositParams = {
-            depositKey,
-            includeLeaf: true,
-            recipient: ZeroAddress
-        }
-
-        await main.connect(bob).deposit([depositParams])
+        await main.connect(bob).deposit([depositKey])
 
         assert(await main.root() == new TinyMerkleTree(leaves).root)
     }
@@ -362,6 +294,10 @@ describe("Main Tests", function () {
         await main.withdraw(root, usedWithdrawalkey, piA, piB, piC, nullifier, elisha, bobsWithdrawalAmount)
         const balance = await swapper.balanceOf(elisha)
         assert(balance == bobsWithdrawalAmount)
+
+        const { amount } = extractKeyMetadata(usedWithdrawalkey)
+        const withdrawals = await main.withdrawalCountForAmount(amount)
+        assert(Number(withdrawals) == 1)
     })
 
     it("Revert because nullifier hash has already been used.", async function () {
@@ -396,20 +332,6 @@ describe("Main Tests", function () {
         await expect(
             main.withdraw(root, usedWithdrawalkey, piA, piB, piC, BigInt(nullifier.toString()), elisha, BigInt(1e10))
         ).to.be.revertedWithCustomError(main, "NullifierUsed")
-    })
-
-    it("Unwrap Chris' $wPRIV.", async function () {
-        let balance = await main.balanceOf(chrisAddress)
-        console.log({ chrisBalance: balance })
-
-        balance = await swapper.balanceOf(george)
-        console.log({ georgeBalanceBefore: balance })
-
-        const unWrapAmount = await main.balanceOf(chrisAddress)
-        await main.connect(chris).unWrap(unWrapAmount, george)
-
-        balance = await swapper.balanceOf(george)
-        console.log({ georgeBalanceAfter: balance })
     })
 })
 

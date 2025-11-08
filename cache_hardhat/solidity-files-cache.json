@@ -262,8 +262,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/Recorder.sol": {
-      "lastModificationDate": 1760617828531,
-      "contentHash": "150b81700ddbd1e117b96ce94d47f803",
+      "lastModificationDate": 1762600429525,
+      "contentHash": "5d98efff8e8ea7b04c62e9c89764b98a",
       "sourceName": "src/Recorder.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -300,8 +300,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/Main.sol": {
-      "lastModificationDate": 1762272722677,
-      "contentHash": "062c92c1913ecbc61add975bd208b730",
+      "lastModificationDate": 1762600362096,
+      "contentHash": "103c8a973e1a7568cb4054d63ec1a33b",
       "sourceName": "src/Main.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -333,7 +333,6 @@
         "./interfaces/IVerifier.sol",
         "./lib/Extractor.sol",
         "@fifteenfigures/lib/PoseidonHash.sol",
-        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
         "./Fee.sol",
         "./Recorder.sol",
         "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
@@ -347,8 +346,8 @@
       ]
     },
     "/Users/fps/Desktop/attp-contracts/src/interfaces/IMain.sol": {
-      "lastModificationDate": 1762272736202,
-      "contentHash": "c31cad8bc3299d80bd1b23484366b496",
+      "lastModificationDate": 1762599758215,
+      "contentHash": "fe2f332c5c4ecf8734ce4df08b46e79f",
       "sourceName": "src/interfaces/IMain.sol",
       "solcConfig": {
         "version": "0.8.28",

@@ -4,9 +4,11 @@ pragma solidity ^0.8.28;
 import { NATIVE_TOKEN } from "./Fee.sol";
 
 abstract contract Recorder {
-    mapping(bytes32 leaf => bool inUse) internal leaves;
     mapping(uint256 nullifier => bool used) internal nullifierUsed;
-    mapping(bytes withdrawalKeyHash => uint256 amountWithdrawn) public withdrawals;
+    mapping(bytes32 leaf => bool inUse) public leaves;
+    mapping(uint256 amount => uint256 depositCount) public depositCountForAmount;
+    mapping(uint256 amount => uint256 depositCount) public withdrawalCountForAmount;
+    mapping(bytes withdrawalKey => uint256 amountWithdrawn) public withdrawals;
 
     function _leafExists(bytes32 leaf) internal view returns (bool) {
         return leaves[leaf];

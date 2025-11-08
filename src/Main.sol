@@ -8,13 +8,12 @@ import { IVerifier } from "./interfaces/IVerifier.sol";
 import { Extractor } from "./lib/Extractor.sol";
 import { PoseidonT3 } from "@fifteenfigures/lib/PoseidonHash.sol";
 
-import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import { NATIVE_TOKEN, Fee } from "./Fee.sol";
 import { Recorder } from "./Recorder.sol";
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import { TinyMerkleTree } from "@fifteenfigures/TinyMerkleTree.sol";
 
-contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
+contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard {
     using Extractor for bytes;
 
     ISilentERC20 internal immutable SILENT_TOKEN;
@@ -23,10 +22,8 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
     constructor (
         bytes32 initLeaf,
         address _verifier,
-        address silentToken,
-        string memory name,
-        string memory symbol
-    ) TinyMerkleTree (initLeaf) ERC20(name, symbol) {
+        address silentToken
+    ) TinyMerkleTree (initLeaf) {
         SILENT_TOKEN = ISilentERC20(silentToken);
         verifier = IVerifier(_verifier);
         emit DepositAdded(initLeaf);
@@ -34,35 +31,26 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
 
     receive() external payable {}
 
-    function decimals() public pure override returns (uint8) {
-        return 6;
-    }
-
-    function deposit(DepositParams[] calldata depositParams) public {
-        uint256 length = depositParams.length;
+    function deposit(bytes[] calldata depositKeys) public {
+        uint256 length = depositKeys.length;
         
         for (uint256 i; i < length; i++) {
-            DepositParams calldata depositParam = depositParams[i];
+            bytes calldata depositKey = depositKeys[i];
 
-            bytes calldata depositKey = depositParam.depositKey;
             (bytes32 keyHash, uint256 amount) = depositKey._extractKeyMetadata();
 
-            if (depositParam.includeLeaf) {
-                bytes32 leaf = bytes32(PoseidonT3.hash([uint256(keyHash), amount]));
-                
-                if (_leafExists(leaf)) revert KeyAlreadyUsed(leaf);
+            bytes32 leaf = bytes32(PoseidonT3.hash([uint256(keyHash), amount]));
+            
+            if (_leafExists(leaf)) revert KeyAlreadyUsed(leaf);
 
-                SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
+            SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
 
-                _takeFee(SILENT_TOKEN, amount);
-                _addLeaf(leaf);
-                _recordDeposit(leaf);
+            _takeFee(SILENT_TOKEN, amount);
+            _addLeaf(leaf);
+            _recordDeposit(leaf);
+            depositCountForAmount[amount] += 1;
 
-                emit DepositAdded(leaf);
-            } else {
-                SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
-                _mint(depositParam.recipient, amount);
-            }
+            emit DepositAdded(leaf);
         }
     }
     
@@ -87,6 +75,8 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
         uint256 amountWithdrawn = withdrawals[withdrawalKey];
 
         if ((amountWithdrawn + amount) > maxWithdrawable) revert WithdrawalExceedsMax(amount);
+        if ((amountWithdrawn + amount) == maxWithdrawable) withdrawalCountForAmount[amountInKey] += 1;
+        
         withdrawals[withdrawalKey] += amount;
 
         uint256[4] memory publicSignals;
@@ -97,11 +87,6 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard, ERC20 {
 
         if (!verifier.verifyProof(pA, pB, pC, publicSignals)) revert ProofNotVerified();
 
-        SILENT_TOKEN.transfer(recipient, amount);
-    }
-
-    function unWrap(uint256 amount, address recipient) public {
-        _burn(msg.sender, amount);
         SILENT_TOKEN.transfer(recipient, amount);
     }
 
