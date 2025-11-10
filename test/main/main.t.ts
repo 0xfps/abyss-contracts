@@ -1,7 +1,7 @@
 import { BigNumberish, parseEther, Signer, ZeroAddress } from "ethers"
 import { Groth16Verifier, Main, MockERC20, Swapper } from "../../typechain-types"
 import { ethers } from "hardhat"
-import TinyMerkleTree, { extractKeyMetadata, generatekeys, getInputObjects, getLeafFromKey, getMaxWithdrawalOnKey, getRandomNullifier, hashNums, hexify } from "@fifteenfigures/tiny-merkle-tree"
+import TinyMerkleTree, { breakDownKey, extractKeyMetadata, generateKeys, getInputObjects, getLeafFromKey, getLeavesFromKeys, getMaxWithdrawalOnKey, getRandomNullifier, hashNums, hexify } from "@fifteenfigures/tiny-merkle-tree"
 import assert from "node:assert/strict"
 import { HermesClient } from "@pythnetwork/hermes-client"
 import { collector, elisha, fisk, george, sCollector, SECRET_KEY_LENGTH } from "../constants"
@@ -144,7 +144,7 @@ describe("Main Tests", function () {
         const bobBalance = await swapper.balanceOf(bobAddress)
         await swapper.connect(bob).approve(mainAddress, bobBalance)
 
-        const { depositKey, withdrawalKey } = generatekeys(bobDeposit, secretKey)
+        const { depositKey, withdrawalKey } = generateKeys(bobDeposit, secretKey)
         usedWithdrawalkey = withdrawalKey
         // Value in key is slightly higher than what the key stores due to fees.
         bobsWithdrawalAmount = getMaxWithdrawalOnKey(withdrawalKey)
@@ -249,7 +249,7 @@ describe("Main Tests", function () {
 
     async function deposit() {
         const secretKey = Randomstring.generate({ length: SECRET_KEY_LENGTH, charset: "alphanumeric" })
-        const { depositKey } = generatekeys(bobDeposit, secretKey)
+        const { depositKey } = generateKeys(bobDeposit, secretKey)
         const stdKey = getLeafFromKey(depositKey)
 
         usedDepositKey = depositKey
@@ -332,6 +332,44 @@ describe("Main Tests", function () {
         await expect(
             main.withdraw(root, usedWithdrawalkey, piA, piB, piC, BigInt(nullifier.toString()), elisha, BigInt(1e10))
         ).to.be.revertedWithCustomError(main, "NullifierUsed")
+    })
+
+    it("Make another valid deposit and add leaf.", async function () {
+        secretKey = Randomstring.generate({ length: SECRET_KEY_LENGTH, charset: "alphanumeric" })
+
+        const updates = await hermesConnection.getLatestPriceUpdates([ETH_PRICE_FEED_ID])
+        const hexifiedData = updates.binary.data.map(function (data) {
+            return hexify(data)
+        })
+
+        priceUpdate = hexifiedData
+
+        const swapParams = {
+            assetToSwapToOrFrom: ZeroAddress,
+            amountToSwapToOrFrom: parseEther("5"),
+            receiver: bobAddress,
+            updateData: priceUpdate
+        }
+
+        await swapper.connect(alice).swapToPrivateToken(swapParams, {
+            value: swapParams.amountToSwapToOrFrom + feeUpdatePrice
+        })
+
+        const bobBalance = await swapper.balanceOf(bobAddress)
+        await swapper.connect(bob).approve(mainAddress, bobBalance)
+
+        console.log({ bobBalance })
+        const { withdrawalKey } = generateKeys(bobBalance, secretKey)
+        const { depositKeys } = breakDownKey(withdrawalKey, secretKey)
+
+        await main.connect(bob).deposit(depositKeys)
+        const _leaves = getLeavesFromKeys(depositKeys)
+        leaves.push(..._leaves)
+
+        const tree = new TinyMerkleTree(leaves)
+        const root = await main.root()
+
+        assert(tree.root == root)
     })
 })
 
