@@ -1,2 +1,2 @@
-forge remove fifteenfigures/tiny-merkle-tree-solidity
-forge install git@github.com:fifteenfigures/tiny-merkle-tree-solidity.git
+forge remove 0xfps/tiny-merkle-tree-solidity
+forge install 0xfps/tiny-merkle-tree-solidity

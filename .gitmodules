@@ -6,4 +6,4 @@
 	url = https://github.com/openzeppelin/openzeppelin-contracts
 [submodule "lib/tiny-merkle-tree-solidity"]
 	path = lib/tiny-merkle-tree-solidity
-	url = https://github.com/fifteenfigures/tiny-merkle-tree-solidity
+	url = https://github.com/0xfps/tiny-merkle-tree-solidity
