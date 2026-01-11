@@ -10,7 +10,8 @@ import { expect } from "chai"
 import commaNumber = require("comma-number")
 import path = require("node:path")
 import { groth16 } from "snarkjs"
-import { writeFileSync } from "node:fs"
+
+const depth = 32n
 
 const wasmPath = path.join(__dirname, "/artifacts/main.wasm")
 const zkeyPath = path.join(__dirname, "/artifacts/main2.zkey")
@@ -106,6 +107,7 @@ describe("Main Tests", function () {
         leaves.push(initLeaf)
 
         main = await ethers.deployContract("Main", [
+            depth,
             initLeaf,
             verifierAddress,
             swapperAddress
