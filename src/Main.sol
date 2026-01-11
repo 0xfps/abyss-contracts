@@ -20,10 +20,11 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard {
     IVerifier internal verifier;
 
     constructor (
+        uint8 depth,
         bytes32 initLeaf,
         address _verifier,
         address silentToken
-    ) TinyMerkleTree (initLeaf) {
+    ) TinyMerkleTree (depth, initLeaf) {
         SILENT_TOKEN = ISilentERC20(silentToken);
         verifier = IVerifier(_verifier);
         emit DepositAdded(initLeaf);
