@@ -1,13 +1,23 @@
 import { BigNumberish, parseEther, Signer, ZeroAddress } from "ethers"
 import { Groth16Verifier, Main, MockERC20, Swapper } from "../../typechain-types"
 import { ethers } from "hardhat"
-import TinyMerkleTree, { breakDownKey, extractKeyMetadata, generateKeys, getInputObjects, getLeafFromKey, getLeavesFromKeys, getMaxWithdrawalOnKey, getRandomNullifier, hashNums, hexify } from "@fifteenfigures/tiny-merkle-tree"
+import TinyMerkleTree, {
+    breakDownKey,
+    extractKeyMetadata,
+    generateKeys,
+    getInputObjects,
+    getLeafFromKey,
+    getLeavesFromKeys,
+    getMaxWithdrawalOnKey,
+    getRandomNullifier,
+    hashNums,
+    hexify
+} from "@fifteenfigures/tiny-merkle-tree"
 import assert from "node:assert/strict"
 import { HermesClient } from "@pythnetwork/hermes-client"
-import { collector, elisha, fisk, george, sCollector, SECRET_KEY_LENGTH } from "../constants"
+import { collector, elisha, SECRET_KEY_LENGTH } from "../constants"
 import Randomstring = require("randomstring")
 import { expect } from "chai"
-import commaNumber = require("comma-number")
 import path = require("node:path")
 import { groth16 } from "snarkjs"
 
@@ -163,16 +173,10 @@ describe("Main Tests", function () {
         let balance = await swapper.balanceOf(collector)
         console.log({ collectorBalanceBefore: balance })
 
-        balance = await swapper.balanceOf(sCollector)
-        console.log({ sCollectorBalanceBefore: balance })
-
         await main.connect(bob).deposit([depositKey])
 
         balance = await swapper.balanceOf(collector)
         console.log({ collectorBalanceAfter: balance })
-
-        balance = await swapper.balanceOf(sCollector)
-        console.log({ sCollectorBalanceAfter: balance })
 
         const tree = new TinyMerkleTree(leaves)
         const root = await main.root()

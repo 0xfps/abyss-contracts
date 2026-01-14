@@ -15,8 +15,8 @@ describe("Oracle Registry Tests", function () {
     let aliceAddress: string
     let bobAddress: string
 
-    const fakeOracleFeedId = encodeBytes32String("fake asset")
-    const anotherFakeOracleFeedId = encodeBytes32String("fake asset")
+    const demoOracleFeedId = encodeBytes32String("demo asset")
+    const anotherDemoOracleFeedId = encodeBytes32String("demo asset")
 
     before(async function () {
         [alice, bob] = await ethers.getSigners()
@@ -35,7 +35,7 @@ describe("Oracle Registry Tests", function () {
     it("Revert add or remove called by not owner.", async function () {
         const params = {
             asset: dante,
-            priceFeedId: fakeOracleFeedId
+            priceFeedId: demoOracleFeedId
         }
         
         await expect(oracleRegistry.connect(alice).addAssetPriceFeeds([params]))
@@ -50,26 +50,26 @@ describe("Oracle Registry Tests", function () {
         assert(priceFeedId == encodeBytes32String(""))
     })
 
-    it("Add valid fake asset oracle feed Id.", async function () {
+    it("Add valid demo asset oracle feed Id.", async function () {
         const params = {
             asset: dante,
-            priceFeedId: fakeOracleFeedId
+            priceFeedId: demoOracleFeedId
         }
 
         await oracleRegistry.connect(bob).addAssetPriceFeeds([params])
         const priceFeedId = await oracleRegistry.getPriceFeed(dante)
-        assert(priceFeedId == fakeOracleFeedId)
+        assert(priceFeedId == demoOracleFeedId)
     })
 
-    it("Add valid fake asset oracle feed Id doesn't reset set feed Id.", async function () {
+    it("Add valid demo asset oracle feed Id doesn't reset set feed Id.", async function () {
         const params = {
             asset: dante,
-            priceFeedId: anotherFakeOracleFeedId
+            priceFeedId: anotherDemoOracleFeedId
         }
 
         await oracleRegistry.connect(bob).addAssetPriceFeeds([params])
         const priceFeedId = await oracleRegistry.getPriceFeed(dante)
-        assert(priceFeedId == fakeOracleFeedId)
+        assert(priceFeedId == demoOracleFeedId)
     })
 
     it("Remove set asset oracle feed Id.", async function () {

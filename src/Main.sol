@@ -16,7 +16,6 @@ import { TinyMerkleTree } from "@fifteenfigures/TinyMerkleTree.sol";
 contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard {
     using Extractor for bytes;
 
-    ISilentERC20 internal immutable SILENT_TOKEN;
     IVerifier internal verifier;
 
     constructor (
@@ -24,13 +23,10 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard {
         bytes32 initLeaf,
         address _verifier,
         address silentToken
-    ) TinyMerkleTree (depth, initLeaf) {
-        SILENT_TOKEN = ISilentERC20(silentToken);
+    ) Fee(silentToken) TinyMerkleTree (depth, initLeaf) {
         verifier = IVerifier(_verifier);
         emit DepositAdded(initLeaf);
     }
-
-    receive() external payable {}
 
     function deposit(bytes[] calldata depositKeys) public {
         uint256 length = depositKeys.length;
@@ -46,7 +42,7 @@ contract Main is IMain, Recorder, Fee, TinyMerkleTree, ReentrancyGuard {
 
             SILENT_TOKEN.transferFrom(msg.sender, address(this), amount);
 
-            _takeFee(SILENT_TOKEN, amount);
+            _takeFee(amount);
             _addLeaf(leaf);
             _recordDeposit(leaf);
             depositCountForAmount[amount] += 1;
