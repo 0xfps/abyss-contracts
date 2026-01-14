@@ -15,6 +15,7 @@ import poseidonT2Artifact from "../artifacts/@fifteenfigures/lib/PoseidonHash.so
 import poseidonT3Artifact from "../artifacts/@fifteenfigures/lib/PoseidonHash.sol/PoseidonT3.json"
 import mainArtifact from "../artifacts/src/Main.sol/Main.json"
 
+const DEPTH = 32n
 const BLOCKS = 10
 const ADDRESS = "0xa08092B3AE155e6aa3444DBEeB5D92E69E8a41fB"
 const USDC_PRICE_FEED_ID = "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a"
@@ -135,8 +136,8 @@ async function deployOracleRegistry() {
 
 async function deploySwapper() {
     const swapperConstructorParams = [
-        "V",
-        "V",
+        "Abyss Protocol Token",
+        "ABYSS",
         oracleRegistryAddress,
         oracleAddress
     ]
@@ -275,6 +276,7 @@ async function deployPoseidonLibraries() {
 
 async function deployMainContract() {
     const mainConstructorParams = [
+        DEPTH,
         encodeBytes32String(""),
         groth16VerifierAddress,
         swapperAddress
@@ -320,6 +322,7 @@ async function deployMainContract() {
             blockNumber
         }
     }
+    
     writeAbiFile(fP, JSON.stringify(newContent))
 }
 

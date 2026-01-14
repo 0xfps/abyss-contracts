@@ -71,7 +71,7 @@ const config: HardhatUserConfig = {
     },
     sepolia: {
       chainId: 11155111,
-      url: "https://sepolia.gateway.tenderly.co",
+      url: "https://eth-sepolia.g.alchemy.com/v2/DhVf4WBbA1sl0bKUmrVAp",
       ...ACCOUNTS_CONFIG
     }
   },
