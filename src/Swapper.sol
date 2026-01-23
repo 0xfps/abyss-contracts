@@ -23,6 +23,8 @@ contract Swapper is ISwapper, SilentERC20, ReentrancyGuard {
     IOracleRegistry public immutable ORACLE_REGISTRY;
     IPyth public immutable PYTH;
 
+    mapping(address user => uint256 mostRecentSwapBlock) internal swapBlocks;
+
     constructor(
         string memory name,
         string memory symbol,
@@ -44,7 +46,10 @@ contract Swapper is ISwapper, SilentERC20, ReentrancyGuard {
         address asset = swapParams.assetToSwapToOrFrom;
         uint256 amount = swapParams.amountToSwapToOrFrom;
 
+        if (swapBlocks[msg.sender] == block.number) revert SwapOnSameBlockNumber();
         if (asset == address(this)) revert SwapOnlyToPrivateToken();
+        
+        _updateSwapBlockNumberForUser(msg.sender);
 
         if (asset != NATIVE_TOKEN) {
             IERC20(asset).safeTransferFrom(msg.sender, address(this), amount);
@@ -77,7 +82,10 @@ contract Swapper is ISwapper, SilentERC20, ReentrancyGuard {
         address asset = swapParams.assetToSwapToOrFrom;
         uint256 amount = swapParams.amountToSwapToOrFrom;
 
+        if (swapBlocks[msg.sender] == block.number) revert SwapOnSameBlockNumber();
         if (asset == address(this)) revert SwapOnlyToOtherTokens();
+        
+        _updateSwapBlockNumberForUser(msg.sender);
 
         _burn(msg.sender, amount);
 
@@ -100,6 +108,10 @@ contract Swapper is ISwapper, SilentERC20, ReentrancyGuard {
 
         (bool sent, ) = swapParams.receiver.call{ value: balance }("");
         require(sent);
+    }
+
+    function _updateSwapBlockNumberForUser(address swapper) internal {
+        swapBlocks[swapper] = block.number;
     }
 
     function _getAssetPriceFeedId(address asset) internal view returns (bytes32) {

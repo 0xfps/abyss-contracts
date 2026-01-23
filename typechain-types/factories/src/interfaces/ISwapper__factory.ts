@@ -26,6 +26,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "SwapOnSameBlockNumber",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "SwapOnlyToOtherTokens",
     type: "error",
   },

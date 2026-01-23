@@ -15,6 +15,7 @@ interface ISwapper {
     error SwapperMustNotBeReceiver();
     error SwapOnlyToOtherTokens();
     error SwapOnlyToPrivateToken();
+    error SwapOnSameBlockNumber();
 
     function getOracleUpdateFee(bytes[] calldata priceUpdate) external view returns (uint256);
     function swapToPrivateToken(SwapParams calldata swapParams) external payable;
