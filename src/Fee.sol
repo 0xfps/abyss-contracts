@@ -20,9 +20,12 @@ abstract contract Fee {
 
     address private constant COLLECTOR = 0x1181a7eA6E0A4350b067B0BaCdf71440e70ef219;
 
-    constructor(address silentToken, address guardian) {
+    constructor(
+        address silentToken
+        /* , address guardian */
+    ) {
         SILENT_TOKEN = ISilentERC20(silentToken);
-        GUARDIAN_FEE_COLLECTOR = guardian;
+        // GUARDIAN_FEE_COLLECTOR = guardian;
     }
 
     function _takeFee(uint256 amount) internal {
